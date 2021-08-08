@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>fyx</title>
+        <style>
+body { font-family: monospace; display: flex; }
+nav { margin-right: 2em; padding: 1em; }
+ul { margin: 0; padding-left: 1em; }
+ul.spaced-list > li { margin-bottom: 1ex; }
+hr { border: 1px solid gray; margin: 2ex 0; }
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
+body { background-color: #111; color: #fff; }
+a { color: #3cf; }
+a:visited { color: #c6f; }
+        </style>
+        <link rel="icon" href="/favicon.ico"/>
+        <body>
+            <nav>
+                <ul>
+                    <li><a href="/">home</a>
+                        <!--
+                            <ul>
+                            <li><a href="/code/">code</a>
+                            <li><a href="/writeups/">writeups</a>
+                            <li><a href="/ctf/">ctf</a>
+                            </ul>
+                        -->
+                </ul>
+            </nav>
+            <main>
+
+            <header>
+                <h1>fyx</h1>
+            </header>
+
+
+            Full time cyber, part time CTF player.<br/>
+            This website contains some of the work I've made public.<br/>
+            <small><i>Website is a work in progress... YMMV.</i></small>
+            <br/><br/>
+
+
+            <hr/>
+
+            <h2>code</h2>
+
+            <h3>tools</h3>
+            <ul class="spaced-list">
+                <li><b><a href="https://github.com/fyxme/dreamcatcher">dreamcatcher</a></b>, a TCP listener which allows the same port to be used as a HTTP file server (similarly to python's SimpleHTTPServer) and handle's other TCP connections similarly to netcat.</li>
+
+                <li><b><a href="https://github.com/fyxme/blistener">blistener</a></b>, a Blind-XSS listener with javascript payloads to retrieve the target user's browser data including cookies, local/session storage, html code (and optionally a screenshot) of current page (also works as a HTTP listener) </li>
+
+                <li><b><a href="https://github.com/fyxme/genx">genx</a></b>, a fast alternative domain name generator to help in generating potential subdomains of a target. Useful when starting recon on a domain. </li>
+
+                <li><b><a href="https://github.com/fyxme/dnsfaster">dnsfaster</a></b>, a tool to benchmark DNS resolvers in order to find resolvers with the highest speed and accuracy.</li>
+
+                <li><b><a href="https://github.com/fyxme/golang-short-domain-finder">short domain finder</a></b>, a golang application which aims to find the shortest available domain based on user parameters (ie. length, domain extension). <small><i>How I found this domain</i></small> </li>
+
+            </ul>
+
+            <h3>research</h3>
+
+            <ul class="spaced-list">
+                <li><b><a href="https://github.com/fyxme/crc-32-hash-collider">CRC-32 hash collider</a></b>, an application which finds a CRC-32 hash collision based on a provided CRC-32 value and a charset.</li>
+            </ul>
+            <ul class="spaced-list">
+                <li><b><a href="https://gitlab.com/0x41414141/scary-rootkit">BSD rootkit</a></b>, a BSD rootkit and rootkit detector (written for research &amp; education)</li>
+            </ul>
+
+            <ul class="spaced-list">
+                <li><b><a href="https://github.com/fyxme/silentbook">silentbook</a></b>, Proof-of-Concept app allowing encrypted messaging over Facebook messenger using AES-256 encryption</li>
+            </ul>
+
+            <br/>
+            other: <a href="https://github.com/fyxme">github.com/fyxme</a>
+
+            <hr/>
+            <h2>writeups</h2>
+
+            <h3>post-mortems</h3>
+            <ul class="spaced-list">
+
+                <li>
+                    <b>[July 2021] <a href="https://github.com/fyxme/writeups/blob/master/post-mortems/HackTheBox%20-%20Take%20It%20Easy%20Dare.md">HackTheBox - Take It Easy Dare</a></b>, a number of retired easy boxes that were made available for everyone during the month of July
+                </li>
+
+                <li>
+                    <b>[July 2021] <a href="https://github.com/fyxme/writeups/blob/master/post-mortems/Hacky%20holidays%20-%20Space%20Race.md">Hacky holidays - Space Race</a></b>, awesome 3 week long CTF hosted by Deloitte Netherlands
+                </li>
+            </ul>
+
+            <h3>boot2root</h3>
+            <ul class="spaced-list">
+
+                <li><b><a href="https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/active/active.md">active</a></b> :: Windows | Kerberoasting | Active Directory | Powershell</li>
+
+                <li><b><a href="https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/bastion/bastion.md">bastion</a></b> :: Windows | Powershell | File Misconfiguration</li>
+
+                <li><b><a href="https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/forest/forest.md">forest</a></b> :: Windows | Powershell | FKerberoasting | Active Directory</li>
+                <li><b><a href="https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/heist/heist.md">heist</a></b> :: Windows | Web | Process Inspection</li>
+
+                <li><b><a href="https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/openadmin/openadmin.md">openadmin</a></b> :: Linux | Web | File Misconfiguration</li>
+
+                <li><b><a href="https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/traverxec/traverxec.md">traverxec</a></b> :: Linux | Web | File Misconfiguration</li>
+
+                <li><b><a href="https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/shocker/shocker.md">shocker</a></b> :: Linux | Perl | Web | Injection</li>
+
+                <li><b><a href="https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/writeup/writeup.md">writeup</a></b> :: Linux | Web | SQL | SQLi</li>
+
+            </ul>
+
+            <h3>CTF</h3>
+            Older CTF writeups currently reside on github: <a href="https://github.com/fyxme/writeups">github.com/fyxme/writeups</a>.<br/>
+            Currently in the process of updating it with latest writeups.<br/>
+            <small>Also working on writing up some of the Hacky Holiday challenges</small>
+
+
+            </main>
