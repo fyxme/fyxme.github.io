@@ -21,14 +21,14 @@
 &lt;p>Ref: &lt;a href="https://www.prefect.io/" target="_blank" rel="noopener">https://www.prefect.io/&lt;/a>&lt;/p>
 &lt;/blockquote>
 &lt;p>
-&lt;img src="../_img/prefect.png" alt="Prefect Dashboard" loading="lazy" />&lt;/p>
+&lt;img src="../img/prefect.png" alt="Prefect Dashboard" loading="lazy" />&lt;/p>
 &lt;h4>Apache Airflow&lt;span class="hx-absolute -hx-mt-20" id="apache-airflow">&lt;/span>
 &lt;a href="#apache-airflow" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
 &lt;p>&lt;strong>Apache Airflow®&lt;/strong> is a platform created by the community to programmatically author, schedule and monitor workflows.&lt;/p>
 &lt;p>Ref: &lt;a href="https://airflow.apache.org/" target="_blank" rel="noopener">https://airflow.apache.org/&lt;/a>&lt;/p>
 &lt;/blockquote>
 &lt;p>
-&lt;img src="../_img/apache-airflow.png" alt="Apache Airflow Dashboard" loading="lazy" />&lt;/p>
+&lt;img src="../img/apache-airflow.png" alt="Apache Airflow Dashboard" loading="lazy" />&lt;/p>
 &lt;h3>Difference between CI-CD runners and Workflow orchestrators&lt;span class="hx-absolute -hx-mt-20" id="difference-between-ci-cd-runners-and-workflow-orchestrators">&lt;/span>
 &lt;a href="#difference-between-ci-cd-runners-and-workflow-orchestrators" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Difference between CI-CD runners like &lt;code>Github actions&lt;/code> and Workflow orchestrators like &lt;code>Airflow&lt;/code> and &lt;code>Perfect&lt;/code>?&lt;/p>
 &lt;blockquote>
