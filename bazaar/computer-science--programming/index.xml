@@ -1,0 +1,198 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) –</title><link>https://fyx.me/bazaar/computer-science--programming/</link><description>Recent content on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://fyx.me/bazaar/computer-science--programming/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://fyx.me/bazaar/computer-science--programming/git/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/git/</guid><description>
+&lt;h3>Git signing&lt;span class="hx-absolute -hx-mt-20" id="git-signing">&lt;/span>
+&lt;a href="#git-signing" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Get git signing key ID:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;pre>&lt;code># get keys
+gpg --list-secret-keys --keyid-format SHORT
+# key id is the one after rsa4096
+rsa4096/XXXXXXXX&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>Setup &lt;code>.gitconfig&lt;/code> to sign automatically:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename" dir="auto">.gitconfig&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>user&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">useConfigOnly&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">email&lt;/span> &lt;span class="o">=&lt;/span> ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">signingkey&lt;/span> &lt;span class="o">=&lt;/span> &amp;lt;XXXXXXXX&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>commit&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">gpgSign&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>tag&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">gpgSign&lt;/span> &lt;span class="o">=&lt;/span> true&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>ref: &lt;a href="https://git-scm.com/book/ms/v2/Git-Tools-Signing-Your-Work" target="_blank" rel="noopener">https://git-scm.com/book/ms/v2/Git-Tools-Signing-Your-Work&lt;/a> &lt;br />
+ref: &lt;a href="https://withblue.ink/2020/05/17/how-and-why-to-sign-git-commits.html" target="_blank" rel="noopener">https://withblue.ink/2020/05/17/how-and-why-to-sign-git-commits.html&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;h3>Git diff(ing): Generating and Applying code patches&lt;span class="hx-absolute -hx-mt-20" id="git-diffing-generating-and-applying-code-patches">&lt;/span>
+&lt;a href="#git-diffing-generating-and-applying-code-patches" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># GENERATING&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># head -1 &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git format-patch -1 HEAD
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># head - 3 to head&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git format-patch HEAD~3..HEAD
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># generating a single patch across multiple commits&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git format-patch cc1dde0dd^..6de6d4b06 --stdout &amp;gt; foo.patch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># generating diff from tags (can use --stat to only get the number of lines changed)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git diff 2.0.0 1.0.0 --stat
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># generating patches for uncommited changes&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git diff &amp;gt; my-changes.patch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># APPLYING&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git apply &amp;lt;patch-file&amp;gt;&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>ref: &lt;a href="https://www.geeksforgeeks.org/how-to-generate-and-apply-patches-with-git/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/how-to-generate-and-apply-patches-with-git/&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;h4>Using linux diff command&lt;span class="hx-absolute -hx-mt-20" id="using-linux-diff-command">&lt;/span>
+&lt;a href="#using-linux-diff-command" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Can also be done from linux diff commands directly:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># GENERATING&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># new code has the new changes we want to make as part of the patch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">diff -ru &amp;lt;old code&amp;gt; &amp;lt;new code&amp;gt; &amp;gt; mychanges.patch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># APPLYING&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># need to be in the directory in which you want to make the diff changes from&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">patch -i mychanges.patch&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>Encrypted git repos&lt;span class="hx-absolute -hx-mt-20" id="encrypted-git-repos">&lt;/span>
+&lt;a href="#encrypted-git-repos" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+&lt;p class="hx-flex hx-items-center hx-font-medium">Tbd&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;a href="https://git-annex.branchable.com/tips/fully_encrypted_git_repositories_with_gcrypt/" target="_blank" rel="noopener">https://git-annex.branchable.com/tips/fully_encrypted_git_repositories_with_gcrypt/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3>Git Convetional Commits&lt;span class="hx-absolute -hx-mt-20" id="git-convetional-commits">&lt;/span>
+&lt;a href="#git-convetional-commits" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>See &lt;a href="versioning.md" >versioning&lt;/a>&lt;/p></description></item><item><title/><link>https://fyx.me/bazaar/computer-science--programming/orchestration-workflows/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/orchestration-workflows/</guid><description>
+&lt;h3>Workflow orchestration&lt;span class="hx-absolute -hx-mt-20" id="workflow-orchestration">&lt;/span>
+&lt;a href="#workflow-orchestration" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-rounded-lg hx-border hx-py-2 ltr:hx-pr-4 rtl:hx-pl-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+&lt;div class="ltr:hx-pl-3 ltr:hx-pr-2 rtl:hx-pr-3 rtl:hx-pl-2">&lt;/div>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;strong>tldr:&lt;/strong> A fancy &lt;code>cron&lt;/code> runner with advanced workflow management, status monitoring, alerting, etc&amp;hellip;&lt;/p>
+&lt;p>Cyber security use cases:&lt;/p>
+&lt;ul>
+&lt;li>Monitoring tasks&lt;/li>
+&lt;li>Scheduled offensive/defensive scan triggers&lt;/li>
+&lt;li>Daily Enumeration workflows&lt;/li>
+&lt;li>data pipelines&lt;/li>
+&lt;li>and more&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h4>Prefect&lt;span class="hx-absolute -hx-mt-20" id="prefect">&lt;/span>
+&lt;a href="#prefect" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>&lt;strong>Prefect&lt;/strong> offers modern orchestration solutions to empower data teams to build resilient workflows that scale with versatile resource needs.&lt;/p>
+&lt;p>Ref: &lt;a href="https://www.prefect.io/" target="_blank" rel="noopener">https://www.prefect.io/&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>
+&lt;img src="../img/prefect.png" alt="Prefect Dashboard" loading="lazy" />&lt;/p>
+&lt;h4>Apache Airflow&lt;span class="hx-absolute -hx-mt-20" id="apache-airflow">&lt;/span>
+&lt;a href="#apache-airflow" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>&lt;strong>Apache Airflow®&lt;/strong> is a platform created by the community to programmatically author, schedule and monitor workflows.&lt;/p>
+&lt;p>Ref: &lt;a href="https://airflow.apache.org/" target="_blank" rel="noopener">https://airflow.apache.org/&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>
+&lt;img src="../img/apache-airflow.png" alt="Apache Airflow Dashboard" loading="lazy" />&lt;/p>
+&lt;h3>Difference between CI-CD runners and Workflow orchestrators&lt;span class="hx-absolute -hx-mt-20" id="difference-between-ci-cd-runners-and-workflow-orchestrators">&lt;/span>
+&lt;a href="#difference-between-ci-cd-runners-and-workflow-orchestrators" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Difference between CI-CD runners like &lt;code>Github actions&lt;/code> and Workflow orchestrators like &lt;code>Airflow&lt;/code> and &lt;code>Perfect&lt;/code>?&lt;/p>
+&lt;blockquote>
+&lt;p>As to the differences, GitHub actions is generally a &amp;ldquo;on commit, do something&amp;rdquo;, like build an image, run tests, linting, build documentation, etc. It&amp;rsquo;s a tool generally to automate actions on your repository.&lt;/p>
+&lt;p>Airflow and Prefect are orchestration systems. They&amp;rsquo;re not tied to a repo and can do a wider variety of things. For example, every day at 4am run a daily report for the prior business day. Every weekend retain our ML models by spinning up some Amazon ECS tasks. Every half an hour hit an external API and digest it&amp;rsquo;s data into our data lake.&lt;/p>
+&lt;p>[&amp;hellip;] GitHub actions&amp;hellip; Can be shoehorned to do orchestration in a limited fashion, but it&amp;rsquo;s not quite the intent.&lt;/p>
+&lt;p>Prefect and airflow are, however, explicitly designed to do it. For Prefect, that means I dictate how things are run (containers, dask workers, other), I can specific what to happen on failure (retry, pagerduty alert, slack warnings, etc), and many other things that in general make my life easier bridging the proof of concept to fully productionised system easier.&lt;/p>
+&lt;p>Ref: &lt;a href="https://www.reddit.com/r/mlops/comments/13ulfux/airflow_vs_github_actions_workflows/" target="_blank" rel="noopener">https://www.reddit.com/r/mlops/comments/13ulfux/airflow_vs_github_actions_workflows/&lt;/a>&lt;/p>
+&lt;/blockquote></description></item><item><title/><link>https://fyx.me/bazaar/computer-science--programming/versioning/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/versioning/</guid><description>
+&lt;h3>Semver : Semantic versioning&lt;span class="hx-absolute -hx-mt-20" id="semver--semantic-versioning">&lt;/span>
+&lt;a href="#semver--semantic-versioning" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>ref: &lt;a href="https://semver.org/" target="_blank" rel="noopener">https://semver.org/&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>Given a version number MAJOR.MINOR.PATCH, increment the:&lt;/p>
+&lt;ol>
+&lt;li>MAJOR version when you make incompatible API changes&lt;/li>
+&lt;li>MINOR version when you add functionality in a backward compatible manner&lt;/li>
+&lt;li>PATCH version when you make backward compatible bug fixes&lt;/li>
+&lt;/ol>
+&lt;p>Additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format.&lt;/p>
+&lt;p>Other ref:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.conventionalcommits.org/en/v1.0.0/" target="_blank" rel="noopener">https://www.conventionalcommits.org/en/v1.0.0/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3>Conventional commits&lt;span class="hx-absolute -hx-mt-20" id="conventional-commits">&lt;/span>
+&lt;a href="#conventional-commits" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+&lt;p class="hx-flex hx-items-center hx-font-medium">Tldr&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;strong>Commit formats:&lt;/strong> &lt;code>feat(parser): add ability to parse arrays&lt;/code> &lt;br>
+&lt;strong>Tags:&lt;/strong> &lt;code>feat, fix, build, chore, ci, docs, style, refactor, perf, test&lt;/code>&lt;br>
+&lt;strong>Breaking changes:&lt;/strong> a footer &lt;code>BREAKING CHANGE:&lt;/code>, or appends a &lt;code>!&lt;/code> after the type/scope (eg. &lt;code>fix(parser)!: fixed CVE-XXX by adding input validation&lt;/code>)&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>The Conventional Commits specification is a lightweight convention on top of commit messages. It provides an easy set of rules for creating an explicit commit history; which makes it easier to write automated tools on top of. This convention dovetails with &lt;a href="http://semver.org" target="_blank" rel="noopener">SemVer&lt;/a>, by describing the features, fixes, and breaking changes made in commit messages.&lt;/p>
+&lt;p>The commit message should be structured as follows:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;pre>&lt;code>&amp;lt;type&amp;gt;[optional scope]: &amp;lt;description&amp;gt;
+[optional body]
+[optional footer(s)]&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>The commit contains the following structural elements, to communicate intent to the consumers of your library:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>fix:&lt;/strong> a commit of the &lt;em>type&lt;/em> &lt;code>fix&lt;/code> patches a bug in your codebase (this correlates with &lt;code>PATCH&lt;/code> in Semantic Versioning).&lt;/li>
+&lt;li>&lt;strong>feat:&lt;/strong> a commit of the &lt;em>type&lt;/em> &lt;code>feat&lt;/code> introduces a new feature to the codebase (this correlates with &lt;code>MINOR&lt;/code> in Semantic Versioning).&lt;/li>
+&lt;li>&lt;strong>BREAKING CHANGE:&lt;/strong> a commit that has a footer &lt;code>BREAKING CHANGE:&lt;/code>, or appends a &lt;code>!&lt;/code> after the type/scope, introduces a breaking API change (correlating with &lt;code>MAJOR&lt;/code> in Semantic Versioning). A BREAKING CHANGE can be part of commits of any &lt;em>type&lt;/em>.&lt;/li>
+&lt;li>&lt;em>types&lt;/em> other than &lt;code>fix:&lt;/code> and &lt;code>feat:&lt;/code> are allowed, for example &lt;a href="https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional" target="_blank" rel="noopener">@commitlint/config-conventional&lt;/a> (based on the &lt;a href="https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines" target="_blank" rel="noopener">Angular convention&lt;/a>) recommends &lt;code>build:&lt;/code>, &lt;code>chore:&lt;/code>, &lt;code>ci:&lt;/code>, &lt;code>docs:&lt;/code>, &lt;code>style:&lt;/code>, &lt;code>refactor:&lt;/code>, &lt;code>perf:&lt;/code>, &lt;code>test:&lt;/code>, and others.&lt;/li>
+&lt;li>&lt;em>footers&lt;/em> other than &lt;code>BREAKING CHANGE: &amp;lt;description&amp;gt;&lt;/code> may be provided and follow a convention similar to &lt;a href="https://git-scm.com/docs/git-interpret-trailers" target="_blank" rel="noopener">git trailer format&lt;/a>.&lt;/li>
+&lt;/ol>
+&lt;p>Additional types are not mandated by the Conventional Commits specification, and have no implicit effect in Semantic Versioning (unless they include a BREAKING CHANGE). A scope may be provided to a commit’s type, to provide additional contextual information and is contained within parenthesis, e.g., &lt;code>feat(parser): add ability to parse arrays&lt;/code>.&lt;/p>
+&lt;blockquote>
+&lt;p>Ref: &lt;a href="https://www.conventionalcommits.org/en/v1.0.0/" target="_blank" rel="noopener">https://www.conventionalcommits.org/en/v1.0.0/&lt;/a>&lt;/p>
+&lt;/blockquote></description></item></channel></rss>
