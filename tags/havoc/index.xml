@@ -11,23 +11,23 @@ The tool can be found here: &lt;a href="https://github.com/fyxme/havoc-runall-po
 &lt;p>The Havoc Run All Module allows you to run commands on all connected agents, which could prove useful when searching for something, running post-exploitation on a number of hosts and/or downloading files on all compromised hosts at once.&lt;/p>
 &lt;p>&lt;em>Note: executing ransomware this way would actually be stupid since you&amp;rsquo;d need to have a beacon on every machine you wish to ransom&amp;hellip; As is currently done in ransomware operations, its much easier to use GPO, Intune, SCCM or any other software deployment tool. This is only a fun project which will increase IOCs when used and increase the likelihood of being compromised&amp;hellip; So &lt;a href="https://i1.kym-cdn.com/entries/icons/facebook/000/021/665/DpQ9YJl.jpg" target="_blank" rel="noopener">ackchyually&lt;/a>, I&amp;rsquo;m doing blue team a favor here. Its ok&amp;hellip; Thank me later.&lt;/em>&lt;/p>
 &lt;p>
-&lt;img src="../img/Havoc%20Run%20All%20Module%20Car%20salesman%20IOCs.png" alt="" loading="lazy" />&lt;/p>
+&lt;img src="../img/Havoc%20Run%20All%20Module%20Car%20salesman%20IOCs.webp" alt="" loading="lazy" />&lt;/p>
 &lt;h2>Figuring out which of my beacons are alive&lt;span class="hx-absolute -hx-mt-20" id="figuring-out-which-of-my-beacons-are-alive">&lt;/span>
 &lt;a href="#figuring-out-which-of-my-beacons-are-alive" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The first use case I found for this was to sync all my beacons (using the sleep command) and finding out which of my beacons are alive by running a dummy BOF.&lt;/p>
 &lt;p>To sync all the beacons, I first run &lt;code>sleep 0&lt;/code> on all of them to get them to return all at the same time (some limitations in the current version of Havoc make it unreliable when the beacons do not return at similar intervals):&lt;/p>
 &lt;p>
 &lt;figure>
-&lt;img src="../img/Havoc%20Run%20All%20Sleep%200.png" title="havoc &amp;gt; runall sleep 0" alt="" loading="lazy" />
+&lt;img src="../img/Havoc%20Run%20All%20Sleep%200.webp" title="havoc &amp;gt; runall sleep 0" alt="" loading="lazy" />
 &lt;figcaption>havoc &amp;gt; runall sleep 0&lt;/figcaption>
 &lt;/figure>&lt;/p>
 &lt;p>
 &lt;figure>
-&lt;img src="../img/Havoc%20Run%20All%20Sync-ed%20beacons.png" title="All Havoc beacons synced together" alt="" loading="lazy" />
+&lt;img src="../img/Havoc%20Run%20All%20Sync-ed%20beacons.webp" title="All Havoc beacons synced together" alt="" loading="lazy" />
 &lt;figcaption>All Havoc beacons synced together&lt;/figcaption>
 &lt;/figure>&lt;/p>
 &lt;p>To get details about the alive beacons, I&amp;rsquo;ve created a command (&lt;code>getalive&lt;/code>) which run a dummy BOF on all the agents. This BOF returns the hostname and the username of the underlying beacon allowing us to check which beacons are actually alive and which ones might be dead:&lt;/p>
 &lt;p>
-&lt;img src="../img/Havoc%20Run%20All%20Get%20Alive%20Command.png" alt="" loading="lazy" />&lt;/p>
+&lt;img src="../img/Havoc%20Run%20All%20Get%20Alive%20Command.webp" alt="" loading="lazy" />&lt;/p>
 &lt;h2>Passively mapping out an internal environment using Packet Captures&lt;span class="hx-absolute -hx-mt-20" id="passively-mapping-out-an-internal-environment-using-packet-captures">&lt;/span>
 &lt;a href="#passively-mapping-out-an-internal-environment-using-packet-captures" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>With firewalls, network access controls, and network segmentation, it can be tough to identify which machines can talk to which ones. There are tools out there that can help map out a network environment but they require active scanning of target devices. You could also use DNS cache to get an idea of what the machine is trying to talk to but it does not necessarily correlate with what it can reach (eg. DNS for a machine that is firewall/blocked off).&lt;/p>
 &lt;p>Instead, we can look at currently outgoing data and see if we can create our own map from passively analysing network packets. To do this, we would need access to Network Routing Device like a switch or we can rely on running packet captures on a large number of hosts within the environment. Since we&amp;rsquo;re testing out the Havoc Run All Module (and there&amp;rsquo;s no network device we can compromise), we&amp;rsquo;ll use the second option and perform a packet capture on all of the hosts we have compromised.&lt;/p>
@@ -74,7 +74,7 @@ title="Copy code"
 &lt;/div>
 &lt;p>After deploying my beacons using &lt;code>nxc&lt;/code>, I was able to connect to them in Havoc and they started pinging back periodically as expected:&lt;/p>
 &lt;p>
-&lt;img src="../img/Havoc%20Run%20All%20Multiple%20Beacons%20Deployed.png" alt="" loading="lazy" />&lt;/p>
+&lt;img src="../img/Havoc%20Run%20All%20Multiple%20Beacons%20Deployed.webp" alt="" loading="lazy" />&lt;/p>
 &lt;p>I then started a trace on all the beacons at once using the following commands:&lt;/p>
 &lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;pre>&lt;code># start the trace
@@ -93,13 +93,13 @@ title="Copy code"
 &lt;/div>
 &lt;p>
 &lt;figure>
-&lt;img src="../img/Havoc%20Run%20All%20netsh%20start%20trace.png" title="Console from one of the agents receiving the command" alt="" loading="lazy" />
+&lt;img src="../img/Havoc%20Run%20All%20netsh%20start%20trace.webp" title="Console from one of the agents receiving the command" alt="" loading="lazy" />
 &lt;figcaption>Console from one of the agents receiving the command&lt;/figcaption>
 &lt;/figure>&lt;/p>
 &lt;p>Data collection and consolidation takes some time but once it&amp;rsquo;s completed you should see a message as such:&lt;/p>
 &lt;p>
 &lt;figure>
-&lt;img src="../img/Havoc%20Run%20All%20netsh%20generate%20cab%20file.png" title="Consolidation of data into CAB file" alt="" loading="lazy" />
+&lt;img src="../img/Havoc%20Run%20All%20netsh%20generate%20cab%20file.webp" title="Consolidation of data into CAB file" alt="" loading="lazy" />
 &lt;figcaption>Consolidation of data into CAB file&lt;/figcaption>
 &lt;/figure>&lt;/p>
 &lt;p>At this point we have an &lt;a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/devtest/trace-log" target="_blank" rel="noopener">ETL&lt;/a> file (Microsoft Event Trace Log File) which can be opened by ETW-centric tools like Microsoft Message Analyzer, but cannot be opened by Wireshark and co. Ideally, we want a file format that is supported by most tools which analyse network data, aka we want a &lt;a href="https://www.netresec.com/?page=Blog&amp;amp;month=2022-10&amp;amp;post=What-is-a-PCAP-file" target="_blank" rel="noopener">PCAP&lt;/a> or &lt;a href="https://pcapng.com/" target="_blank" rel="noopener">PCAPng&lt;/a> file. As such we can convert the &lt;code>.etl&lt;/code> file into a &lt;code>.pcapng&lt;/code> file using the &lt;a href="https://github.com/microsoft/etl2pcapng" target="_blank" rel="noopener">etl2pcapng&lt;/a> utility tool.&lt;/p>
@@ -119,7 +119,7 @@ title="Copy code"
 &lt;/div>
 &lt;p>
 &lt;figure>
-&lt;img src="../img/Havoc%20Run%20All%20yesconsolation%20etl2pcapng.png" title="Converting .etl to .pcapng directly on the hosts" alt="" loading="lazy" />
+&lt;img src="../img/Havoc%20Run%20All%20yesconsolation%20etl2pcapng.webp" title="Converting .etl to .pcapng directly on the hosts" alt="" loading="lazy" />
 &lt;figcaption>Converting .etl to .pcapng directly on the hosts&lt;/figcaption>
 &lt;/figure>&lt;/p>
 &lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-amber-200 hx-bg-amber-100 hx-text-amber-900 dark:hx-border-amber-200/30 dark:hx-bg-amber-900/30 dark:hx-text-amber-200">
@@ -145,16 +145,16 @@ title="Copy code"
 &lt;/div>
 &lt;p>Depending on how large the PCAP is, this may take a while&amp;hellip; You can use the last seen tab to know when the file has finished downloading vs when it&amp;rsquo;s still downloading:&lt;/p>
 &lt;p>
-&lt;img src="../img/Havoc%20Run%20All%20Downloading%20PCAP%20files.png" alt="" loading="lazy" />&lt;/p>
+&lt;img src="../img/Havoc%20Run%20All%20Downloading%20PCAP%20files.webp" alt="" loading="lazy" />&lt;/p>
 &lt;p>Once downloaded, you can navigate to your local Havoc install and find the &lt;code>data/loot&lt;/code> folder which is where the downloaded files will be located:&lt;/p>
 &lt;p>
-&lt;img src="../img/Havoc%20Run%20All%20Downloaded%20all%20pcapng%20files%20locally.png" alt="" loading="lazy" />&lt;/p>
+&lt;img src="../img/Havoc%20Run%20All%20Downloaded%20all%20pcapng%20files%20locally.webp" alt="" loading="lazy" />&lt;/p>
 &lt;p>Now we don&amp;rsquo;t want to deal with each packet capture one at a time, so instead we can merge them into a single large PCAP file using the &lt;a href="https://www.wireshark.org/docs/man-pages/mergecap.html" target="_blank" rel="noopener">mergecap&lt;/a> tool (which is part of Wireshark):&lt;/p>
 &lt;p>
-&lt;img src="../img/Havoc%20Run%20All%20mergecap.png" alt="" loading="lazy" />&lt;/p>
+&lt;img src="../img/Havoc%20Run%20All%20mergecap.webp" alt="" loading="lazy" />&lt;/p>
 &lt;p>Some tools might not work with pcapng (eg. the free version of &lt;a href="https://www.netresec.com/?page=NetworkMiner" target="_blank" rel="noopener">NetworkMiner&lt;/a>) and require the old school pcap format instead, which we can easily create using &lt;a href="https://www.wireshark.org/docs/man-pages/tshark.html" target="_blank" rel="noopener">tshark&lt;/a> (part of Wireshark as well):&lt;/p>
 &lt;p>
-&lt;img src="../img/Havoc%20Run%20All%20tshark%20combine.png" alt="" loading="lazy" />&lt;/p>
+&lt;img src="../img/Havoc%20Run%20All%20tshark%20combine.webp" alt="" loading="lazy" />&lt;/p>
 &lt;p>&lt;em>The old school PCAP format does not have all the bells and whistles of the PCAPng format and therefore may loose some data during conversion. This explains the discrepancy in the file sizes above.&lt;/em>&lt;/p>
 &lt;h3>Analysing the data&lt;span class="hx-absolute -hx-mt-20" id="analysing-the-data">&lt;/span>
 &lt;a href="#analysing-the-data" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
@@ -189,20 +189,20 @@ title="Copy code"
 &lt;/ul>
 &lt;p>
 &lt;figure>
-&lt;img src="../img/Havoc%20Run%20All%20NetworkMiner%20Loot.png" title="NetworkMiner Hosts Tab" alt="" loading="lazy" />
+&lt;img src="../img/Havoc%20Run%20All%20NetworkMiner%20Loot.webp" title="NetworkMiner Hosts Tab" alt="" loading="lazy" />
 &lt;figcaption>NetworkMiner Hosts Tab&lt;/figcaption>
 &lt;/figure>&lt;/p>
 &lt;p>
 &lt;figure>
-&lt;img src="../img/Havoc%20Run%20All%20NetworkMiner%20Credentials%20Tab.png" title="NetworkMiner Credentials Tab" alt="" loading="lazy" />
+&lt;img src="../img/Havoc%20Run%20All%20NetworkMiner%20Credentials%20Tab.webp" title="NetworkMiner Credentials Tab" alt="" loading="lazy" />
 &lt;figcaption>NetworkMiner Credentials Tab&lt;/figcaption>
 &lt;/figure>&lt;/p>
 &lt;p>We can use tshark to generate a table like output of IP Communications and see which hosts are communicating together:&lt;/p>
 &lt;p>
-&lt;img src="../img/Havoc%20Run%20All%20Tshark%20IP%20Communication.png" alt="" loading="lazy" />&lt;/p>
+&lt;img src="../img/Havoc%20Run%20All%20Tshark%20IP%20Communication.webp" alt="" loading="lazy" />&lt;/p>
 &lt;p>I tried playing around with python tools but because the PCAP is of decent size, it was quite slow so I resorted to writing a good ol&amp;rsquo; C program to parse the PCAP using &lt;a href="https://www.tcpdump.org/" target="_blank" rel="noopener">libpcap&lt;/a> which generates a DOT file that can be converted to a graph using &lt;a href="https://graphviz.org/" target="_blank" rel="noopener">GraphViz&lt;/a>:&lt;/p>
 &lt;p>
-&lt;img src="../img/Havoc%20Run%20All%20Visualising%20IP%20Network%20map.png" alt="" loading="lazy" />&lt;/p>
+&lt;img src="../img/Havoc%20Run%20All%20Visualising%20IP%20Network%20map.webp" alt="" loading="lazy" />&lt;/p>
 &lt;p>The graph above already highlights a few things about the environment:&lt;/p>
 &lt;ul>
 &lt;li>RED: my Kali VM;&lt;/li>
@@ -213,7 +213,7 @@ title="Copy code"
 &lt;p>We can also see the two Google DNS IPs (&lt;code>8.8.8.8&lt;/code> and &lt;code>8.8.4.4&lt;/code>) being connected to the Blue node which indicate that the domain controller is likely using Google DNS server for external DNS queries. It also connects to multiple root name servers, namely e.root-servers.net (&lt;code>192.203.230.10&lt;/code>) and g.root-servers.net (&lt;code>192.112.36.4&lt;/code>).&lt;/p>
 &lt;p>As such, we have a decent overview of the network. We can also start performing additional data analysis to for example find open ports and services on the network like HTTPS (port 443), RDP (port 3389) and Microsoft SQL Server (port 1433):&lt;/p>
 &lt;p>
-&lt;img src="../img/Havoc%20Run%20All%20Analysis%20Open%20Ports.png" alt="" loading="lazy" />&lt;/p>
+&lt;img src="../img/Havoc%20Run%20All%20Analysis%20Open%20Ports.webp" alt="" loading="lazy" />&lt;/p>
 &lt;h2>Conclusion and use cases&lt;span class="hx-absolute -hx-mt-20" id="conclusion-and-use-cases">&lt;/span>
 &lt;a href="#conclusion-and-use-cases" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The Havoc Run All Module is a fun tool to play around with in test environments but since it generates a lot of IOCs, it wouldn&amp;rsquo;t be too practical in Red Team engagements unless you&amp;rsquo;re looking to go all out and validate that the Blue Team can catch you.&lt;/p>
 &lt;p>I do see some potential within practice environments like HTB Pro Labs, OffSec OSEP, etc. It&amp;rsquo;s overall really fun to use and does feel pretty powerful when you don&amp;rsquo;t have to worry about OPSEC! Combine it with a BOF that searches for flags or does post-exploitation looting and you&amp;rsquo;ve got yourself a powerful weapon for those pesky practice environments which hide loot everywhere.&lt;/p>
