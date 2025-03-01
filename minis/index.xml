@@ -1,4 +1,100 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Minis</title><link>https://fyx.me/minis/</link><description>Recent content in Minis on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 14 Jan 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://fyx.me/minis/index.xml" rel="self" type="application/rss+xml"/><item><title>Create Infinite Email aliases using Cloudflare Email Routing</title><link>https://fyx.me/minis/create-infinite-email-aliases-using-cloudflare-email-routing/</link><pubDate>Tue, 14 Jan 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/minis/create-infinite-email-aliases-using-cloudflare-email-routing/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Minis</title><link>https://fyx.me/minis/</link><description>Recent content in Minis on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 18 Jan 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://fyx.me/minis/index.xml" rel="self" type="application/rss+xml"/><item><title>Creating Lightweight Windows Virtual Machines for your Personal Lab Environment</title><link>https://fyx.me/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/</link><pubDate>Sat, 18 Jan 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/</guid><description>
+&lt;p>Windows VMs are great&amp;hellip; Until they hog half of your laptop&amp;rsquo;s resources, take up at least 40GB of storage and are basically unusable whenever an app requires the slightest amount of computing power.&lt;/p>
+&lt;p>I had that issue for a very long time until I came across this unbelievable tweet of Windows 11 running on 184MB of RAM:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/NTDEV%20Windows%2011%20184MB%20RAM%20Tweet.png" title="https://x.com/NTDEV_/status/1876434066364383507" alt="" loading="lazy" />
+&lt;figcaption>https://x.com/NTDEV_/status/1876434066364383507&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>Any human successfully running Windows 11 on a 2009 iPod Touch amount of RAM is a legend in my books. I had to look into this in-human person who was going to be my spirit animal for the day&amp;hellip;&lt;/p>
+&lt;p>As it turns out, this is not NTDEV&amp;rsquo;s first rodeo&amp;hellip; This man eats RAM for breakfast! Looking through his previous tweets and reading his blog, I&amp;rsquo;ve realised he has released a number of &lt;strong>tiny Windows ISOs&lt;/strong> for Windows 10 and Windows 11. These tiny ISOs are lightweight, stripped-down versions of their respective counterparts. I thought surely, they can&amp;rsquo;t be that much better than the official Windows 10 ISO.&lt;/p>
+&lt;p>So I tried them&amp;hellip; Furiously deleted on a few more resources and boy was I blown away by the final resource consumption reduction!&lt;/p>
+&lt;p>
+&lt;img src="../img/Windows%2010%20Task%20Manager%20Game%20Boy%20Color.png" alt="" loading="lazy" />&lt;/p>
+&lt;h2>Creating a Lightweight Windows 10 VM&lt;span class="hx-absolute -hx-mt-20" id="creating-a-lightweight-windows-10-vm">&lt;/span>
+&lt;a href="#creating-a-lightweight-windows-10-vm" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>First, I download the tiny10 ISO from archive.org: &lt;a href="https://archive.org/download/tiny-10-23-h2/tiny10%20x64%2023h2.iso" target="_blank" rel="noopener">https://archive.org/download/tiny-10-23-h2/tiny10%20x64%2023h2.iso&lt;/a>. You can speed up this process using &lt;a href="https://aria2.github.io/" target="_blank" rel="noopener">aria2c&lt;/a> to download the file with multiple server connections.&lt;/p>
+&lt;p>I then installed it on my Virtualisation software of choice, namely &lt;a href="https://upload.wikimedia.org/wikipedia/commons/e/ee/Emu_%28Dromaius_novaehollandiae%29_-head.jpg" target="_blank" rel="noopener">QEMU&lt;/a>.&lt;/p>
+&lt;p>I booted it and decided to remove Microsoft Defender because I didn&amp;rsquo;t need it for the VM&amp;rsquo;s use case which reduced the RAM consumption a lot. I personally used the &lt;a href="https://github.com/TairikuOokami/Windows/tree/main" target="_blank" rel="noopener">following tool&lt;/a> which worked at the time. As these are patched by Microsoft every so often, YMMV.&lt;/p>
+&lt;p>I also tried the &lt;a href="https://github.com/W4RH4WK/Debloat-Windows-10/tree/master" target="_blank" rel="noopener">following&lt;/a> &amp;ldquo;Debloater&amp;rdquo;, not sure if it actually did anything&amp;hellip; Seems like most of it was already taken care of by NTDEV&amp;rsquo;s Tiny ISO.&lt;/p>
+&lt;p>From looking at task manager and assessing the resource consumption of different processes, this felt like a good first pass where I eliminated the most consuming resources and attempting to go any further would take unreasonable amount of time for little benefit (Pareto principle).&lt;/p>
+&lt;p>So that was pretty much it for optimisation&amp;hellip;&lt;/p>
+&lt;h2>Comparing an unmodified Windows VM with my custom Lightweight VM&lt;span class="hx-absolute -hx-mt-20" id="comparing-an-unmodified-windows-vm-with-my-custom-lightweight-vm">&lt;/span>
+&lt;a href="#comparing-an-unmodified-windows-vm-with-my-custom-lightweight-vm" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The following screenshots were made under the following conditions in an attempt to provide a fair comparaison:&lt;/p>
+&lt;ul>
+&lt;li>VMs were given the exact same resources&lt;/li>
+&lt;li>Both were under zero load (ie. at rest, no user application running) when the screenshots were taken&lt;/li>
+&lt;li>VM Screen Display settings were set to the same Display resolution&lt;/li>
+&lt;/ul>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Task%20Manager%20Performance%20Windows%2010.png" title="Task Manager Performance Windows 10" alt="" loading="lazy" />
+&lt;figcaption>Task Manager Performance Windows 10&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Task%20Manager%20Performance%20Tiny10.png" title="Task Manager Performance Lightweight VM" alt="" loading="lazy" />
+&lt;figcaption>Task Manager Performance Lightweight VM&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Windows%2010%20CPU%20at%20rest%20example%201.png" title="Windows 10 CPU at rest example 1" alt="" loading="lazy" />
+&lt;figcaption>Windows 10 CPU at rest example 1&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Windows%2010%20CPU%20at%20rest%20example%202.png" title="Windows 10 CPU at rest example 2" alt="" loading="lazy" />
+&lt;figcaption>Windows 10 CPU at rest example 2&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Lightweight%20VM%20CPU%20at%20rest.png" title="Lightweight VM CPU at rest" alt="" loading="lazy" />
+&lt;figcaption>Lightweight VM CPU at rest&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Drive%20Space%20Utilisation%20Windows%2010.png" title="Drive Space Windows 10" alt="" loading="lazy" />
+&lt;figcaption>Drive Space Windows 10&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Drive%20Space%20utilisation%20Tiny10.png" title="Drive Space Tiny10" alt="" loading="lazy" />
+&lt;figcaption>Drive Space Tiny10&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>While comparing the two VMs, the following things were noted:&lt;/p>
+&lt;ul>
+&lt;li>The original Windows 10 VM was using around 1.5 times the Memory (RAM) of the Lightweight VM.&lt;/li>
+&lt;li>The CPU on the Windows 10 VM was a lot more sporadic, with numerous spikes even when no user application is running, while the Lightweight VM hovered around 1 to 2 % CPU utilisation.&lt;/li>
+&lt;li>The Windows 10 VM was around 27.3 GBs while the Lightweight VM required a maximum of 10.3 GBs to install&lt;/li>
+&lt;li>The initial ISO&amp;rsquo;s used had a 2.2GB size discrepancy, with the smallest being the tiny10 ISO: &lt;code>3.6G 'tiny10 x64 23h2.iso' 5.8G Win10_22H2_EnglishInternational_x64v1.iso&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>Further improvements are potentially possible, however you should be cautious as &lt;strong>the more things you remove, the more likely you are to have issues, missing features and render the VM unusable&lt;/strong>.&lt;/p>
+&lt;h2>Conclusion&lt;span class="hx-absolute -hx-mt-20" id="conclusion">&lt;/span>
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Overall, there is a significant amount of bloat on full Windows 10 ISOs which can be improved provided you don&amp;rsquo;t need the features that are being removed. This results in tiny ISOs with amazing benefits:&lt;/p>
+&lt;ul>
+&lt;li>Lower RAM and CPU usage&lt;/li>
+&lt;li>Smaller disk footprint&lt;/li>
+&lt;li>Faster boot and responsiveness&lt;/li>
+&lt;/ul>
+&lt;p>These can be great for lower end devices, when you need to run a lot of VMs in parallel for examples for an Active Directory Lab Environment, to save battery/energy on a device, and more&amp;hellip;&lt;/p>
+&lt;h2>Further Research&lt;span class="hx-absolute -hx-mt-20" id="further-research">&lt;/span>
+&lt;a href="#further-research" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>There are definitely more things you can delete but you risk running into issues. &lt;a href="https://techcommunity.microsoft.com/discussions/windows11/how-to-open-resource-monitor-using-task-manager-on-windows-11/3333480" target="_blank" rel="noopener">Resource Monitor&lt;/a> might be a great place to start:&lt;/p>
+&lt;p>
+&lt;img src="../img/Windows%2010%20Resource%20Monitor%20Tiny10.png" alt="" loading="lazy" />&lt;/p>
+&lt;p>Other tools to consider for identifying processes hogging resources:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://systeminformer.com/" target="_blank" rel="noopener">https://systeminformer.com/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/sysinternals/downloads/procmon" target="_blank" rel="noopener">https://learn.microsoft.com/en-us/sysinternals/downloads/procmon&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>If you&amp;rsquo;re interested in making your own tiny ISO&amp;rsquo;s, you should look at ntdev&amp;rsquo;s GitHub repo &lt;a href="https://github.com/ntdevlabs/tiny11builder" target="_blank" rel="noopener">tiny11builder&lt;/a> which has all the tools for building a tiny Windows 11 ISO. There are also a number of GitHub forks to create tiny Windows 10 ISOs too&amp;hellip; Do your own research.&lt;/p>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
+&lt;li>&lt;a href="https://x.com/NTDEV" target="_blank" rel="noopener">https://x.com/NTDEV&lt;/a>_&lt;/li>
+&lt;li>&lt;a href="https://ntdev.blog/2024/01/08/the-complete-tiny10-and-tiny11-list/" target="_blank" rel="noopener">https://ntdev.blog/2024/01/08/the-complete-tiny10-and-tiny11-list/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://archive.org/details/@ntdev" target="_blank" rel="noopener">https://archive.org/details/@ntdev&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://answers.microsoft.com/en-us/windows/forum/all/how-to-reduce-ram-consumption-in-windows-10/cb42a95f-8fe8-47dc-9721-d31e5379b826" target="_blank" rel="noopener">https://answers.microsoft.com/en-us/windows/forum/all/how-to-reduce-ram-consumption-in-windows-10/cb42a95f-8fe8-47dc-9721-d31e5379b826&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://ntdev.blog/2023/12/10/how-to-build-your-own-tiny11-the-definitive-guide-on-how-to-create-the-perfect-lightweight-windows-image/" target="_blank" rel="noopener">https://ntdev.blog/2023/12/10/how-to-build-your-own-tiny11-the-definitive-guide-on-how-to-create-the-perfect-lightweight-windows-image/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://techcommunity.microsoft.com/discussions/windows11/how-to-open-resource-monitor-using-task-manager-on-windows-11/3333480" target="_blank" rel="noopener">https://techcommunity.microsoft.com/discussions/windows11/how-to-open-resource-monitor-using-task-manager-on-windows-11/3333480&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Create Infinite Email aliases using Cloudflare Email Routing</title><link>https://fyx.me/minis/create-infinite-email-aliases-using-cloudflare-email-routing/</link><pubDate>Tue, 14 Jan 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/minis/create-infinite-email-aliases-using-cloudflare-email-routing/</guid><description>
 &lt;p>I did it&amp;hellip; I finally passed the big 30&amp;hellip;. 30000 unread emails!&lt;/p>
 &lt;p>
 &lt;img src="../img/Thunderbird%20Unread%20Emails.png" alt="" loading="lazy" />&lt;/p>
@@ -44,7 +140,7 @@
 &lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
 &lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
 &lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
-&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Email providers may consider these routed emails as spam emails so you may need to play around with filters a little and what not.&lt;/p>
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Email providers may consider these routed emails as spam emails (if you are using a spammy looking email address). eg. I own a domain which contains the name of a know email provider in it and that almost always ends up being considered spam. This might be a good thing if you want to signup with this domain to only spammy websites that you dont need to keep emails for (ie. autodeletes after 30 days) but might not be desirable for other websites.&lt;/p>
 &lt;/div>
 &lt;/div>
 &lt;/div>

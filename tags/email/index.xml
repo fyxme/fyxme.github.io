@@ -44,7 +44,7 @@
 &lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
 &lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
 &lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
-&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Email providers may consider these routed emails as spam emails so you may need to play around with filters a little and what not.&lt;/p>
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Email providers may consider these routed emails as spam emails (if you are using a spammy looking email address). eg. I own a domain which contains the name of a know email provider in it and that almost always ends up being considered spam. This might be a good thing if you want to signup with this domain to only spammy websites that you dont need to keep emails for (ie. autodeletes after 30 days) but might not be desirable for other websites.&lt;/p>
 &lt;/div>
 &lt;/div>
 &lt;/div>

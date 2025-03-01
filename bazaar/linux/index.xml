@@ -1,5 +1,6 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Linux</title><link>https://fyx.me/bazaar/linux/</link><description>Recent content in Linux on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://fyx.me/bazaar/linux/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://fyx.me/bazaar/linux/other-commands/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/linux/other-commands/</guid><description>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h3>Other Linux Commands&lt;span class="hx-absolute -hx-mt-20" id="other-linux-commands">&lt;/span>
+&lt;a href="#other-linux-commands" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># find files and pretty print them&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">find /home -type f -printf &lt;span class="s2">&amp;#34;%f\t%p\t%u\t%g\t%m\n&amp;#34;&lt;/span> 2&amp;gt;/dev/null &lt;span class="p">|&lt;/span> column -t
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
