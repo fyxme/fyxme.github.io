@@ -228,4 +228,337 @@ title="Copy code"
 &lt;/li>
 &lt;li>Turn the packet analysis C tools into a BOF that can also capture network packets and passively identify open ports without having to export large Packet Capture files over C2 comms&lt;/li>
 &lt;li>Look into trying out &lt;a href="https://github.com/nsacyber/GRASSMARLIN" target="_blank" rel="noopener">GRASSMARLIN&lt;/a> which is targeted towards Industrial Control Systems (ICS), however could still be useful to map out an environment from a PCAP&lt;/li>
+&lt;/ul></description></item><item><title>Replicating Cobalt Strike's Port Scanner as a BOF for Open-Source C2 Frameworks</title><link>https://fyx.me/articles/replicating-cobalt-strikes-port-scanner-as-a-bof-for-open-source-c2-frameworks/</link><pubDate>Fri, 24 Jan 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/articles/replicating-cobalt-strikes-port-scanner-as-a-bof-for-open-source-c2-frameworks/</guid><description>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+&lt;p class="hx-flex hx-items-center hx-font-medium">Tldr&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Was annoyed open source C2 tools had inferior port scanners compared to Cobalt Strike so I decided to replicate the functionality. Also wrote a ping scanner to help with host discovery. OPSEC may still require some improvements as described throughout the blog but the functionality is there. &lt;br>
+The tool is available here: &lt;a href="https://github.com/fyxme/portscanbof" target="_blank" rel="noopener">https://github.com/fyxme/portscanbof&lt;/a>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>On my quest to reviewing random C2&amp;rsquo;s for pure self enjoyment, I&amp;rsquo;ve come to realise that very few implement port-scanning for whatever reason.&lt;/p>
+&lt;p>While I understand that it&amp;rsquo;s possible to use a socks proxy and perform &lt;code>nmap&lt;/code> scans over the proxy using a TCP connect scan (&lt;code>-sT&lt;/code> flag), it feels less convenient, generates a lot of unwanted network traffic, requires the beacon to communicate constantly (&lt;code>sleep 0&lt;/code>) and may have DNS issues, which made me want to re-create the &lt;a href="https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/post-exploitation_port-scanning.htm" target="_blank" rel="noopener">Cobalt Strike Port Scan&lt;/a> functionality.&lt;/p>
+&lt;p>It&amp;rsquo;s already possible to run binaries (ie. &lt;code>exe&lt;/code> and &lt;code>dll&lt;/code>) via other BOFs like &lt;a href="https://github.com/fortra/No-Consolation.git" target="_blank" rel="noopener">noconsolation&lt;/a>, using dotnet CLR to run csharp binaries inline or using a PowerShell port scanner via the C2&amp;rsquo;s powershell functionality, however, a lot of these generate more IoCs than BOFs and their output formats don&amp;rsquo;t integrate as well with C2&amp;rsquo;s since they were not directly made for those.&lt;/p>
+&lt;p>Through reviewing a number of BOFs on Github, looking at custom C2 agents and more, I didn&amp;rsquo;t find many implementing portscanning up to the level of Cobalt Strike&amp;rsquo;s Port Scanner. Although, I will give the following honourable mentions:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/rvrsh3ll/BOF_Collection/tree/master?tab=readme-ov-file#portscanc" target="_blank" rel="noopener">rvrsh3ll&amp;rsquo;s bofportscan BOF&lt;/a> which works well but only supports a single host and a single port&lt;/li>
+&lt;li>&lt;a href="https://github.com/MythicAgents/thanatos/" target="_blank" rel="noopener">Mythic&amp;rsquo;s thanatos agent&lt;/a> which seemed to be the most complete, supports &lt;a href="https://github.com/MythicAgents/thanatos/blob/main/Payload_Type/thanatos/thanatos/agent_code/src/portscan.rs#L28" target="_blank" rel="noopener">IP and IP subnets as well as ports and port ranges&lt;/a>. While the agent itself is really good and the &lt;a href="https://blog.cybershenanigans.space/posts/thanatos-agent" target="_blank" rel="noopener">blog post&lt;/a> about it deserves a read, this port scan functionality is only available to users of this specific agent, isn&amp;rsquo;t portable like a BOF, and still doesn&amp;rsquo;t support as many arguments or output as Cobalt Strike&amp;rsquo;s port scanner.&lt;/li>
+&lt;/ul>
+&lt;p>Hence, the goals were set:&lt;/p>
+&lt;ul>
+&lt;li>write a portscanner BOF (COFF) that replicates &lt;a href="https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/post-exploitation_port-scanning.htm" target="_blank" rel="noopener">Cobalt Strikes Port Scanning&lt;/a> functionality including the wide variety of input parameters and provide the same amount of information as its output&lt;/li>
+&lt;li>write a pingscanner to complement the portscanner and use as a first pass scan&lt;/li>
+&lt;li>have some OPSEC considerations or at least describe the OPSEC limitations of the tool.&lt;/li>
+&lt;/ul>
+&lt;p>The initial release will be used to test and improve the BOF in training environments and/or test labs, with future improvement adding functionality and improving OPSEC. We&amp;rsquo;ll write the BOF in C as it&amp;rsquo;s the most common language to use for BOFs.&lt;/p>
+&lt;p>Enough intro, let&amp;rsquo;s begin.&lt;/p>
+&lt;h3>Parsing Arguments&lt;span class="hx-absolute -hx-mt-20" id="parsing-arguments">&lt;/span>
+&lt;a href="#parsing-arguments" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Cobalt Strike&amp;rsquo;s port scanner can be using the following way:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;pre>&lt;code>portscan [pid] [arch] [targets] [ports] [arp|icmp|none] [max connections] &lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>The &lt;code>[pid]&lt;/code> and &lt;code>[arch]&lt;/code> options are used to &amp;ldquo;inject into the specified process to run a port scan against the specified hosts&amp;rdquo;. We&amp;rsquo;ll ignore completely as our BOF will just execute within the context of the running agent. Nevertheless, this is a good functionality if you want to improve OPSEC as you may want to choose a process which is likely to perform arbitrary requests to other hosts (eg. a web browser for HTTP/HTTPS).&lt;/li>
+&lt;li>The &lt;code>[targets]&lt;/code> option is a comma separated list of hosts to scan. You may also specify IPv4 address ranges (e.g., &lt;code>192.168.1.128-192.168.2.240&lt;/code>, &lt;code>192.168.1.0/24&lt;/code>)&lt;/li>
+&lt;li>The &lt;code>[ports]&lt;/code> option is a comma separated list or ports to scan. You may specify port ranges as well (e.g., &lt;code>1-65535&lt;/code>)&lt;/li>
+&lt;li>The &lt;code>[arp|icmp|none]&lt;/code> target discovery options dictate how the port scanning tool will determine if a host is alive. &lt;code>none&lt;/code> assumes that all hosts are alive. Instead of doing this in the port scan BOF itself, I&amp;rsquo;ve decided to implement the &lt;code>icmp&lt;/code> functionality in a different BOF (ie. &lt;code>pingscan&lt;/code>) which will be described later on. The &lt;code>arp&lt;/code> scan feature will be implemented as a feature update in a future release. For our portscan, we&amp;rsquo;ll just assume that all hosts are alive (ie. &lt;code>none&lt;/code>) and use timeouts instead to reduce the time it takes to perform a portscan.&lt;/li>
+&lt;li>Lastly, the &lt;code>[max connections]&lt;/code> option limits how many connections the port scan tool will attempt at any one time. While this is not hard to code, performing synchronous scans is actually already really fast if you set low enough timeouts (which should be fine considering you&amp;rsquo;d expect low RTT in most internal environments). Nevertheless, this is a good feature that will be added in a future release.&lt;/li>
+&lt;/ul>
+&lt;p>We&amp;rsquo;ll split our BOF between &lt;code>portscan&lt;/code> (ie. TCP connect scan) and &lt;code>pingscan&lt;/code> (ie. ICMP echo/reply) with each being used the following way:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;pre>&lt;code>portscan [targets] [ports]
+pingscan [targets]&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h4>Parsing ports&lt;span class="hx-absolute -hx-mt-20" id="parsing-ports">&lt;/span>
+&lt;a href="#parsing-ports" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Parsing ports is relatively easy, there&amp;rsquo;s only three (3) options:&lt;/p>
+&lt;ul>
+&lt;li>a single port (eg. &lt;code>22&lt;/code>,&lt;code>445&lt;/code>,&lt;code>80&lt;/code>, etc)&lt;/li>
+&lt;li>a port range (eg. &lt;code>1-100&lt;/code>, &lt;code>5000-6000&lt;/code>, etc)&lt;/li>
+&lt;li>an arbitrary combination of the two above options separated by a comma (eg. &lt;code>22,5000-9000,445,7&lt;/code>)&lt;/li>
+&lt;/ul>
+&lt;p>To improve user experience, we&amp;rsquo;ll also allow decreasing port ranges (eg. &lt;code>900-100&lt;/code>) for bragging rights on Cobalt Strike&amp;rsquo;s &lt;strong>inferior&lt;/strong> port scanning argument parser.&lt;/p>
+&lt;p>The pseudo-code for this is simple:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;pre>&lt;code>split input on &amp;#34;,&amp;#34;
+for each part:
+if it contains a dash (&amp;#34;-&amp;#34;) assume its a range:
+get both parts of the range using sscanf
+convert each part to an int
+check that each part is between 1 and 65535
+else assume its a port:
+convert str to int
+check that the int is between 1 and 65535&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>Assuming the parts are valid and passed our rudimentary checks, we need to store these ports. A design decision was made to use a linked list to store these as it reduces memory usage when large ranges are provided and easily allows arbitrary combinations to be made. To make things easier, we&amp;rsquo;ll assume that a single port is the same as the range from that port to itself (ie. &lt;code>&amp;quot;80&amp;quot; == &amp;quot;80-80&amp;quot;&lt;/code>), which allows us to use the following struct:&lt;/p>
+&lt;p>
+&lt;img src="../img/port_input%20struct.png" alt="Port input struct" loading="lazy" />&lt;/p>
+&lt;h4>Parsing targets&lt;span class="hx-absolute -hx-mt-20" id="parsing-targets">&lt;/span>
+&lt;a href="#parsing-targets" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Parsing targets is a lot more involved since there are many available options, however we can split valid input options between the following input types:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>IP Range:&lt;/strong> token contains a dash (&lt;code>-&lt;/code>). Need to validate that each part of the dash is a valid IP otherwise you might end up matching hosts (eg. &lt;code>asdf-asdf.com&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>CIDR:&lt;/strong> that one is easy, just match on &lt;code>/&lt;/code>, parse the IP and the mask and do calculations to find the IP range, which brings us back to type 1&lt;/li>
+&lt;li>&lt;strong>Host:&lt;/strong> you can use &lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-getaddrinfo" target="_blank" rel="noopener">getaddrinfo&lt;/a> to do the work for you here as it will find IPs for hostnames for you.&lt;/li>
+&lt;li>&lt;strong>IP:&lt;/strong> similarly to hosts, we can use &lt;code>getaddrinfo&lt;/code> and validate the IP which allows us to treat single IPs, the same way as single Hosts.&lt;/li>
+&lt;li>A combination of any of the above input types, split by a comma (&lt;code>,&lt;/code>)&lt;/li>
+&lt;/ol>
+&lt;p>In the end, you can categorise each target into one of two categories:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>IP Range:&lt;/strong> IP ranges, and CIDR Subnet (ie. an IP range in disguise)&lt;/li>
+&lt;li>&lt;strong>IP/Host:&lt;/strong> Everything else that was parsed correctly by &lt;code>getaddrinfo&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>Similarly to port arguments, we&amp;rsquo;ll use a linked list to store the information as it provides the most flexibility. This results in the following struct definitions:&lt;/p>
+&lt;p>
+&lt;img src="../img/Host%20Input%20Structs.png" alt="Host Input Structs" loading="lazy" />&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Important&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;strong>OPSEC:&lt;/strong> The &lt;strong>getaddrinfo&lt;/strong> function returns results for the &lt;strong>NS_DNS&lt;/strong> namespace. The &lt;strong>getaddrinfo&lt;/strong> function aggregates all responses if more than one namespace provider returns information. For use with the IPv6 and IPv4 protocol, name resolution can be by the Domain Name System (DNS), a local &lt;em>hosts&lt;/em> file, or by other naming mechanisms for the &lt;strong>NS_DNS&lt;/strong> namespace. (&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-getaddrinfo#remarks" target="_blank" rel="noopener">ref&lt;/a>)&lt;/p>
+&lt;p>ie. &lt;code>getaddrinfo&lt;/code> will resolve host names to their IPs. This potentially results in network traffic being generating while parsing input. To limit network traffic, we store a pointer to the &lt;code>addrinfo&lt;/code> struct populated after running &lt;code>getaddrinfo&lt;/code> and we&amp;rsquo;ll reuse it during scanning operations.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>Correct parsing results in the following (with reversible IP ranges to assert dominance on Cobalt Strike&amp;rsquo;s inferior parser):&lt;/p>
+&lt;p>
+&lt;img src="../img/Parser%20Testing.png" alt="Parser Testing" loading="lazy" />&lt;/p>
+&lt;h3>ICMP (ping scan)&lt;span class="hx-absolute -hx-mt-20" id="icmp-ping-scan">&lt;/span>
+&lt;a href="#icmp-ping-scan" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Windows API provides a very easy to use function to send ICMP echo requests, namely &lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/icmpapi/nf-icmpapi-icmpsendecho" target="_blank" rel="noopener">IcmpSendEcho&lt;/a>. We can use this function to send ICMP echoes to our targets easily:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// The **IcmpSendEcho** function sends an IPv4 ICMP echo request and returns any echo response replies. The call returns when the time-out has expired or the reply buffer is filled.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">IPHLPAPI_DLL_LINKAGE&lt;/span> &lt;span class="n">DWORD&lt;/span> &lt;span class="nf">IcmpSendEcho&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="n">in&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="n">HANDLE&lt;/span> &lt;span class="n">IcmpHandle&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="n">in&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="n">IPAddr&lt;/span> &lt;span class="n">DestinationAddress&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="n">in&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="n">LPVOID&lt;/span> &lt;span class="n">RequestData&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="n">in&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="n">WORD&lt;/span> &lt;span class="n">RequestSize&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="n">in&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">optional&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="n">PIP_OPTION_INFORMATION&lt;/span> &lt;span class="n">RequestOptions&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="n">out&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="n">LPVOID&lt;/span> &lt;span class="n">ReplyBuffer&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="n">in&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="n">DWORD&lt;/span> &lt;span class="n">ReplySize&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="n">in&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="n">DWORD&lt;/span> &lt;span class="n">Timeout&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">);&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>The function takes in a &lt;code>HANDLE IcmpHandle&lt;/code> as its first parameter which denotes a handle returned by the &lt;a href="https://learn.microsoft.com/en-us/windows/desktop/api/icmpapi/nf-icmpapi-icmpcreatefile" target="_blank" rel="noopener">IcmpCreateFile&lt;/a> function (ie. a &amp;ldquo;function which opens a handle on which IPv4 ICMP echo requests can be issued.&amp;rdquo;). From testing, it appears we can reuse this file allowing us to create the initial handle and reuse it on subsequent calls to &lt;code>IcmpSendEcho&lt;/code> resulting in improved scanning speed.&lt;/p>
+&lt;h4>OPSEC&lt;span class="hx-absolute -hx-mt-20" id="opsec">&lt;/span>
+&lt;a href="#opsec" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>I wanted to see the network traffic difference between the &lt;code>IcmpSendEcho&lt;/code> default configuration and the traffic generated from the &lt;code>ping.exe&lt;/code> Windows utility. As it turns out, there is quite a bit of a difference:&lt;/p>
+&lt;p>
+&lt;img src="../img/Wireshark%20Ping%20Comparison.png" alt="Wireshark Ping Comparison" loading="lazy" />&lt;/p>
+&lt;p>We notice the following from the screenshot above:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>ping.exe&lt;/code>: the ICMP requests and replies from the first four packets (those generated by the &lt;code>ping&lt;/code> utility) are all 74 bytes long. The packet&amp;rsquo;s time to live (ie. &lt;code>ttl&lt;/code>) is set to 128ms.&lt;/li>
+&lt;li>&lt;code>IcmpSendEcho&lt;/code>: the request packets are 46 bytes long and the reply packets are 60 bytes long. The packet&amp;rsquo;s TTL defaults to 255ms.&lt;/li>
+&lt;/ul>
+&lt;p>By comparing the requests packets, we notice that the &lt;code>ping&lt;/code> utility sends data as part of the request, namely the following string &lt;code>abcdefghijklmnopqrstuvwabdcefghi&lt;/code>.&lt;/p>
+&lt;p>
+&lt;img src="../img/Wireshark%20Ping%20Packet%20Data.png" alt="Wireshark Ping Packet Data" loading="lazy" />&lt;/p>
+&lt;p>We can match this in our function call by passing in &lt;code>RequestData&lt;/code>, and adjust the packet&amp;rsquo;s TTL to 128ms. This results in the following traffic being generated which is now identical between both &lt;code>ping.exe&lt;/code> and our ping scanner:&lt;/p>
+&lt;p>
+&lt;img src="../img/Wireshark%20ICMP%20Packet%20Size%2074.png" alt="Wireshark ICMP Packet Size 74" loading="lazy" />&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>The ping reply size difference was simply due to the difference in data being sent (since the reply contains the data our packet has sent), hence no further configuration was needed.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>With configurations and optimisations via timeout, this results in the following code:&lt;/p>
+&lt;p>
+&lt;img src="../img/ping_ip%20c%20code.png" alt="Ping IP C code" loading="lazy" />&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+&lt;p class="hx-flex hx-items-center hx-font-medium">Danger&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;strong>OPSEC:&lt;/strong> Other than the improvements described above, the tool does not currently add any delay between ping requests which can result in extremely fast consecutive requests being made which could lead to Denial of Service (DoS) on fragile hosts/environments if you&amp;rsquo;re not careful. Further customisation options will added in a future release to help improve OPSEC, as well as the ability to configure a custom timeout. The defaults will be adjusted to &lt;code>ping.exe&lt;/code>&amp;rsquo;s timeouts.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>We can combine this with the parser to have a working &lt;code>pingscanner&lt;/code> that supports many input types:&lt;/p>
+&lt;p>
+&lt;img src="../img/icmp.exe%20ping%20cflare%20subnet.png" alt="icmp.exe Ping cflare subnet" loading="lazy" />&lt;/p>
+&lt;h4>Speed&lt;span class="hx-absolute -hx-mt-20" id="speed">&lt;/span>
+&lt;a href="#speed" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Surprisingly if you don&amp;rsquo;t add a delay between the ping requests, it&amp;rsquo;s actually &lt;a href="https://www.youtube.com/watch?v=6E7ZGCfruaw" target="_blank" rel="noopener">extremely fast&lt;/a>&amp;hellip; Who knew&amp;hellip;&lt;/p>
+&lt;p>Without multi-threading or any other optimisations, running it against a &lt;code>/24&lt;/code> subnet (ie. 255 IPs) with low response times, you can scan the whole subnet in about 4 seconds:
+&lt;img src="../img/icmp_scan_24subnet_4s.png" alt="ICMP scan 24 subnet 4s" loading="lazy" />&lt;/p>
+&lt;p>Just watch out&amp;hellip; If you ping scan too quickly, you get angry neighbours&amp;hellip; From ~20ms to over 10 times that for each ping:&lt;/p>
+&lt;p>
+&lt;img src="../img/icmp.exe%20ping%20cflare%20subnet.png" alt="icmp.exe Ping cflare subnet" loading="lazy" />
+&lt;img src="../img/icmp.exe%20Ping%20cflare%20subnet%20error.png" alt="icmp.exe Ping cflare subnet error" loading="lazy" />&lt;/p>
+&lt;p>From testing, it appears there are two events which can slow down the ping scan:&lt;/p>
+&lt;ul>
+&lt;li>A ping request timeout which results in error &lt;code>11010&lt;/code> aka &lt;code>IP_REQ_TIMED_OUT&lt;/code>. This is possible to optimise by setting the request timeout in &lt;code>IcmpSendEcho&lt;/code>, although there is a trade-off where you may end up with false negatives (ie. the host exists but took longer than timeout time to respond).&lt;/li>
+&lt;/ul>
+&lt;p>
+&lt;img src="../img/ping_error_11010.png" alt="Ping Error 11010" loading="lazy" />&lt;/p>
+&lt;ul>
+&lt;li>Supplying non existant domains will result in delay from &lt;code>getaddrinfo&lt;/code>. Unfortunately, it doesn&amp;rsquo;t have a timeout so you&amp;rsquo;d need to run it in a thread and time it out yourself if you wanted to optimise this. Or implement DNS requests yourself, but I&amp;rsquo;ll leave that as an exercise for the reader.&lt;/li>
+&lt;/ul>
+&lt;p>
+&lt;img src="../img/nslookup%20nsaindisguise.com.png" alt="nslookup nsaindisguise.com" loading="lazy" />
+Furthermore, &lt;code>getaddrinfo&lt;/code> is also extremely slow when provided with invalid input&amp;hellip; A stunning 2.4s to say that the &lt;a href="https://media.makeameme.org/created/you-dont-say-5ab1f3.jpg" target="_blank" rel="noopener">host doesn&amp;rsquo;t exist&lt;/a>:
+&lt;img src="../img/icmp.exe%20digits%20slow.png" alt="icmp.exe digits slow" loading="lazy" />&lt;/p>
+&lt;p>The simplest fix to the above would be to check whether the input is a valid IP or hostname based on a regex, although this is harder than expected because in an internal environment, pretty much anything could be a valid hostname&amp;hellip;.&lt;/p>
+&lt;p>OPSEC wise performing a scan this fast really isn&amp;rsquo;t great and will start flooding the network with too many packets, potentially generating alerts or breaking stuff. But damn it&amp;rsquo;s fun to see the packets go by at MACH 2 speed!&lt;/p>
+&lt;p>I&amp;rsquo;ll add IP/Host validation as an optimisation in the backlog, move on to another project and never implement it. But at least you know its there&amp;hellip; So yeah, don&amp;rsquo;t pass stupid data to it and you should be sweet!&lt;/p>
+&lt;h3>TCP (port scan)&lt;span class="hx-absolute -hx-mt-20" id="tcp-port-scan">&lt;/span>
+&lt;a href="#tcp-port-scan" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Before attempting to write a port scanner, I looked at the &lt;a href="https://www.youtube.com/watch?v=qzZCYIKH6fM" target="_blank" rel="noopener">video&lt;/a> linked on Cobalt Strike&amp;rsquo;s website about the Port Scanning functionality. From this, I gathered a few things I wanted to include in this port scanner:&lt;/p>
+&lt;ul>
+&lt;li>The port scanner shows all open ports (that&amp;rsquo;s an obvious one)&lt;/li>
+&lt;li>For each port/service it finds, if the service supplies a banner (ie. SSH), then it will receive the banner and display it&lt;/li>
+&lt;li>The scanner provides additional information for Windows hosts with SMB open (port 445)&lt;/li>
+&lt;/ul>
+&lt;p>This is the functionality I wanted to replicate with this BOF.&lt;/p>
+&lt;h4>Port Scan Function&lt;span class="hx-absolute -hx-mt-20" id="port-scan-function">&lt;/span>
+&lt;a href="#port-scan-function" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>This is describing a TCP Connect Scan. If you are interested in other types of scans, checkout nmap&amp;rsquo;s &lt;a href="https://nmap.org/book/scan-methods.html" target="_blank" rel="noopener">book&lt;/a> on scan methods.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>Port scanning in itself is very simple, you have an IP and a port, you connect to an address, if the socket connects successfully, that port is open, if the socket errors that port is closed. Translate to code, this looks something like this (assuming WSA is initialised outside of this function):&lt;/p>
+&lt;p>
+&lt;img src="../img/isPortOpen%20source%20code.png" alt="isPortOpen source code" loading="lazy" />&lt;/p>
+&lt;p>Not much going on here but this would also make a terrible port scanner because it would be terribly slow when you try to scan a port/service that doesn&amp;rsquo;t exist (ie. you&amp;rsquo;d get timed out but it would take a while). The screenshot below demonstrates this. It&amp;rsquo;s pretty much instant when the service exists (&lt;code>Elapsed time: 0.00 seconds&lt;/code>) but takes forever when the services do not respond (&lt;code>Elapsed time: 42.00 seconds&lt;/code>):&lt;/p>
+&lt;p>
+&lt;img src="../img/port%20scanning%20slow%20example.png" alt="port scanning slow example" loading="lazy" />&lt;/p>
+&lt;p>To improve the speed we can set a timeout when the socket attempts to connect to the remote port/service. On Windows, this results to setting the socket to non-blocking mode and using the &lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-select" target="_blank" rel="noopener">select&lt;/a> function to wait for the socket to successfully connect or timeout. This allows us to set a socket timeout and greatly increase the speed of the program:&lt;/p>
+&lt;p>
+&lt;img src="../img/updated%20isPortOpen%20with%20timeout.png" alt="updated isPortOpen with timeout" loading="lazy" />&lt;/p>
+&lt;p>The code above results in an increase of 41 seconds over the old code:&lt;/p>
+&lt;p>
+&lt;img src="../img/portscanning%20with%20timeout%20for%20speed.png" alt="portscanning with timeout for speed" loading="lazy" />&lt;/p>
+&lt;p>Lastly, since we want to receive the headers from sockets we successfully connect to, we should set a timeout on the socket receive too. We can do this using the &lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-setsockopt" target="_blank" rel="noopener">setsocketopt&lt;/a> function prior to connecting to the socket as such:&lt;/p>
+&lt;p>
+&lt;img src="../img/setsockopt%20timeout%20example.png" alt="setsockopt timeout example" loading="lazy" />&lt;/p>
+&lt;p>This is pretty much it in terms of basic setup and allows us to identify open ports at a reasonable speed. We can now move on to more fun stuff like receive service headers and querying Windows Host information.&lt;/p>
+&lt;h4>Service Headers and Information Discovery&lt;span class="hx-absolute -hx-mt-20" id="service-headers-and-information-discovery">&lt;/span>
+&lt;a href="#service-headers-and-information-discovery" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>In the video posted on the Cobalt Strike website, they show banner information retrieved when port scanning:&lt;/p>
+&lt;p>
+&lt;img src="../img/cobalt%20strike%20video%20screenshot%20scanner%20output.png" alt="cobalt strike video screenshot scanner output" loading="lazy" />&lt;/p>
+&lt;p>Now, the simple headers like &lt;code>SSH&lt;/code> are simply sent upon connecting to the service. You just need to receive after connecting to the socket. You don&amp;rsquo;t even need to send any data:&lt;/p>
+&lt;p>
+&lt;img src="../img/netcat%20port%2022%20ssh%20banner.png" alt="netcat port 22 ssh banner" loading="lazy" />&lt;/p>
+&lt;p>This is trivial to add to our scanner using the following snippet:&lt;/p>
+&lt;p>
+&lt;img src="../img/c%20socket%20receive%20data.png" alt="c socket receive data" loading="lazy" />
+&lt;em>&lt;strong>Note:&lt;/strong> In the above snippet, we are setting the socket back to blocking mode, however if we wanted to keep it asynchronous we could use a similar approach as what we did for &lt;code>connect&lt;/code>, check the WSA Error and use &lt;code>select&lt;/code> to wait for the &lt;code>recv&lt;/code> function to end or timeout.&lt;/em>&lt;/p>
+&lt;p>I knew you could get computer information from SMB such as hostname and domain but I&amp;rsquo;ve never had to implement it in code so I wasn&amp;rsquo;t sure where to get it from. The computer information seemed harder to get from SMB and I thought surely you wouldn&amp;rsquo;t get that from simply connecting to the socket. Spoiler alert, you don&amp;rsquo;t&amp;hellip;&lt;/p>
+&lt;p>So I went down the rabbit hole and found some documentation on how to get server information on MS Documentation. I started by using &lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/lmserver/nf-lmserver-netservergetinfo" target="_blank" rel="noopener">NetServerGetInfo&lt;/a> to try and retrieve the same information as in the cobalt strike clip&amp;hellip; Turns out it was not that&amp;hellip;. I didn&amp;rsquo;t get much information from it but was on the right track:&lt;/p>
+&lt;p>
+&lt;img src="../img/server-info.exe%20NetServerGetInfo.png" alt="server-info.exe NetServerGetInfo" loading="lazy" />&lt;/p>
+&lt;p>Did more digging and found another more promising function, namely &lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/lmwksta/nf-lmwksta-netwkstagetinfo" target="_blank" rel="noopener">NetWkstaGetInfo&lt;/a>. And as it turns out, it looks like this is what they are using under the hood. I was able to get the exact same information as Cobalt Strike&amp;rsquo;s port scanner from that one function call:&lt;/p>
+&lt;p>
+&lt;img src="../img/server-info.exe%20NetWkstaGetInfo.png" alt="server-info.exe NetWkstaGetInfo" loading="lazy" />&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>You can request different levels of information from both &lt;code>NetWkstaGetInfo&lt;/code> and &lt;code>NetServerGetInfo&lt;/code>.&lt;/p>
+&lt;p>Example for &lt;code>NetWkstaGetInfo&lt;/code>:&lt;/p>
+&lt;ul>
+&lt;li>Anonymous access is always permitted for &lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/lmwksta/ns-lmwksta-wksta_info_100" target="_blank" rel="noopener">level 100&lt;/a>.&lt;/li>
+&lt;li>Authenticated users can view additional information at &lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/lmwksta/ns-lmwksta-wksta_info_101" target="_blank" rel="noopener">level 101&lt;/a>&lt;/li>
+&lt;li>Members of the Administrators, and the Server, System and Print Operator local groups can view information at &lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/lmwksta/ns-lmwksta-wksta_info_102" target="_blank" rel="noopener">levels 102&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;p>We&amp;rsquo;re using level 100 here since we want to do this unauthenticated.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>All that remained was adding the following code to our scanner:&lt;/p>
+&lt;p>
+&lt;img src="../img/C%20get_server_info%20function.png" alt="C get_server_info function" loading="lazy" />&lt;/p>
+&lt;h4>Final Scanner&lt;span class="hx-absolute -hx-mt-20" id="final-scanner">&lt;/span>
+&lt;a href="#final-scanner" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>After implementing all of the above, we have a scanner that can identify open ports, prints Windows host information and displays service banners:&lt;/p>
+&lt;p>
+&lt;img src="../img/Havoc%20Final%20Scanner%20output.png" alt="Havoc Final Scanner output" loading="lazy" />&lt;/p>
+&lt;p>However, it&amp;rsquo;s not a BOF yet&amp;hellip;&lt;/p>
+&lt;h4>OPSEC&lt;span class="hx-absolute -hx-mt-20" id="opsec-1">&lt;/span>
+&lt;a href="#opsec-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>At the moment the tool scans all selected ports on one (1) IP before moving on to the next, however it might be better to do the opposite and scan one (1) port on all IPs and move on to the next port.&lt;/p>
+&lt;p>An even better solution might be to randomly choose 1 port and 1 IP and scan that, although if you see random ports and IPs popping up in logs than it also might stand out as weird&amp;hellip; More research required.&lt;/p>
+&lt;p>Interestingly, looking at the output from Cobalt Strike&amp;rsquo;s video demonstrating their port scanner, I noticed two things:&lt;/p>
+&lt;ul>
+&lt;li>They are scanning IPs and ports from highest to lowest (probably due to how they are parsing the arguments). You can see the first service to come back is port &lt;code>5357&lt;/code> on &lt;code>10.10.10.2222&lt;/code>:&lt;/li>
+&lt;/ul>
+&lt;p>
+&lt;img src="../img/Cobalt%20Strike%20IP%20scan%20start.png" alt="Cobalt Strike IP scan start" loading="lazy" />&lt;/p>
+&lt;p>And after the video cut, you can see the IPs are decreasing and ports too:&lt;/p>
+&lt;p>
+&lt;img src="../img/Cobalt%20Strike%20tool%20output%20IP%20decreasing%20order.png" alt="Cobalt Strike tool output IP decreasing order" loading="lazy" />&lt;/p>
+&lt;ul>
+&lt;li>They perform the &lt;code>NetWkstaGetInfo&lt;/code> on all hosts with port 445 open &lt;strong>at the end of the scan&lt;/strong>, which is why you see all of the port 445 hosts popup at once:&lt;/li>
+&lt;/ul>
+&lt;p>
+&lt;img src="../img/Cobalt%20Strike%20tool%20output%20NetWkstaGetInfo.png" alt="Cobalt Strike tool output NetWkstaGetInfo" loading="lazy" />&lt;/p>
+&lt;p>No idea if their design is better or not. Need to test it inside a lab environment where monitoring tools are in place to gain a better idea. Good follow up research!&lt;/p>
+&lt;h3>Converting to a BOF&lt;span class="hx-absolute -hx-mt-20" id="converting-to-a-bof">&lt;/span>
+&lt;a href="#converting-to-a-bof" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>A follow up blog will be released highlighting how the scanners were converted to BOFs and will cover the following topics:&lt;/p>
+&lt;ul>
+&lt;li>Dynamic Resolution of Win32 APIs and generating function declaration mappings automatically&lt;/li>
+&lt;li>Compiling larger BOFs with multiple c files&lt;/li>
+&lt;li>Improved BOF output through batching prints&lt;/li>
+&lt;/ul>
+&lt;p>In the meantime, you can enjoy using the tool by downloading it from github: &lt;a href="https://github.com/fyxme/portscanbof" target="_blank" rel="noopener">https://github.com/fyxme/portscanbof&lt;/a>&lt;/p>
+&lt;h3>Initial release&lt;span class="hx-absolute -hx-mt-20" id="initial-release">&lt;/span>
+&lt;a href="#initial-release" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>After converting the application to a BOF and cleaning up the output, we get the following:&lt;/p>
+&lt;p>
+&lt;img src="../img/Initial%20Release%20Example%20screenshot.png" alt="Initial Release Example Screenshot" loading="lazy" />&lt;/p>
+&lt;p>The code and usage guide has been released publicly and can be found here: &lt;a href="https://github.com/fyxme/portscanbof" target="_blank" rel="noopener">https://github.com/fyxme/portscanbof&lt;/a>&lt;/p>
+&lt;p>The tool may have been update since this blog was written. See the corresponding GitHub repository for up to date information.&lt;/p>
+&lt;h3>Future improvements&lt;span class="hx-absolute -hx-mt-20" id="future-improvements">&lt;/span>
+&lt;a href="#future-improvements" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;del>Add async/multi-threading support for TCP scan&lt;/del> - This has been added since this blog was written. Still need to do more testing but good for now&lt;/li>
+&lt;li>ARP scan&lt;/li>
+&lt;li>Add the ability to check if the host is alive before running a TCP scan (similar to how cobaltstrike does it)&lt;/li>
+&lt;li>Additional arguments including timeout, number of threads, only scan 1 ip per host, etc&lt;/li>
+&lt;li>Add sleep delay option between ICMP requests to prevent DOS and improve OPSEC (approx 1 second delay from &lt;code>ping.exe&lt;/code>)&lt;/li>
+&lt;li>Fix code and Makefile for compiling exe&amp;rsquo;s&lt;/li>
+&lt;li>code refactor, and ensure all failure checks are validated (ie. memory allocation failures, etc)&lt;/li>
+&lt;li>UDP scan&lt;/li>
+&lt;li>IPV6 Support&lt;/li>
+&lt;li>Linux support&lt;/li>
+&lt;/ul>
+&lt;h3>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;a href="https://gist.github.com/dascandy/544acdfdc907051bcaa0b51d6d4a334a" target="_blank" rel="noopener">https://gist.github.com/dascandy/544acdfdc907051bcaa0b51d6d4a334a&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/rvrsh3ll/BOF_Collection/blob/master/Network/PortScan/PortScan.c" target="_blank" rel="noopener">https://github.com/rvrsh3ll/BOF_Collection/blob/master/Network/PortScan/PortScan.c&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/tijme/amd-ryzen-master-driver-v17-exploit" target="_blank" rel="noopener">https://github.com/tijme/amd-ryzen-master-driver-v17-exploit&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://trustedsec.com/blog/bofs-for-script-kiddies" target="_blank" rel="noopener">https://trustedsec.com/blog/bofs-for-script-kiddies&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.cybershenanigans.space/posts/thanatos-agent" target="_blank" rel="noopener">https://blog.cybershenanigans.space/posts/thanatos-agent&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.cybershenanigans.space/posts/writing-bofs-without-dfr/" target="_blank" rel="noopener">https://blog.cybershenanigans.space/posts/writing-bofs-without-dfr/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.elastic.co/security-labs/detonating-beacons-to-illuminate-detection-gaps" target="_blank" rel="noopener">https://www.elastic.co/security-labs/detonating-beacons-to-illuminate-detection-gaps&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://beej.us/guide/bgnet/html/split/" target="_blank" rel="noopener">https://beej.us/guide/bgnet/html/split/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://tangentsoft.com/wskfaq/" target="_blank" rel="noopener">https://tangentsoft.com/wskfaq/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.cybershenanigans.space/posts/writing-bofs-without-dfr/#intro" target="_blank" rel="noopener">https://blog.cybershenanigans.space/posts/writing-bofs-without-dfr/#intro&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/rvrsh3ll/BOF_Collection/blob/master/Network/PortScan/portscan.cna" target="_blank" rel="noopener">https://github.com/rvrsh3ll/BOF_Collection/blob/master/Network/PortScan/portscan.cna&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/wsummerhill/C2_RedTeam_CheatSheets/blob/main/CobaltStrike/BOF_Collections.md" target="_blank" rel="noopener">https://github.com/wsummerhill/C2_RedTeam_CheatSheets/blob/main/CobaltStrike/BOF_Collections.md&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/phra/PEzor/blob/b4e5927775de49735e22dc4b352b7e45d750cb15/bof.cpp#L151" target="_blank" rel="noopener">https://github.com/phra/PEzor/blob/b4e5927775de49735e22dc4b352b7e45d750cb15/bof.cpp#L151&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://frn.sh/posts/sockets/" target="_blank" rel="noopener">https://frn.sh/posts/sockets/&lt;/a>&lt;/li>
 &lt;/ul></description></item></channel></rss>
