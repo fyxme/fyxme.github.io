@@ -1,0 +1,17 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Cybersecurity Resources</title><link>https://fyx.me/tags/cybersecurity-resources/</link><description>Recent content in Cybersecurity Resources on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://fyx.me/tags/cybersecurity-resources/index.xml" rel="self" type="application/rss+xml"/><item><title>Other Cyber Cheatsheets</title><link>https://fyx.me/bazaar/other-cheatsheets/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/other-cheatsheets/</guid><description>
+&lt;h3>General&lt;span class="hx-absolute -hx-mt-20" id="general">&lt;/span>
+&lt;a href="#general" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;a href="https://www.thehacker.recipes/" target="_blank" rel="noopener">https://www.thehacker.recipes/&lt;/a> (Better than hacktricks imo)&lt;/li>
+&lt;li>&lt;a href="https://viperone.gitbook.io/pentest-everything" target="_blank" rel="noopener">https://viperone.gitbook.io/pentest-everything&lt;/a> (great for AD stuff)&lt;/li>
+&lt;li>hacktricks&lt;/li>
+&lt;li>&lt;a href="https://www.ired.team/" target="_blank" rel="noopener">https://www.ired.team/&lt;/a> - always find gems in here. More oldschool but pretty awesome and well explained&lt;/li>
+&lt;li>&lt;a href="https://exploit-notes.hdks.org/" target="_blank" rel="noopener">https://exploit-notes.hdks.org/&lt;/a> (found when looking for something specific, looks interesting)&lt;/li>
+&lt;li>&lt;a href="https://watchdogsacademy.gitbook.io/attacking-active-directory" target="_blank" rel="noopener">https://watchdogsacademy.gitbook.io/attacking-active-directory&lt;/a> (found when looking at mssql stuff, also has cool shit I think)&lt;/li>
+&lt;li>&lt;a href="https://werebug.com/pentest-cheatsheet/" target="_blank" rel="noopener">https://werebug.com/pentest-cheatsheet/&lt;/a> - cool layout for a cheatsheet, mostly basic content&lt;/li>
+&lt;li>&lt;a href="https://hideandsec.sh/books/cheatsheets-82c/page/active-directory-python-edition" target="_blank" rel="noopener">https://hideandsec.sh/books/cheatsheets-82c/page/active-directory-python-edition&lt;/a> - pretty well maintained cheatsheet&lt;/li>
+&lt;li>&lt;a href="https://notes.qazeer.io/" target="_blank" rel="noopener">https://notes.qazeer.io/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3>Mindmaps&lt;span class="hx-absolute -hx-mt-20" id="mindmaps">&lt;/span>
+&lt;a href="#mindmaps" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;a href="https://orange-cyberdefense.github.io/ocd-mindmaps/" target="_blank" rel="noopener">https://orange-cyberdefense.github.io/ocd-mindmaps/&lt;/a> (It looks cool but I&amp;rsquo;ve honestly never used this&amp;hellip;)&lt;/li>
+&lt;/ul></description></item></channel></rss>

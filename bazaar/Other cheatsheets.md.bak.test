@@ -1,0 +1,23 @@
+---
+linkTitle: ++ cyber cheatsheets
+title: Other Cyber Cheatsheets
+waddup:
+- asdf
+weight: 100
+---
+
+### General
+
+- https://www.thehacker.recipes/ (Better than hacktricks imo)
+- https://viperone.gitbook.io/pentest-everything (great for AD stuff)
+- hacktricks
+- https://www.ired.team/ - always find gems in here. More oldschool but pretty awesome and well explained
+- https://exploit-notes.hdks.org/ (found when looking for something specific, looks interesting)
+- https://watchdogsacademy.gitbook.io/attacking-active-directory (found when looking at mssql stuff, also has cool shit I think)
+- https://werebug.com/pentest-cheatsheet/ - cool layout for a cheatsheet, mostly basic content
+- https://hideandsec.sh/books/cheatsheets-82c/page/active-directory-python-edition - pretty well maintained cheatsheet
+- https://notes.qazeer.io/
+
+ ### Mindmaps
+ 
+ - https://orange-cyberdefense.github.io/ocd-mindmaps/ (It looks cool but I've honestly never used this...)

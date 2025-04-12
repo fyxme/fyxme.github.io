@@ -1,0 +1,43 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Techniques 2024</title><link>https://fyx.me/tags/techniques-2024/</link><description>Recent content in Techniques 2024 on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://fyx.me/tags/techniques-2024/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://fyx.me/bazaar/other/password-cracking/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/other/password-cracking/</guid><description>
+&lt;h3>Common Password generation&lt;span class="hx-absolute -hx-mt-20" id="common-password-generation">&lt;/span>
+&lt;a href="#common-password-generation" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>Password generation using Regex&lt;span class="hx-absolute -hx-mt-20" id="password-generation-using-regex">&lt;/span>
+&lt;a href="#password-generation-using-regex" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># tool installation&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># pipx install exrex&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exrex &lt;span class="s2">&amp;#34;((W|w)inter|(S|s)ummer|(F|f)all|(A|a)utumn|(S|s)pring)20(16|17|18|19|20)&amp;#34;&lt;/span> &amp;gt; seasons_months.txt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exrex &lt;span class="s2">&amp;#34;((J|j)anuary|(F|f)ebruary|(M|m)arch|(A|a)pril|(M|m)ay|(J|j)une|(J|j)uly|(A|a)ugust|(S|s)eptember|(O|o)ctober|(N|n)ovember|(D|d)ecember)20(16|17|18|19|20)&amp;#34;&lt;/span> &amp;gt;&amp;gt; seasons_months.txt&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h4>Keyboard Walks&lt;span class="hx-absolute -hx-mt-20" id="keyboard-walks">&lt;/span>
+&lt;a href="#keyboard-walks" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Generating keyboard walks based on keyboard layout:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># https://github.com/hashcat/kwprocessor&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">kwp -z basechars/full.base keymaps/en-us.keymap routes/2-to-16-max-3-direction-changes.route &amp;gt; keymap.txt&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>Ref: &lt;a href="https://cyberarms.wordpress.com/2018/02/13/creating-hashcat-keymap-walking-password-wordlists/" target="_blank" rel="noopener">https://cyberarms.wordpress.com/2018/02/13/creating-hashcat-keymap-walking-password-wordlists/&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;h3>Ref&lt;span class="hx-absolute -hx-mt-20" id="ref">&lt;/span>
+&lt;a href="#ref" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;a href="https://github.com/Mebus/cupp" target="_blank" rel="noopener">https://github.com/Mebus/cupp&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://specopssoft.com/blog/predictable-passwords-seasons-and-months/" target="_blank" rel="noopener">https://specopssoft.com/blog/predictable-passwords-seasons-and-months/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://cyberarms.wordpress.com/2018/02/13/creating-hashcat-keymap-walking-password-wordlists/" target="_blank" rel="noopener">https://cyberarms.wordpress.com/2018/02/13/creating-hashcat-keymap-walking-password-wordlists/&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>

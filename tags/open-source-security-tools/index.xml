@@ -1,0 +1,45 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Open Source Security Tools</title><link>https://fyx.me/tags/open-source-security-tools/</link><description>Recent content in Open Source Security Tools on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://fyx.me/tags/open-source-security-tools/index.xml" rel="self" type="application/rss+xml"/><item><title>Code</title><link>https://fyx.me/code/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/code/</guid><description>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Important&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>The layout of this section is a work in progress. A lot remains to be updated&amp;hellip;&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+&lt;p class="hx-flex hx-items-center hx-font-medium">Tldr&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Tools, code and other research stuff that I&amp;rsquo;ve made public. Content ordered using a single iteration of bogosort&amp;hellip;&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h2>latest code&lt;span class="hx-absolute -hx-mt-20" id="latest-code">&lt;/span>
+&lt;a href="#latest-code" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Developing new BOFs and improving old ones to extend open-source C2 capabilities:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/fyxme/portscanbof" target="_blank" rel="noopener">portscanbof&lt;/a> | A Port Scanning BOF (COFF) that replicates Cobalt Strike&amp;rsquo;s Port Scanning functionality. Also includes a ping scanner.&lt;/li>
+&lt;li>&lt;a href="https://github.com/fyxme/enumpwshhistbof" target="_blank" rel="noopener">enumpwshhistbof&lt;/a> | enumpwshhist is a Beacon Object File (BOF) that enumerates and finds sensitive information in PowerShell history files.&lt;/li>
+&lt;li>&lt;a href="https://github.com/fyxme/havoc-runall-poc" target="_blank" rel="noopener">havoc-runall-poc&lt;/a> | A Havoc Module to run commands on all connected agents.&lt;/li>
+&lt;/ul>
+&lt;h2>tools&lt;span class="hx-absolute -hx-mt-20" id="tools">&lt;/span>
+&lt;a href="#tools" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
+&lt;li>&lt;a href="https://github.com/fyxme/dreamcatcher" target="_blank" rel="noopener">dreamcatcher&lt;/a> | a TCP listener which allows the same port to be used as a HTTP file server (similarly to python&amp;rsquo;s SimpleHTTPServer) and handle&amp;rsquo;s other TCP connections similarly to netcat.&lt;/li>
+&lt;li>&lt;a href="https://github.com/fyxme/blistener" target="_blank" rel="noopener">blistener&lt;/a> | a Blind-XSS listener with javascript payloads to retrieve the target user&amp;rsquo;s browser data including cookies, local/session storage, html code (and optionally a screenshot) of current page (also works as a HTTP listener)&lt;/li>
+&lt;li>&lt;a href="https://github.com/fyxme/genx" target="_blank" rel="noopener">genx&lt;/a> | a fast alternative domain name generator to help in generating potential subdomains of a target. Useful when starting recon on a domain.&lt;/li>
+&lt;li>&lt;a href="https://github.com/fyxme/dnsfaster" target="_blank" rel="noopener">dnsfaster&lt;/a> | a tool to benchmark DNS resolvers in order to find resolvers with the highest speed and accuracy.&lt;/li>
+&lt;li>&lt;a href="https://github.com/fyxme/golang-short-domain-finder" target="_blank" rel="noopener">short domain finder&lt;/a> | a golang application which aims to find the shortest available domain based on user parameters (ie. length, domain extension). How I found this domain&lt;/li>
+&lt;/ul>
+&lt;h2>research&lt;span class="hx-absolute -hx-mt-20" id="research">&lt;/span>
+&lt;a href="#research" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>github (&lt;a href="https://github.com/fyxme" target="_blank" rel="noopener">ext&lt;/a>)&lt;span class="hx-absolute -hx-mt-20" id="github-exthttpsgithubcomfyxme">&lt;/span>
+&lt;a href="#github-exthttpsgithubcomfyxme" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;a href="https://gitlab.com/0x41414141/scary-rootkit" target="_blank" rel="noopener">BSD rootkit&lt;/a> | a BSD rootkit and rootkit detector (written for research &amp;amp; education)&lt;/li>
+&lt;li>&lt;a href="https://github.com/fyxme/silentbook" target="_blank" rel="noopener">silentbook&lt;/a> | Proof-of-Concept app allowing encrypted messaging over Facebook messenger using AES-256 encryption&lt;/li>
+&lt;li>&lt;a href="https://github.com/fyxme/crc-32-hash-collider" target="_blank" rel="noopener">CRC-32 hash collider&lt;/a> | Naive bruteforce attack to find a CRC-32 hash collision based on a provided CRC-32 value and a charset. &lt;sub>&lt;em>CRC-32 is not a cryptographic hash function. There are mathematical ways to reverse the hash value to a valid input. For more information, see the following &lt;a href="https://github.com/theonlypwner/crc32" target="_blank" rel="noopener">tool&lt;/a>.&lt;/em>&lt;/sub>&lt;/li>
+&lt;/ul>
+&lt;h3>gists (&lt;a href="https://gist.github.com/fyxme" target="_blank" rel="noopener">ext&lt;/a>)&lt;span class="hx-absolute -hx-mt-20" id="gists-exthttpsgistgithubcomfyxme">&lt;/span>
+&lt;a href="#gists-exthttpsgistgithubcomfyxme" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;a href="https://gist.github.com/fyxme/2bceed4038e2be71ce1deb7e6e9db434" target="_blank" rel="noopener">minimalcj.go&lt;/a> | Golang Minimal CookieJar Implementation which always returns all cookies, regardless of domain or url (Insecure but useful for testing or writing POCs)&lt;/li>
+&lt;li>&lt;a href="https://gist.github.com/fyxme/835253b1cf247c723008acdc39c67337" target="_blank" rel="noopener">webserver.go&lt;/a> | Simple Golang webserver serving files from a directory and logging all incoming requests (ip, headers and body content)&lt;/li>
+&lt;li>&lt;a href="https://gist.github.com/fyxme/25fb9bc7a3c76997ec51da30d3f3e4dd" target="_blank" rel="noopener">replay-http.go&lt;/a> | Simple Golang tool to replay an http request from a txt file.&lt;/li>
+&lt;li>&lt;a href="https://gist.github.com/fyxme/8f81d3deee28d79f2f5df8c6d3e1adad" target="_blank" rel="noopener">whoami.go&lt;/a> | Golang webserver which echo&amp;rsquo;s the request back to you and prints your IP address.&lt;/li>
+&lt;li>&lt;a href="https://gist.github.com/fyxme/fb8344933366c35806763cfad97d2912" target="_blank" rel="noopener">sqlmap-proxy.go&lt;/a> | Golang proxy example to abuse more complex SQL injections which may not be picked up by sqlmap. For example, SQL injections in CTF challenges.&lt;/li>
+&lt;/ul></description></item></channel></rss>

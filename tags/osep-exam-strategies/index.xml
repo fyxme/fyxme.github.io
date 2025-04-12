@@ -1,0 +1,132 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – OSEP Exam Strategies</title><link>https://fyx.me/tags/osep-exam-strategies/</link><description>Recent content in OSEP Exam Strategies on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 12 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://fyx.me/tags/osep-exam-strategies/index.xml" rel="self" type="application/rss+xml"/><item><title>OffSec Experienced Penetration Tester (OSEP) Exam Review</title><link>https://fyx.me/articles/osep-exam-review/</link><pubDate>Thu, 12 Dec 2024 00:00:00 +0000</pubDate><guid>https://fyx.me/articles/osep-exam-review/</guid><description>
+&lt;h2>Offsec OSEP Exam&lt;span class="hx-absolute -hx-mt-20" id="offsec-osep-exam">&lt;/span>
+&lt;a href="#offsec-osep-exam" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Early December, I attempted the &lt;a href="https://www.offsec.com/courses/pen-300/" target="_blank" rel="noopener">OffSec Experienced Penetration Tester (OSEP) certification exam&lt;/a>. I survived a failed computer firmware update, slow and inconsistent internet speeds due to living in a 3rd world country (aka Canada) and a sleeping proctor who took an hour to unfreeze my camera and VPN but in the end&amp;hellip;&lt;/p>
+&lt;p>&lt;strong>
+&lt;figure>
+&lt;img src="../img/offsec-osep-completion-email.png" title="I successfully passed the exam!" alt="Offsec OSEP Exam Completion email" loading="lazy" />
+&lt;figcaption>I successfully passed the exam!&lt;/figcaption>
+&lt;/figure>&lt;/strong>&lt;/p>
+&lt;p>There&amp;rsquo;s a lot of OSEP reviews out there so I will try to minimise overlap with what overs have said. Use your google fu to find these!&lt;/p>
+&lt;p>Nevertheless, I&amp;rsquo;ve compiled a number of tips that will hopefully help you preparing for and taking the OSEP exam.&lt;/p>
+&lt;h3>Preparation&lt;span class="hx-absolute -hx-mt-20" id="preparation">&lt;/span>
+&lt;a href="#preparation" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;figure>
+&lt;img src="https://fyx.me/gifs/confused-joe-biden.webp" title="We need to prep for exams? I thought the exam was the prep..." alt="Confused Joe Biden GIF" loading="lazy" />
+&lt;figcaption>We need to prep for exams? I thought the exam was the prep...&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>Learn to use your tools, especially if you&amp;rsquo;re using a C2 other than the one taught in the course (ie. Metasploit).&lt;/p>
+&lt;p>TJNull has a lot of great suggestions in his &lt;a href="https://docs.google.com/spreadsheets/d/1dwSMIAPIam0PuRBkCiDI88pU3yzrqqHkDtBngUHNCw8/edit?gid=998752843#gid=998752843" target="_blank" rel="noopener">OSEP list of vulnerable machines&lt;/a>. A lot of these can be used to test your tools in a controlled environment.&lt;/p>
+&lt;p>Making cheatsheets could also be useful especially when you do a lot of these (ie. boot2roots, CTFs or AD environments). Saves you time to just copy paste the commands directly instead of having to run &lt;code>-h&lt;/code> / &lt;code>--help&lt;/code> every 2 seconds&amp;hellip;&lt;/p>
+&lt;h3>Choice of tools&lt;span class="hx-absolute -hx-mt-20" id="choice-of-tools">&lt;/span>
+&lt;a href="#choice-of-tools" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>C2&lt;span class="hx-absolute -hx-mt-20" id="c2">&lt;/span>
+&lt;a href="#c2" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+&lt;p class="hx-flex hx-items-center hx-font-medium">Bazaar&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;a href="https://fyx.me/bazaar/c2/havoc/" target="_blank">Havoc quick reference guide&lt;/a>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>The course is centered around Metasploit C2 but use any open source C2 you want and are comfortable with. I used &lt;a href="https://github.com/HavocFramework/Havoc" target="_blank" rel="noopener">havoc&lt;/a> because I wanted to play around with it.&lt;/p>
+&lt;p>Don&amp;rsquo;t be a hero and try to do everything from C2. If you know how to do it from Kali Linux (eg. &lt;code>impacket&lt;/code>, &lt;code>netexec&lt;/code>, etc) then use that&amp;hellip;&lt;/p>
+&lt;p>As long as you have screenshots of retrieving the flag from an &lt;code>interactive shell&lt;/code>, you&amp;rsquo;re gucci.&lt;/p>
+&lt;h4>AD Enumeration&lt;span class="hx-absolute -hx-mt-20" id="ad-enumeration">&lt;/span>
+&lt;a href="#ad-enumeration" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+&lt;p class="hx-flex hx-items-center hx-font-medium">Bazaar&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;a href="https://fyx.me/bazaar/windows/active-directory/ad-enumeration/" target="_blank">AD Enumeration quick reference guide&lt;/a>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>Bloodhound is overrated in these small environments. Plus, the bloodhound client and/or server (depending on which version you are using) is super resource hungry.&lt;/p>
+&lt;p>I&amp;rsquo;d recommend doing manual enumeration using tools like &lt;code>Powerview&lt;/code>/&lt;code>powerview.py&lt;/code> or &lt;code>adsearch&lt;/code>.&lt;/p>
+&lt;h4>Defence Evasion&lt;span class="hx-absolute -hx-mt-20" id="defence-evasion">&lt;/span>
+&lt;a href="#defence-evasion" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Important&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>You&amp;rsquo;re not tested on OPSEC. You can do risky things w/o worrying about OPSEC and whether you should look at less noisy solutions. Just blast things and see what sticks.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>Don&amp;rsquo;t be scared to disable everything on the environment (eg. firewall, AV, running software), this isn&amp;rsquo;t production, this isn&amp;rsquo;t a client&amp;rsquo;s environment. You&amp;rsquo;re here to show you understand the vulnerabilities, misconfigurations and can bypass security configurations. If you need to, just revert and if you&amp;rsquo;re scared add a limitation for the report explaining you did this because you are aware that this is non-production environment and that the &amp;ldquo;client&amp;rdquo; (aka offsec) can reset the environment to its original state.&lt;/p>
+&lt;p>Use your own time to explore other solutions which do not require disabling defences.&lt;/p>
+&lt;h4>Screenshot tool&lt;span class="hx-absolute -hx-mt-20" id="screenshot-tool">&lt;/span>
+&lt;a href="#screenshot-tool" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>It&amp;rsquo;s better to take more then less screenshots&amp;hellip; I&amp;rsquo;d recommend taking fast dirty screenshots, don&amp;rsquo;t worry about extras and what not, just paste them in your note taking tool like &lt;code>obsidian&lt;/code> and reformat them later when writing up the report.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>Just use &lt;a href="https://flameshot.org/" target="_blank" rel="noopener">flameshot&lt;/a>, there&amp;rsquo;s no better alternative.&lt;/p>
+&lt;p>You can also remap your kali and/or host&amp;rsquo;s machine &lt;code>printscreen&lt;/code> button to it.&lt;/p>
+&lt;p>Makes your life easier&amp;hellip; Simply &lt;code>Screenshot&lt;/code> &amp;gt; &lt;code>Edit it from the flameshot popup&lt;/code> &amp;gt; &lt;code>Copy&lt;/code> &amp;gt; &lt;code>Paste&lt;/code> to your favorite editor (eg. &lt;code>Obsidian&lt;/code>).&lt;/p>
+&lt;h4>Other tools&lt;span class="hx-absolute -hx-mt-20" id="other-tools">&lt;/span>
+&lt;a href="#other-tools" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>You don&amp;rsquo;t need to do everything from the C2. It&amp;rsquo;s a free for all, the only requirement is to demonstrate that you have access to the machines in the environment and can reach the flags with an &lt;strong>interactive shell&lt;/strong>, nothing else.&lt;/p>
+&lt;p>So make use of any AD tools you know, including those you can run through proxies (ie. &lt;code>proxychains&lt;/code>) like &lt;code>impacket&lt;/code>, &lt;code>netexec&lt;/code> and &lt;code>powerview.py&lt;/code>.&lt;/p>
+&lt;h3>The Exam itself&lt;span class="hx-absolute -hx-mt-20" id="the-exam-itself">&lt;/span>
+&lt;a href="#the-exam-itself" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Important&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Exam completion requirements and tips:&lt;/p>
+&lt;ul>
+&lt;li>A total of &lt;strong>100 points&lt;/strong> (10 points for each &lt;code>proof.txt&lt;/code> and/or &lt;code>local.txt&lt;/code> flags) OR you reach the end goal and retrieve the &lt;code>secrets.txt&lt;/code> file from the target system.&lt;/li>
+&lt;li>&lt;strong>Once you reach 100 points, I would focus on ensuring you have all you need for the report (ie. screenshots for the attack paths, valid proof screenshots, notes, etc) and that you have submitted all you flags to the provided control panel.&lt;/strong> This ensures you don&amp;rsquo;t forget anything before running out of time.&lt;/li>
+&lt;li>Proof screenshots have a specific format, they need to be taken from an &lt;strong>interactive shell&lt;/strong> and include the &lt;strong>(proof|local|secret).txt file contents&lt;/strong> and the &lt;strong>ipconfig of the machine&lt;/strong>. Also recommended to add &lt;strong>whoami&lt;/strong> in the screenshot because why not (it can help you with write ups later on).&lt;/li>
+&lt;li>You do not need to use a C2 for everything in the exam. The only requirement is that you have &lt;strong>screenshots of the flags from an interactive shell&lt;/strong>. So you can exploit the machine and then drop a beacon on there for example to take your screenshot.&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>Completion txt files :&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>proof.txt&lt;/code>, &lt;code>local.txt&lt;/code> - located on User&amp;rsquo;s home folder, or other publicly reachable folders.&lt;/li>
+&lt;li>&lt;code>secrets.txt&lt;/code> (its the last box on the environment so don&amp;rsquo;t &lt;strong>just&lt;/strong> count on that to pass&amp;hellip; if you&amp;rsquo;re stuck on one path, check the other paths.)&lt;/li>
+&lt;/ul>
+&lt;p>In my opinion, the exam is a lot more straightforward / linear then you think compared to the OSCP.&lt;/p>
+&lt;p>Take time to eat/sleep/shower/talk to friends (lol imagine having friends and taking a 3 day proctored exam).&lt;/p>
+&lt;p>Make sure to read the &lt;a href="https://help.offsec.com/hc/en-us/articles/360050293792-OSEP-Exam-Guide" target="_blank" rel="noopener">OSEP Exam Guide&lt;/a> and &lt;a href="https://help.offsec.com/hc/en-us/articles/360049781352-OSEP-Exam-FAQ" target="_blank" rel="noopener">OSEP Exam FAQ&lt;/a> in details before the exam.&lt;/p>
+&lt;h4>Proctoring&lt;span class="hx-absolute -hx-mt-20" id="proctoring">&lt;/span>
+&lt;a href="#proctoring" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-red-200 hx-bg-red-100 hx-text-red-900 dark:hx-border-red-200/30 dark:hx-bg-red-900/30 dark:hx-text-red-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Caution&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Don&amp;rsquo;t forget a government issued ID to show to the proctor when the exam starts (don&amp;rsquo;t do like i did and panic to find any form of government id when they requested it&amp;hellip;)&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>For the proctoring tool, I had to disable Wayland on Debian Linux because it was interfering with screen sharing (ie. could only share full screen and not individual screens).&lt;/p>
+&lt;p>I lost close to 1 hour at the beginning because of this. I was told that if I could not get the proctoring tools working within the hour, they will end my exam and cancel it (ie. same as did not attend).&lt;/p>
+&lt;p>&lt;strong>Hence, I would highly recommend that you test screen sharing to ensure you can share all your screens individually before the start of the exam. (And install the required extension if you end up using &lt;code>brave&lt;/code> or &lt;code>chrome&lt;/code>)&lt;/strong>&amp;hellip;&lt;/p>
+&lt;p>I ended using &lt;code>brave&lt;/code> with the Offsec memory hogging screenshare extension&amp;hellip; Now that I&amp;rsquo;ve read more OSEP reviews, I should have tried with &lt;code>firefox&lt;/code> after I fixed my Wayland issue.&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+&lt;p class="hx-flex hx-items-center hx-font-medium">Tldr&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Use &lt;code>firefox&lt;/code>. If you can only share your full screen and are running linux, it&amp;rsquo;s probably a Wayland issue (check online for fixes). If that doesn&amp;rsquo;t work, see if using &lt;code>brave&lt;/code> with the screen share plugin works.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>As with all OSEP exams, don&amp;rsquo;t worry about crashes (VPN, VM, Computer, Proctoring tool, etc). Just message them in the chat explaining what happened (ie. poor software and/or hardware, shit crashes). They&amp;rsquo;re usually pretty ok with it. Just restart, reshare and explain what happened.&lt;/p>
+&lt;p>If the proctor is not responding then contact them via &lt;a href="https://help.offsec.com/hc/en-us/articles/16780228284948-Exam-Support-Chat-with-OffSec-Technical-Support-Team" target="_blank" rel="noopener">this chat&lt;/a>. When I had issue and my proctor wasn&amp;rsquo;t responding for like 1 hour and I needed them to unfreeze the webcam/VPN, I messaged them here and someone answered pretty much straight away and nudged the proctor to respond to me and fix my environment.&lt;/p>
+&lt;h4>The dev Windows VM&lt;span class="hx-absolute -hx-mt-20" id="the-dev-windows-vm">&lt;/span>
+&lt;a href="#the-dev-windows-vm" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>They give you a Windows virtual machine that is configured with all the tools required for writing and compiling c sharp, office macros, etc. Machine has Defender disabled, all the tools you need and has quite a lot of hardware resources.&lt;/p>
+&lt;p>It&amp;rsquo;s probably the fastest machine in the environment&amp;hellip; I recommend to make use of it unless you run your own Windows VM where you can do those kind of things easily. Credentials are on the internal exam control panel.&lt;/p>
+&lt;h3>The Exam Report&lt;span class="hx-absolute -hx-mt-20" id="the-exam-report">&lt;/span>
+&lt;a href="#the-exam-report" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>You have 24 hours to finalise and send your report after the exam ends. Make sure you follow the instructions on how to send your report properly (ie. 7z without password, submit on that portal, etc).&lt;/p>
+&lt;p>If you took notes and a lot of screenshots during the exam, this should be a breeze and the formatting should be the most time consuming part.&lt;/p>
+&lt;p>I personally used the following &lt;a href="https://github.com/noraj/OSCP-Exam-Report-Template-Markdown" target="_blank" rel="noopener">offsec exam markdown report template&lt;/a> which has some nice report layouts and allows you to take notes in Markdown and generate the final PDF report directly without having to touch MS Word.&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-amber-200 hx-bg-amber-100 hx-text-amber-900 dark:hx-border-amber-200/30 dark:hx-bg-amber-900/30 dark:hx-text-amber-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>&lt;/svg>Warning&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>When installing the &lt;code>Eisvogel&lt;/code> latex template with that Offsec Markdown template, don&amp;rsquo;t use the v2.5 of the &lt;code>Eisvogel&lt;/code> latex template because its bugged for images and will not resize/center them properly.&lt;/p>
+&lt;p>Ref: &lt;a href="https://github.com/Wandmalfarbe/pandoc-latex-template/issues/405" target="_blank" rel="noopener">https://github.com/Wandmalfarbe/pandoc-latex-template/issues/405&lt;/a> &lt;br />
+Ref2: &lt;a href="https://github.com/noraj/OSCP-Exam-Report-Template-Markdown/issues/63" target="_blank" rel="noopener">https://github.com/noraj/OSCP-Exam-Report-Template-Markdown/issues/63&lt;/a>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>If you decide to use that tool, be wary that you may need some bash magic to convert links and other things that might break during conversion. You can look at the &lt;a href="https://github.com/noraj/OSCP-Exam-Report-Template-Markdown/issues?q=" target="_blank" rel="noopener">Github issues&lt;/a> on the repo to look for help but if you&amp;rsquo;re not confident you can fix the formatting yourself quickly then I wouldn&amp;rsquo;t recommend it and suggest using the Offsec Word Document instead.&lt;/p>
+&lt;p>Once you&amp;rsquo;ve submitted the report, you can finally start cleaning up, respond to everyone you ghosted over the past few days and get back to scrolling twitter and watching anime while you wait for Offsec&amp;rsquo;s email response.&lt;/p>
+&lt;h3>Famous last words&lt;span class="hx-absolute -hx-mt-20" id="famous-last-words">&lt;/span>
+&lt;a href="#famous-last-words" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>One thing that always amazes me in these long exams is that you can get an insane amount of stuff done, learned and researched in just 48 hours when you disregard all other life distractions and become a hermit.&lt;/p>
+&lt;p>Probably not good in the long term but interesting food for thought&amp;hellip;&lt;/p>
+&lt;p>&lt;figure>
+&lt;img src="https://fyx.me/gifs/glhf-soldier.webp" title="Good Luck Comrade!" alt="good luck comrade soldier" loading="lazy" />
+&lt;figcaption>Good Luck Comrade!&lt;/figcaption>
+&lt;/figure>&lt;/p></description></item></channel></rss>

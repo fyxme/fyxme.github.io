@@ -1,0 +1,36 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Programming Knowledge</title><link>https://fyx.me/tags/programming-knowledge/</link><description>Recent content in Programming Knowledge on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://fyx.me/tags/programming-knowledge/index.xml" rel="self" type="application/rss+xml"/><item><title>Welcome to the cyber bazaar</title><link>https://fyx.me/bazaar/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/</guid><description>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-amber-200 hx-bg-amber-100 hx-text-amber-900 dark:hx-border-amber-200/30 dark:hx-bg-amber-900/30 dark:hx-text-amber-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>&lt;/svg>Warning&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>The bazaar is at a very early stage. Anything and everything may change for better or worse.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;img src="./img/cyberpunk-bazaar.webp" alt="cyberpunk bazaar" loading="lazy" style="max-height: 300px">
+&lt;blockquote>
+&lt;p>A bazaar or souk is a marketplace consisting of multiple small stalls or shops, especially in the Middle East, the Balkans, Central Asia, North Africa and South Asia. They are traditionally located in vaulted or covered streets that have doors on each end and served as a city&amp;rsquo;s central marketplace.&lt;/p>
+&lt;/blockquote>
+&lt;p>In other terms, the cyber bazaar is a place for structured chaos where you can (sometimes) find cyber things you need (and sometimes stuff you don&amp;rsquo;t need).&lt;/p>
+&lt;p>A wiki / cheatsheet combination of some sorts with some magic dust sprinkled in there.&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Important&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>The goal is to have quick references to various tools and knowledge that is helpful for cybersecurity, speedrunning ctfs/boot2root/certs and other useful programming knowledge.&lt;/p>
+&lt;p>A lot of the techniques described here are very noisy and &lt;strong>might not be OPSEC safe&lt;/strong>. Tread with caution and do your own research if you want to utilise some of the techniques during pentesting or red teaming engagements.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h2>FAQ&lt;span class="hx-absolute -hx-mt-20" id="faq">&lt;/span>
+&lt;a href="#faq" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>Will I find everything I need here?&lt;span class="hx-absolute -hx-mt-20" id="will-i-find-everything-i-need-here">&lt;/span>
+&lt;a href="#will-i-find-everything-i-need-here" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>No&lt;/p>
+&lt;h3>At what stage of completion is this?&lt;span class="hx-absolute -hx-mt-20" id="at-what-stage-of-completion-is-this">&lt;/span>
+&lt;a href="#at-what-stage-of-completion-is-this" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Eternal work in progress&lt;/p>
+&lt;h3>Why make yet another cybersecurity cheatsheet?&lt;span class="hx-absolute -hx-mt-20" id="why-make-yet-another-cybersecurity-cheatsheet">&lt;/span>
+&lt;a href="#why-make-yet-another-cybersecurity-cheatsheet" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>I like the stock&lt;/p>
+&lt;/blockquote>
+&lt;h3>Where did you get the image?&lt;span class="hx-absolute -hx-mt-20" id="where-did-you-get-the-image">&lt;/span>
+&lt;a href="#where-did-you-get-the-image" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Yonked it at gunpoint from an AI on the internet.&lt;/p>
+&lt;h3>&amp;ldquo;I&amp;rsquo;ve seen this before, you yonked it from X&amp;hellip;&amp;rdquo;&lt;span class="hx-absolute -hx-mt-20" id="ive-seen-this-before-you-yonked-it-from-x">&lt;/span>
+&lt;a href="#ive-seen-this-before-you-yonked-it-from-x" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>X borrowed from Y who borrowed it from Z who asked an LLM to generate the code for him.&lt;/p>
+&lt;p>The references try to highlight where the code or information was found. If references are missing, feel free to contact me and I will be happy to update them.&lt;/p></description></item></channel></rss>

@@ -1,0 +1,11 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – IT Security</title><link>https://fyx.me/tags/it-security/</link><description>Recent content in IT Security on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://fyx.me/tags/it-security/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://fyx.me/bazaar/c2-and-red-team-tools/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/c2-and-red-team-tools/</guid><description>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+&lt;p class="hx-flex hx-items-center hx-font-medium">Tbd&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3>Pivoting&lt;span class="hx-absolute -hx-mt-20" id="pivoting">&lt;/span>
+&lt;a href="#pivoting" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>does your ticket have network permissions?&lt;/strong> sometimes easier to use &lt;code>ptt&lt;/code> to pass the ticket or steal a token from the machine that has network privilege on behalf of the machine&lt;/li>
+&lt;/ul></description></item></channel></rss>

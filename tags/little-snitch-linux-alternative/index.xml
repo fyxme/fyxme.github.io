@@ -1,0 +1,76 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Little Snitch Linux Alternative</title><link>https://fyx.me/tags/little-snitch-linux-alternative/</link><description>Recent content in Little Snitch Linux Alternative on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://fyx.me/tags/little-snitch-linux-alternative/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://fyx.me/bazaar/linux/system-hardening/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/linux/system-hardening/</guid><description>
+&lt;h3>OpenSnitch&lt;span class="hx-absolute -hx-mt-20" id="opensnitch">&lt;/span>
+&lt;a href="#opensnitch" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>OpenSnitch is a GNU/Linux interactive application firewall inspired by Little Snitch.
+Ref: &lt;a href="https://github.com/evilsocket/opensnitch" target="_blank" rel="noopener">https://github.com/evilsocket/opensnitch&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-amber-200 hx-bg-amber-100 hx-text-amber-900 dark:hx-border-amber-200/30 dark:hx-bg-amber-900/30 dark:hx-text-amber-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>&lt;/svg>Warning&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;code>appindicators&lt;/code> which is required for the system tray icon is buggy and seems to produce a lot of syslog errors: &lt;code>journalctl --since &amp;quot;1 hour ago&amp;quot;&lt;/code>&lt;/p>
+&lt;p>Recommend installing and using &lt;code>Tray Icons: Reloaded&lt;/code> instead: &lt;a href="https://extensions.gnome.org/extension/2890/tray-icons-reloaded/" target="_blank" rel="noopener">https://extensions.gnome.org/extension/2890/tray-icons-reloaded/&lt;/a>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Works more or less with VPNs&amp;hellip; YMMV.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3>Other speedup configs&lt;span class="hx-absolute -hx-mt-20" id="other-speedup-configs">&lt;/span>
+&lt;a href="#other-speedup-configs" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-red-200 hx-bg-red-100 hx-text-red-900 dark:hx-border-red-200/30 dark:hx-bg-red-900/30 dark:hx-text-red-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Caution&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Tread at your own risk&amp;hellip; A lot of these things can fuck-up your device and might be annoying to undo or fix easily. But we all have installation scripts and backups right&amp;hellip;. right?!&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>Monitor &lt;code>journalctl --since &amp;quot;1 hour ago&amp;quot;&lt;/code> for bugs and application errors which might use up battery, or other hardware resources. Need to run as admin to see all messages otherwise you will only see logs related to your system.&lt;/p>
+&lt;blockquote>
+&lt;p>gnome-shell editor: &lt;strong>dconf-editor&lt;/strong>&lt;/p>
+&lt;/blockquote>
+&lt;p>To look into:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://askubuntu.com/questions/346211/tracker-store-and-tracker-miner-fs-eating-up-my-cpu-on-every-startup" target="_blank" rel="noopener">https://askubuntu.com/questions/346211/tracker-store-and-tracker-miner-fs-eating-up-my-cpu-on-every-startup&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4>Hardening scripts&lt;span class="hx-absolute -hx-mt-20" id="hardening-scripts">&lt;/span>
+&lt;a href="#hardening-scripts" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;h5>&lt;code>debian-cis&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="debian-cis">&lt;/span>
+&lt;a href="#debian-cis" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-amber-200 hx-bg-amber-100 hx-text-amber-900 dark:hx-border-amber-200/30 dark:hx-bg-amber-900/30 dark:hx-text-amber-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>&lt;/svg>Warning&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Some of these may not be desirable to have hardened on host machines.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>Ref: &lt;a href="https://github.com/ovh/debian-cis" target="_blank" rel="noopener">https://github.com/ovh/debian-cis&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Installation&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># need root to cp into /etc/default/cis-hardening&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> debian-cis
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cp debian/default /etc/default/cis-hardening
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s2">&amp;#34;s#CIS_LIB_DIR=.*#CIS_LIB_DIR=&amp;#39;&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#39;/lib#&amp;#34;&lt;/span> /etc/default/cis-hardening
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s2">&amp;#34;s#CIS_CHECKS_DIR=.*#CIS_CHECKS_DIR=&amp;#39;&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#39;/bin/hardening#&amp;#34;&lt;/span> /etc/default/cis-hardening
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s2">&amp;#34;s#CIS_CONF_DIR=.*#CIS_CONF_DIR=&amp;#39;&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#39;/etc#&amp;#34;&lt;/span> /etc/default/cis-hardening
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s2">&amp;#34;s#CIS_TMP_DIR=.*#CIS_TMP_DIR=&amp;#39;&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#39;/tmp#&amp;#34;&lt;/span> /etc/default/cis-hardening
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Audit everything&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">./bin/hardening.sh --audit-all
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># audit single item&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">./bin/hardening/4.4_logrotate_permissions.sh --audit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Apply a fix / harden&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">./bin/hardening/4.4_logrotate_permissions.sh --apply&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div></description></item></channel></rss>

