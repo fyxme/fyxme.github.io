@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – BOFs</title><link>https://fyx.me/tags/bofs/</link><description>Recent content in BOFs on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 04 Mar 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://fyx.me/tags/bofs/index.xml" rel="self" type="application/rss+xml"/><item><title>fyx(me)</title><link>https://fyx.me/</link><pubDate>Tue, 04 Mar 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – BOFs</title><link>https://fyx.me/tags/bofs/</link><description>Recent content in BOFs on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 13 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://fyx.me/tags/bofs/index.xml" rel="self" type="application/rss+xml"/><item><title>fyx(me)</title><link>https://fyx.me/</link><pubDate>Sun, 13 Apr 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/</guid><description>
 &lt;div class="hx-mt-6 hx-mb-6">
 &lt;h1
 class="not-prose hx-text-4xl hx-leading-none hx-tracking-tighter md:hx-text-5xl hx-py-2 hx-bg-clip-text hx-text-transparent hx-bg-gradient-to-r hx-from-gray-900 hx-to-gray-600 dark:hx-from-gray-100 dark:hx-to-gray-400"
@@ -28,7 +28,7 @@ class="not-prose hx-text-md sm:hx-text-md"
 Developing new BOFs and improving old ones to extend open-source C2 capabilities:
 &lt;/p>
 &lt;/div>
-&lt;div class="landingpage-links">
+&lt;div class="landingpage-links hx-mb-4">
 &lt;ul>
 &lt;li>&lt;a href="https://github.com/fyxme/portscanbof" class="badge-btn badge-btn-red" target="_blank">code&lt;/a> &lt;a href="https://fyx.me/articles/replicating-cobalt-strikes-port-scanner-as-a-bof-for-open-source-c2-frameworks/" class="badge-btn badge-btn-blue">article&lt;/a>&lt;/span> Replicating Cobalt Strike&amp;rsquo;s Port Scanner as a BOF for Open-Source C2 Frameworks&lt;/li>
 &lt;li>&lt;a href="https://github.com/fyxme/havoc-runall-poc" class="badge-btn badge-btn-red" target="_blank">code&lt;/a> &lt;a href="https://fyx.me/articles/creating-a-havoc-module-to-run-commands-on-all-agents-at-once-and-map-out-an-environment-passively/" class="badge-btn badge-btn-blue">article&lt;/a> Creating a Havoc Module to run commands on all agents at once and map out an environment passively&lt;/li>
@@ -36,19 +36,31 @@ Developing new BOFs and improving old ones to extend open-source C2 capabilities
 &lt;li>&lt;a href="https://github.com/fyxme/OperatorsKit" class="badge-btn badge-btn-red" target="_blank">code&lt;/a> &lt;a href="https://fyx.me/minis/improving-functionality-of-open-source-bofs/" class="badge-btn badge-btn-teal">MINI&lt;/a> Improving functionality of open source BOFs&lt;/li>
 &lt;/ul>
 &lt;/div>
+&lt;div class="hx-mb-2">
+&lt;p
+class="not-prose hx-text-md sm:hx-text-md"
+>
+Artificial Intelligence (AI):
+&lt;/p>
+&lt;/div>
+&lt;div class="landingpage-links hx-mb-4">
+&lt;ul>
+&lt;li>&lt;a href="https://fyx.me/minis/leveraging-ai-to-automate-seo-metadata-generation-for-web-content/" class="badge-btn badge-btn-teal">MINI&lt;/a> Leveraging AI to Automate SEO Metadata Generation for Web Content&lt;/li>
+&lt;/ul>
 &lt;/div>
 &lt;div class="hx-mb-2">
 &lt;p
 class="not-prose hx-text-md sm:hx-text-md"
 >
-More writeups:
+Even more writeups:
 &lt;/p>
 &lt;/div>
-&lt;div class="landingpage-links">
+&lt;div class="landingpage-links hx-mb-4">
 &lt;ul>
 &lt;li>&lt;a href="https://fyx.me/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/" class="badge-btn badge-btn-teal">MINI&lt;/a> Creating Lightweight Windows Virtual Machines for your Personal Lab Environment&lt;/li>
 &lt;li>&lt;a href="https://fyx.me/minis/create-infinite-email-aliases-using-cloudflare-email-routing/" class="badge-btn badge-btn-teal">MINI&lt;/a> Create Infinite Email aliases using Cloudflare Email Routing&lt;/li>
 &lt;/ul>
+&lt;/div>
 &lt;/div>
 &lt;/div>
 &lt;br>
