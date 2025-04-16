@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Windows Virtual Machines</title><link>https://fyx.me/tags/windows-virtual-machines/</link><description>Recent content in Windows Virtual Machines on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 13 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://fyx.me/tags/windows-virtual-machines/index.xml" rel="self" type="application/rss+xml"/><item><title>fyx(me)</title><link>https://fyx.me/</link><pubDate>Sun, 13 Apr 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Windows Virtual Machines</title><link>https://fyx.me/tags/windows-virtual-machines/</link><description>Recent content in Windows Virtual Machines on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 15 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://fyx.me/tags/windows-virtual-machines/index.xml" rel="self" type="application/rss+xml"/><item><title>fyx(me)</title><link>https://fyx.me/</link><pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/</guid><description>
 &lt;div class="hx-mt-6 hx-mb-6">
 &lt;h1
 class="not-prose hx-text-4xl hx-leading-none hx-tracking-tighter md:hx-text-5xl hx-py-2 hx-bg-clip-text hx-text-transparent hx-bg-gradient-to-r hx-from-gray-900 hx-to-gray-600 dark:hx-from-gray-100 dark:hx-to-gray-400"
@@ -45,6 +45,7 @@ Artificial Intelligence (AI):
 &lt;/div>
 &lt;div class="landingpage-links hx-mb-4">
 &lt;ul>
+&lt;li>&lt;a href="https://fyx.me/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/" class="badge-btn badge-btn-teal">MINI&lt;/a> Building a Flask Blog in 3 prompts with AI Coding Tools: Using Cline &amp;amp; MCP Servers in VSCode&lt;/li>
 &lt;li>&lt;a href="https://fyx.me/minis/leveraging-ai-to-automate-seo-metadata-generation-for-web-content/" class="badge-btn badge-btn-teal">MINI&lt;/a> Leveraging AI to Automate SEO Metadata Generation for Web Content&lt;/li>
 &lt;/ul>
 &lt;/div>

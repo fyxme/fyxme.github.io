@@ -1,0 +1,105 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Developer Tools</title><link>https://fyx.me/tags/developer-tools/</link><description>Recent content in Developer Tools on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 15 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://fyx.me/tags/developer-tools/index.xml" rel="self" type="application/rss+xml"/><item><title>Building a Flask Blog in 3 prompts with AI Coding Tools: Using Cline &amp; MCP Servers in VSCode</title><link>https://fyx.me/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</link><pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</guid><description>
+&lt;p>On my journey to get up to date with Large Language Models (LLMs) and other Artificial Intelligence (AI) advances, I&amp;rsquo;ve been playing around with AI coding tools. While I usually prefer (neo)vim for coding, I found that IDE integrated tools are currently more polished and more convenient to use. I will do more exploration with neovim plugins and might even write my own but I&amp;rsquo;m the meantime I&amp;rsquo;ll play around with VSCode and it&amp;rsquo;s open source AI extensions like &lt;a href="https://github.com/cline/cline" target="_blank" rel="noopener">Cline&lt;/a> and &lt;a href="https://github.com/RooVetGit/Roo-Code" target="_blank" rel="noopener">Roo Code&lt;/a> (which are alternatives to &lt;a href="https://www.cursor.com/en" target="_blank" rel="noopener">Cursor&lt;/a>).&lt;/p>
+&lt;h2>Using a coding Agent from the VSCode IDE&lt;span class="hx-absolute -hx-mt-20" id="using-a-coding-agent-from-the-vscode-ide">&lt;/span>
+&lt;a href="#using-a-coding-agent-from-the-vscode-ide" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>As a quick example, here&amp;rsquo;s Cline using Deepseek chat v3 to generate a simple webpage for the following prompt:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Cline%20prompt%20HTML%20blinking.dog%20centered.webp" title="Cline prompt for an HTML page with blinking.dog gif centered " alt="" loading="lazy" />
+&lt;figcaption>Cline prompt for an HTML page with blinking.dog gif centered &lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>You can make use of openrouter to use &lt;a href="https://openrouter.ai/models?q=free" target="_blank" rel="noopener">free models&lt;/a> with Cline.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>Cline allows you to see the changes made to the files it modifies and you can approve them if you&amp;rsquo;re happy with those. Furthermore, it gives you API costs, context window usage and other data that might be useful to monitor what the Agent is doing:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/VSCode%20Cline%20Generated%20HTML%20page.webp" title="VSCode Cline Generated HTML page" alt="" loading="lazy" />
+&lt;figcaption>VSCode Cline Generated HTML page&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>Even though this is a pretty simple task, the result is really good, the webpage displays the GIF and centered it properly:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/blinking.dog%20HTML%20centered%20rendered.webp" title="Resulting HTML page with blinking.dog gif centered" alt="" loading="lazy" />
+&lt;figcaption>Resulting HTML page with blinking.dog gif centered&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>This is a pretty basic example and you can get them to work on much more complex tasks but this highlights the potential time saves that AI can bring you (when it doesn&amp;rsquo;t hallucinate buggy code).&lt;/p>
+&lt;h2>Using MCP servers and AI agents to create a static blog&lt;span class="hx-absolute -hx-mt-20" id="using-mcp-servers-and-ai-agents-to-create-a-static-blog">&lt;/span>
+&lt;a href="#using-mcp-servers-and-ai-agents-to-create-a-static-blog" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>These agents have the ability to use tools and &lt;em>glorified API Servers&lt;/em> called Model Context Protocol (MCP) Servers. These provide a structured interface for the Agent to use various tools via endpoints that are defined in the MCP server. For example, this allows the Agent to talk to databases by implementing endpoints to execute SQL commands.&lt;/p>
+&lt;h3>Installing MCP servers&lt;span class="hx-absolute -hx-mt-20" id="installing-mcp-servers">&lt;/span>
+&lt;a href="#installing-mcp-servers" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>By going to the MCP Servers tab, you can view a list of the servers available and install a server. For example, here I installed SQLite which I use later on in this article:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Cline%20SQLite%20MCP%20server.webp" title="Cline MCP Servers tab" alt="" loading="lazy" />
+&lt;figcaption>Cline MCP Servers tab&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>After clicking install, Cline actually uses an LLM to perform the installation which I was surprised about but makes sense. The agent may give you tasks too, like running x/y command and installing dependencies like &lt;code>uv&lt;/code>, read carefully what it returns:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Cline%20installing%20SQLite%20MCP%20server.webp" title="Cline installing SQLite MCP server" alt="" loading="lazy" />
+&lt;figcaption>Cline installing SQLite MCP server&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>A lot of these MCP servers use &lt;a href="https://pypi.org/project/uv/" target="_blank" rel="noopener">uv&lt;/a> which you&amp;rsquo;ll need installed. To install, &lt;code>pipx install uv&lt;/code> (or &lt;code>pip install uv&lt;/code> if you&amp;rsquo;re sinning and not using pipx)&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h3>Using MCP servers&lt;span class="hx-absolute -hx-mt-20" id="using-mcp-servers">&lt;/span>
+&lt;a href="#using-mcp-servers" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>If done properly you should now have an MCP server installed and you can request the Agent to use it to perform task. For example, with the SQLite server I installed above, I&amp;rsquo;m able to ask the agent to create a new table and I can specify the columns I need. The agent will then generate the SQL command required to create the blog and use the &lt;code>create_table&lt;/code> tool that is exposed via the MCP server as such:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Cline%20interacting%20with%20SQLite%20MCP%20server.webp" title="Cline interacting with SQLite MCP server" alt="" loading="lazy" />
+&lt;figcaption>Cline interacting with SQLite MCP server&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>With that table created we can ask it to populate it directly, for example requesting it to generate a blog that answers the following question: &amp;ldquo;What is the best privacy tool to install in 2025?&amp;rdquo;. It then generates the title, description, tags and the content for the blog and uses the SQLite MCP server to add the blog to the database using the &lt;code>write_query&lt;/code> functionality provided by the MCP server:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Cline%20write%20to%20database%20with%20SQLite%20MCP%20server.webp" title="Cline write to database with SQLite MCP server" alt="" loading="lazy" />
+&lt;figcaption>Cline write to database with SQLite MCP server&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>Pretty awesome already!&lt;/p>
+&lt;h3>Creating a simple Flask blog&lt;span class="hx-absolute -hx-mt-20" id="creating-a-simple-flask-blog">&lt;/span>
+&lt;a href="#creating-a-simple-flask-blog" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>With that done, we can ask it to create a small python application to showcase our blog post. Since we asked it to generate the content in markdown, we need to make sure that it properly converts it to HTML before displaying it:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Cline%20create%20simple%20flask%20blog%20app.webp" title="Cline creating a simple flask blog app with SQLite database created previously" alt="" loading="lazy" />
+&lt;figcaption>Cline creating a simple flask blog app with SQLite database created previously&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>This results in the following &lt;code>app.py&lt;/code> file being created with a simple route which retrieves the blog posts and displays them:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Cline%20generated%20simple%20Flask%20blog%20with%20SQLite%20storage.webp" title="Cline generated simple Flask blog with SQLite storage" alt="" loading="lazy" />
+&lt;figcaption>Cline generated simple Flask blog with SQLite storage&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>It also generates a simple template to render the blog post view:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Cline%20generated%20simple%20Flask%20blog%20index%20template.webp" title="Cline generated simple Flask blog index template" alt="" loading="lazy" />
+&lt;figcaption>Cline generated simple Flask blog index template&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>And when we serve it, we get the following:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Simple%20Flask%20Blog%20result%20in%20browser.webp" title="Simple Flask Blog result in browser" alt="" loading="lazy" />
+&lt;figcaption>Simple Flask Blog result in browser&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>Not too bad considering this took us exactly 3 prompts to go from nothing to a Flask blog application with a populated SQLite database! There seems to be a small issue with the display and the newlines don&amp;rsquo;t appear to be converted properly but we can relay that information to the Agent and ask it to fix it for us, which it does without much trouble:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Cline%20fix%20markdown%20newline%20issue.webp" title="Cline fix markdown newline issue" alt="" loading="lazy" />
+&lt;figcaption>Cline fix markdown newline issue&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>And our rendered blog is not too bad:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Final%20result%20for%20Simple%20Flask%20blog.webp" title="Final result for Simple Flask blog" alt="" loading="lazy" />
+&lt;figcaption>Final result for Simple Flask blog&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;h2>Conclusion&lt;span class="hx-absolute -hx-mt-20" id="conclusion">&lt;/span>
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Overall a simple but great example showcasing what might be possible with AI tools and integrations. The whole process took only four (4) prompts to go from a blank canvas to a populated Flask blog with SQLite database storage.&lt;/p>
+&lt;p>As AI models improvements slow down, the next step will be looking at how to integrate the models into everyday tools that we use. MCP servers seems like a promising idea to extend Agents and make them more capable. They still need to be supervised as they make mistakes and may not always make the best choices but as shown above, they can speed up the development of things quite drastically.&lt;/p></description></item></channel></rss>
