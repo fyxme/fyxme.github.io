@@ -2,29 +2,50 @@
 <html lang="en">
     <head>
         <meta charset="utf-8"/>
-        <title>fyx</title>
+        <title>fyx.eme - Old Website Archive</title>
+        <!-- SEO Meta Tags -->
+        <meta name="description" content="Archive of fyx's old personal website showcasing cybersecurity tools (dreamcatcher, blistener, genx, dnsfaster), research (BSD rootkit, silentbook PoC, CRC-32 collider), CTF writeups, and boot2root solutions. Links to GitHub projects and Gists.">
+        <meta name="keywords" content="fyx, fyxme, cybersecurity, portfolio, tools, research, ctf, writeups, boot2root, hackthebox, rootkit, golang, redteam, web exploitation, pwn, post-mortem, archive">
+        <meta name="author" content="fyxme">
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://fyx.me/old-website/">
+        <meta property="og:title" content="fyx - Old Website Archive">
+        <meta property="og:description" content="Archive of fyx's old personal website showcasing cybersecurity tools, research, CTF writeups, and boot2root solutions.">
+        <meta property="og:image" content="https://fyx.me/images/fyxme.svg"> <!-- Assuming this is the site logo -->
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://fyx.me/old-website/">
+        <meta property="twitter:title" content="fyx - Old Website Archive">
+        <meta property="twitter:description" content="Archive of fyx's old personal website showcasing cybersecurity tools, research, CTF writeups, and boot2root solutions.">
+        <meta property="twitter:image" content="https://fyx.me/images/fyxme.svg"> <!-- Assuming this is the site logo -->
+
         <style>
-body { font-family: monospace; display: flex; }
-nav { margin-right: 2em; padding: 1em; }
-ul { margin: 0; padding-left: 1em; }
-ul.spaced-list > li { margin-bottom: 1ex; }
-hr { border: 1px solid gray; margin: 2ex 0; }
-a { text-decoration: none; }
-a:hover { text-decoration: underline; }
-body { background-color: #111; color: #fff; }
-a { color: #3cf; }
-a:visited { color: #c6f; }
+            body { font-family: monospace; display: flex; }
+            nav { margin-right: 2em; padding: 1em; }
+            ul { margin: 0; padding-left: 1em; }
+            ul.spaced-list > li { margin-bottom: 1ex; }
+            hr { border: 1px solid gray; margin: 2ex 0; }
+            a { text-decoration: none; }
+            a:hover { text-decoration: underline; }
+            body { background-color: #111; color: #fff; }
+            a { color: #3cf; }
+            a:visited { color: #c6f; }
         </style>
+
         <link rel="icon" href="/favicon.ico"/>
-        <body>
-            <nav>
-                <ul>
-			<li><a href="/">home</a></li>
-			<li><a href="https://x.com/fyxme_">xitter</a></li>
-			<li><a href="http://blinking.dog">blinking.dog</a></li>
-                </ul>
-            </nav>
-            <main>
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <li><a href="/">home</a></li>
+                <li><a href="https://x.com/fyxme_">xitter</a></li>
+                <li><a href="http://blinking.dog">blinking.dog</a></li>
+            </ul>
+        </nav>
+        <main>
 
             <header>
                 <h1>fyx(me)</h1>
@@ -32,7 +53,7 @@ a:visited { color: #c6f; }
 
 
             Cyber amongst other things...<br/>
-	    This website contains some of the work I've made public. <br/>
+            This website contains some of the work I've made public. <br/>
             <small><i>Website is always a work in progress... YMMV.</i></small>
             <br/><br/>
 
@@ -40,7 +61,7 @@ a:visited { color: #c6f; }
             <hr/>
 
             <h2>code</h2>
-	    <small><i>Content ordered using a single iteration of bogosort</i></small>
+            <small><i>Content ordered using a single iteration of bogosort</i></small>
 
             <h3>tools</h3>
             <ul class="spaced-list">
@@ -58,7 +79,7 @@ a:visited { color: #c6f; }
 
             <h3>research</h3>
 
-	    <h4>github (<a href="https://github.com/fyxme">ext</a>)</h4>
+            <h4>github (<a href="https://github.com/fyxme">ext</a>)</h4>
             <ul class="spaced-list">
                 <li><b><a href="https://gitlab.com/0x41414141/scary-rootkit">BSD rootkit</a></b>, a BSD rootkit and rootkit detector (written for research &amp; education)</li>
             </ul>
@@ -68,24 +89,24 @@ a:visited { color: #c6f; }
             </ul>
 
             <ul class="spaced-list">
-		    <li><b><a href="https://github.com/fyxme/crc-32-hash-collider">CRC-32 hash collider</a></b>, Naive bruteforce attack to find a CRC-32 hash collision based on a provided CRC-32 value and a charset. <small><i>CRC-32 is not a cryptographic hash function. There are mathematical ways to reverse the hash value to a valid input. For more information, see the following <a href="https://github.com/theonlypwner/crc32">tool</a>.</i></small></li>
+                <li><b><a href="https://github.com/fyxme/crc-32-hash-collider">CRC-32 hash collider</a></b>, Naive bruteforce attack to find a CRC-32 hash collision based on a provided CRC-32 value and a charset. <small><i>CRC-32 is not a cryptographic hash function. There are mathematical ways to reverse the hash value to a valid input. For more information, see the following <a href="https://github.com/theonlypwner/crc32">tool</a>.</i></small></li>
             </ul>
 
-	    <h4>gists (<a href="https://gist.github.com/fyxme">ext</a>)</h4>
+            <h4>gists (<a href="https://gist.github.com/fyxme">ext</a>)</h4>
 
             <ul class="spaced-list">
-		    <li><b><a href="https://gist.github.com/fyxme/835253b1cf247c723008acdc39c67337">webserver.go</a></b>, Simple Golang webserver serving files from a directory and logging all incoming requests (ip, headers and body content)</li>
-            </ul>
-
-            <ul class="spaced-list">
-		    <li><b><a href="https://gist.github.com/fyxme/25fb9bc7a3c76997ec51da30d3f3e4dd">replay-http.go</a></b>, tool to replay an http request from a txt file in golang.</li>
-            </ul>
-            <ul class="spaced-list">
-		    <li><b><a href="https://gist.github.com/fyxme/8f81d3deee28d79f2f5df8c6d3e1adad">whoami.go</a></b>, Golang webserver which echo's the request back to you and prints your IP address.</li>
+                <li><b><a href="https://gist.github.com/fyxme/835253b1cf247c723008acdc39c67337">webserver.go</a></b>, Simple Golang webserver serving files from a directory and logging all incoming requests (ip, headers and body content)</li>
             </ul>
 
             <ul class="spaced-list">
-		    <li><b><a href="https://gist.github.com/fyxme/fb8344933366c35806763cfad97d2912">sqlmap-proxy.go</a></b>, Golang proxy example to abuse more complex SQL injections which may not be picked up by sqlmap. For example, SQL injections in CTF challenges.</li>
+                <li><b><a href="https://gist.github.com/fyxme/25fb9bc7a3c76997ec51da30d3f3e4dd">replay-http.go</a></b>, tool to replay an http request from a txt file in golang.</li>
+            </ul>
+            <ul class="spaced-list">
+                <li><b><a href="https://gist.github.com/fyxme/8f81d3deee28d79f2f5df8c6d3e1adad">whoami.go</a></b>, Golang webserver which echo's the request back to you and prints your IP address.</li>
+            </ul>
+
+            <ul class="spaced-list">
+                <li><b><a href="https://gist.github.com/fyxme/fb8344933366c35806763cfad97d2912">sqlmap-proxy.go</a></b>, Golang proxy example to abuse more complex SQL injections which may not be picked up by sqlmap. For example, SQL injections in CTF challenges.</li>
             </ul>
 
             <br/>
@@ -140,4 +161,6 @@ a:visited { color: #c6f; }
 
             </ul>
 
-            </main>
+        </main>
+    </body>
+</html>

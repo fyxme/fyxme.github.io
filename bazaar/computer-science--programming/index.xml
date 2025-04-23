@@ -1,4 +1,39 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) –</title><link>https://fyx.me/bazaar/computer-science--programming/</link><description>Recent content on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://fyx.me/bazaar/computer-science--programming/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://fyx.me/bazaar/computer-science--programming/docker/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/docker/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) –</title><link>https://fyx.me/bazaar/computer-science--programming/</link><description>Recent content on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://fyx.me/bazaar/computer-science--programming/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://fyx.me/bazaar/computer-science--programming/ai-tools/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/ai-tools/</guid><description>
+&lt;h2>&lt;a href="https://docs.cline.bot/" target="_blank" rel="noopener">Cline&lt;/a>&lt;span class="hx-absolute -hx-mt-20" id="clinehttpsdocsclinebot">&lt;/span>
+&lt;a href="#clinehttpsdocsclinebot" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>Cline is an AI development assistant which integrates with Microsoft Visual Studio Code. It provides an interface between your IDE and LLMs facilitating code development, increasing productivity and lowering the barrier to entry for new coders. Depending on permissions, Cline can read/write files, execute commands, use your web browser, and expand its capabilities with Model Context Protocol servers.&lt;/p>
+&lt;/blockquote>
+&lt;h3>What Can Cline Do?&lt;span class="hx-absolute -hx-mt-20" id="what-can-cline-do">&lt;/span>
+&lt;a href="#what-can-cline-do" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Cline is your AI assistant that can:&lt;/p>
+&lt;ul>
+&lt;li>Edit and create files in your project&lt;/li>
+&lt;li>Run terminal commands&lt;/li>
+&lt;li>Search and analyze your code&lt;/li>
+&lt;li>Help debug and fix issues&lt;/li>
+&lt;li>Automate repetitive tasks&lt;/li>
+&lt;li>Integrate with external tools&lt;/li>
+&lt;/ul>
+&lt;h3>Usage&lt;span class="hx-absolute -hx-mt-20" id="usage">&lt;/span>
+&lt;a href="#usage" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>&lt;strong>Start a Task&lt;/strong>
+&lt;ul>
+&lt;li>Type your request in the chat&lt;/li>
+&lt;li>Example: &amp;ldquo;Create a new React component called Header&amp;rdquo;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Provide Context&lt;/strong>
+&lt;ul>
+&lt;li>Use @ mentions to add files, folders, or URLs&lt;/li>
+&lt;li>Example: &amp;ldquo;@file:src/components/App.tsx&amp;rdquo;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Review Changes&lt;/strong>
+&lt;ul>
+&lt;li>Cline will show diffs before making changes&lt;/li>
+&lt;li>You can edit or reject changes&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol></description></item><item><title/><link>https://fyx.me/bazaar/computer-science--programming/docker/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/docker/</guid><description>
 &lt;h3>Migrating docker volume from one server to another&lt;span class="hx-absolute -hx-mt-20" id="migrating-docker-volume-from-one-server-to-another">&lt;/span>
 &lt;a href="#migrating-docker-volume-from-one-server-to-another" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>Using &lt;code>docker run&lt;/code> + &lt;code>tar&lt;/code> (Manual Backup &amp;amp; Restore)**&lt;span class="hx-absolute -hx-mt-20" id="using-docker-run--tar-manual-backup--restore">&lt;/span>
 &lt;a href="#using-docker-run--tar-manual-backup--restore" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ol>
@@ -195,7 +230,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://git-annex.branchable.com/tips/fully_encrypted_git_repositories_with_gcrypt/" target="_blank" rel="noopener">https://git-annex.branchable.com/tips/fully_encrypted_git_repositories_with_gcrypt/&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h3>Git Convetional Commits&lt;span class="hx-absolute -hx-mt-20" id="git-convetional-commits">&lt;/span>
-&lt;a href="#git-convetional-commits" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>See &lt;a href="versioning.md" >versioning&lt;/a>&lt;/p></description></item><item><title/><link>https://fyx.me/bazaar/computer-science--programming/image-modifications/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/image-modifications/</guid><description>
+&lt;a href="#git-convetional-commits" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>See &lt;a href="../versioning/" >versioning&lt;/a>&lt;/p></description></item><item><title/><link>https://fyx.me/bazaar/computer-science--programming/image-modifications/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/image-modifications/</guid><description>
 &lt;h2>Converting PDF to png&lt;span class="hx-absolute -hx-mt-20" id="converting-pdf-to-png">&lt;/span>
 &lt;a href="#converting-pdf-to-png" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Using imagemagick:&lt;/p>
 &lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
