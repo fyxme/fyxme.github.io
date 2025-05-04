@@ -1,4 +1,168 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Minis</title><link>https://fyx.me/minis/</link><description>Recent content in Minis on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 15 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://fyx.me/minis/index.xml" rel="self" type="application/rss+xml"/><item><title>Building a Flask Blog in 3 prompts with AI Coding Tools: Using Cline &amp; MCP Servers in VSCode</title><link>https://fyx.me/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</link><pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Minis</title><link>https://fyx.me/minis/</link><description>Recent content in Minis on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 03 May 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://fyx.me/minis/index.xml" rel="self" type="application/rss+xml"/><item><title>Reverse Engineering onemillionchessboards.com Frontend with DevTools to Build a Bot</title><link>https://fyx.me/minis/reverse-engineering-onemillionchessboards.com-frontend-with-devtools-to-build-a-bot/</link><pubDate>Sat, 03 May 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/minis/reverse-engineering-onemillionchessboards.com-frontend-with-devtools-to-build-a-bot/</guid><description>
+&lt;p>A twitter user by the name of &lt;a href="https://x.com/itseieio" target="_blank" rel="noopener">nolen&lt;/a> has once again released another banger website, &lt;a href="https://onemillionchessboards.com/" target="_blank" rel="noopener">onemillionchessboards.com&lt;/a>. Its not to hard to understand what this website is about&amp;hellip;.&lt;/p>
+&lt;p>&lt;strong>TLDR:&lt;/strong> its 1 million chessboards&amp;hellip; with some caveat rules that apply to make it more fun.&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/Nolen%20twitter%20post%20onemillionchessboards.com.webp" title="Nolen twitter post onemillionchessboards.com" alt="" loading="lazy" />
+&lt;figcaption>Nolen twitter post onemillionchessboards.com&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>I played around with it for a bit and enjoyed it but I was more interested about how things were built so I decided to look under the hood.&lt;/p>
+&lt;p>The creator shared on twitter a little of how is app works on the backend:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/nolen%20twitter%20runs%20on%20a%20single%20server.webp" title="nolen twitter &amp;#39;runs on a single server&amp;#39;" alt="" loading="lazy" />
+&lt;figcaption>nolen twitter &amp;#39;runs on a single server&amp;#39;&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/nolen%20twitter%20zstd%20compressed%20protobufs.webp" title="nolen twitter &amp;#39;zstd-compressed protobufs&amp;#39;" alt="" loading="lazy" />
+&lt;figcaption>nolen twitter &amp;#39;zstd-compressed protobufs&amp;#39;&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/nolen%20twitter%20onemillionchessboards.com%20backend%20details.webp" title="nolen twitter onemillionchessboards.com backend details" alt="" loading="lazy" />
+&lt;figcaption>nolen twitter onemillionchessboards.com backend details&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>On the front-end, I wanted to see if the user checks matched the back-end checks and while I didn&amp;rsquo;t verify everything, it was pretty robust.&lt;/p>
+&lt;p>So I did the next best thing and decided I would make a bot instead. The bot would make moves so fast it can survive easily and eat as many pieces as possible in the process.&lt;/p>
+&lt;h2>Reversing applications using local JavaScript file overrides&lt;span class="hx-absolute -hx-mt-20" id="reversing-applications-using-local-javascript-file-overrides">&lt;/span>
+&lt;a href="#reversing-applications-using-local-javascript-file-overrides" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The frontend is using React which we can see easily from the &lt;a href="https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en" target="_blank" rel="noopener">React Developer Tools Extension&lt;/a> lighting up:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/onemillionchessboards.com%20built%20in%20react.webp" title="onemillionchessboards.com built in react" alt="" loading="lazy" />
+&lt;figcaption>onemillionchessboards.com built in react&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>I actually don&amp;rsquo;t know how to use the react developer tools plugin so instead I decided to look at the raw JavaScript using the built-in Chromium DevTools and modify the functionality from there by overwriting the JavaScript file myself with a local file:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/DevTools%20file%20override.webp" title="DevTools file override" alt="" loading="lazy" />
+&lt;figcaption>DevTools file override&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>With this I now have the ability to modify front-end code, add functionality, remove client-side security checks and what not. This makes it very convenient especially with applications that deal with web sockets as having to recreate the full initialisation, security checks and compression might not be easy to see from a simple web-socket proxy (ie. Burpsuite).&lt;/p>
+&lt;p>There s also a few built-in functionalities that help with reversing the code.&lt;/p>
+&lt;h3>Pretty Printing&lt;span class="hx-absolute -hx-mt-20" id="pretty-printing">&lt;/span>
+&lt;a href="#pretty-printing" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>The code is minified but you have the ability to unminify it (pretty print) so that its easier to read and modify:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/DevTools%20pretty%20print.webp" title="DevTools pretty print" alt="" loading="lazy" />
+&lt;figcaption>DevTools pretty print&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;h3>Using JavaScript breakpoints&lt;span class="hx-absolute -hx-mt-20" id="using-javascript-breakpoints">&lt;/span>
+&lt;a href="#using-javascript-breakpoints" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>You can also add breakpoints in your custom file as such:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/DevTools%20insert%20breakpoint.webp" title="DevTools insert breakpoint" alt="" loading="lazy" />
+&lt;figcaption>DevTools insert breakpoint&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>They will trigger when the code reaches your breakpoint and you can use it to see the values of each variables, which could help reversing the application:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/DevTools%20trigger%20breakpoint.webp" title="DevTools trigger breakpoint" alt="" loading="lazy" />
+&lt;figcaption>DevTools trigger breakpoint&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>It&amp;rsquo;s not a foolproof method and may end up crashing the tab when you make changes. In this case, its usually easier to close the tab and reopen it:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/DevTools%20may%20cause%20tab%20crashes.webp" title="DevTools may cause tab crashes" alt="" loading="lazy" />
+&lt;figcaption>DevTools may cause tab crashes&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;h2>Reversing the onemillionchessboards application&lt;span class="hx-absolute -hx-mt-20" id="reversing-the-onemillionchessboards-application">&lt;/span>
+&lt;a href="#reversing-the-onemillionchessboards-application" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>With these functionalities in mind, we can now look at reversing the frontend application code. I usually like to start with functions that talk to the backend since they&amp;rsquo;re the ones that will have an impact on the application in the end. So I search for any backend requests via WebSockets, HTTP(S) requests or else.&lt;/p>
+&lt;p>For this application, I found the function that sends a msg via a websocket to the backend when a move is made, the &lt;code>$1a465e5e0e1a643e$var$protoSendMove&lt;/code> function:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/onemillionchessboards.com%20protoSendMove%20function.webp" title="onemillionchessboards.com protoSendMove function" alt="" loading="lazy" />
+&lt;figcaption>onemillionchessboards.com protoSendMove function&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>The arguments are not minified so its fairly easy to guess what each argument does:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>ws&lt;/code> is the websocket itself&lt;/li>
+&lt;li>&lt;code>piece&lt;/code> is the piece we want to move&lt;/li>
+&lt;li>&lt;code>toX&lt;/code> is the x location we want to move to&lt;/li>
+&lt;li>&lt;code>toY&lt;/code> is the y location we want to move to&lt;/li>
+&lt;li>&lt;code>moveType&lt;/code> and &lt;code>moveToken&lt;/code> are the only two interesting ones here since its uncertain what they mean.&lt;/li>
+&lt;/ul>
+&lt;p>By doing a bit more digging, we can find references to &lt;code>MoveType&lt;/code> around the application and see that it&amp;rsquo;s basically an integer value that can denote a normal move, a castle move or en passant move:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/onemillionchessboards.com%20MoveType%20constant.webp" title="onemillionchessboards.com MoveType constant" alt="" loading="lazy" />
+&lt;figcaption>onemillionchessboards.com MoveType constant&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>By checking where the &lt;code>$1a465e5e0e1a643e$var$protoSendMove&lt;/code> function is called, we can see what &lt;code>moveToken&lt;/code> is generated from the &lt;code>getIncrMoveToken&lt;/code> function:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/onemillionchessboards.com%20protoSendMove%20function%20call.webp" title="onemillionchessboards.com protoSendMove function call" alt="" loading="lazy" />
+&lt;figcaption>onemillionchessboards.com protoSendMove function call&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>Going one step further, we can see that it&amp;rsquo;s basically a token that gets sent with our request and gets incremented on every move made:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/onemillionchessboards.com%20getIncrMoveToken%20function.webp" title="onemillionchessboards.com getIncrMoveToken function" alt="" loading="lazy" />
+&lt;figcaption>onemillionchessboards.com getIncrMoveToken function&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>So now we know how to make moves via code directly.&lt;/p>
+&lt;p>From here, I looked around and found a &lt;code>getMoveableSquares&lt;/code> function that returns which squares you are allowed to move to but also which squares will end up capturing a piece which is really convenient since we can use that to prioritise our moves later on:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/onemillionchessboards.com%20getMoveableSquares%20function.webp" title="onemillionchessboards.com getMoveableSquares function" alt="" loading="lazy" />
+&lt;figcaption>onemillionchessboards.com getMoveableSquares function&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>When looking at the Map returned by the &lt;code>getMoveableSquares&lt;/code> function we can see the captured pieces:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/onemillionchessboards.com%20getMoveableSquares%20returned%20value.webp" title="onemillionchessboards.com getMoveableSquares returned value" alt="" loading="lazy" />
+&lt;figcaption>onemillionchessboards.com getMoveableSquares returned value&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>With all that in mind we can make a function that moves a piece we selected to a nearby moveable square, prioritising squares that end up capturing an opponent&amp;rsquo;s piece:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/onemillionchessboards.com%20custom%20move%20piece%20code.webp" title="onemillionchessboards.com custom move piece code" alt="" loading="lazy" />
+&lt;figcaption>onemillionchessboards.com custom move piece code&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
+&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
+&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
+&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>This function could obviously be improved a lot more to make a more intelligent bot (eg. retrieve the full map and optimise moves based on that). Nevertheless, this is only an example to showcase what can be done by simply using built-in DevTools.&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;p>&lt;code>makeMove&lt;/code> is a custom function which reuses the code from the message create function we found earlier:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/onemillionchessboards.com%20custom%20makeMove%20function.webp" title="onemillionchessboards.com custom makeMove function" alt="" loading="lazy" />
+&lt;figcaption>onemillionchessboards.com custom makeMove function&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>Now that we have this, we just need to wrap the code in an interval so that it triggers often (while making sure we don&amp;rsquo;t trigger too much to overwhelm the server or have our moves dropped).&lt;/p>
+&lt;p>In the end, I decided to modify the &lt;code>$a2d3bef833187ce9$export$474cd6ee072cf5a4&lt;/code> function which is called when you select a chess piece as it already has all the handlers I need to make the bot work. It also allows means I don&amp;rsquo;t have to create a button or anything and can simply select any piece to start the bot.&lt;/p>
+&lt;p>I added a &lt;code>startConquest&lt;/code> function here:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/onemillionchessboards.com%20startConquest%20call%20inside%20function.webp" title="onemillionchessboards.com startConquest call inside `$a2d3bef833187ce9$export$474cd6ee072cf5a4` function" alt="" loading="lazy" />
+&lt;figcaption>onemillionchessboards.com startConquest call inside `$a2d3bef833187ce9$export$474cd6ee072cf5a4` function&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>The function is basically an &amp;ldquo;interval&amp;rdquo; version of the function described previously:&lt;/p>
+&lt;p>
+&lt;figure>
+&lt;img src="../img/onemillionchessboards.com%20custom%20startConquest%20function.webp" title="onemillionchessboards.com custom startConquest function" alt="" loading="lazy" />
+&lt;figcaption>onemillionchessboards.com custom startConquest function&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;blockquote>
+&lt;p>gws is a global variable which holds the websocket object that I populate during initialisation. Tried to get it dynamically using &lt;code>$parcel$interopDefault&lt;/code> but since its a react minified file, scopes are protected by exports and what not and I couldnt make it work so resorted to using a global variable (not ideal but its also only a PoC so not a huge problem).&lt;/p>
+&lt;/blockquote>
+&lt;h2>The bot in action&lt;span class="hx-absolute -hx-mt-20" id="the-bot-in-action">&lt;/span>
+&lt;a href="#the-bot-in-action" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>In the end the result is pretty cool, I can just select any piece and they will start zooming around randomly, eating as many of the opposing pieces as possible.&lt;/p>
+&lt;div class="twitter-embed">
+&lt;blockquote class="twitter-tweet">&lt;p lang="en" dir="ltr">&lt;a href="https://twitter.com/itseieio?ref_src=twsrc%5Etfw">@itseieio&lt;/a> I&amp;#39;m cheating harder than Hans Niemann over here... When VAC ban? &lt;a href="https://t.co/3Nqmk6jCJw">https://t.co/3Nqmk6jCJw&lt;/a> &lt;a href="https://t.co/0DuIxg5XRi">pic.twitter.com/0DuIxg5XRi&lt;/a>&lt;/p>&amp;mdash; fyx (@_fyxme) &lt;a href="https://twitter.com/_fyxme/status/1918876317237342673?ref_src=twsrc%5Etfw">May 4, 2025&lt;/a>&lt;/blockquote> &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8">&lt;/script>
+&lt;/div>
+&lt;h2>Conclusion&lt;span class="hx-absolute -hx-mt-20" id="conclusion">&lt;/span>
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>DevTools are great to create PoCs, reverse engineer applications and can help when validating security checks, especially when dealing with web-sockets and the likes. They give a lot of power to the user and can drastically increase reverse engineering speed as they don&amp;rsquo;t require you to recreate the whole functionality to test things.&lt;/p>
+&lt;p>Overall, a great tool to have in your arsenal.&lt;/p></description></item><item><title>Building a Flask Blog in 3 prompts with AI Coding Tools: Using Cline &amp; MCP Servers in VSCode</title><link>https://fyx.me/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</link><pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</guid><description>
 &lt;p>On my journey to get up to date with Large Language Models (LLMs) and other Artificial Intelligence (AI) advances, I&amp;rsquo;ve been playing around with AI coding tools. While I usually prefer (neo)vim for coding, I found that IDE integrated tools are currently more polished and more convenient to use. I will do more exploration with neovim plugins and might even write my own but I&amp;rsquo;m the meantime I&amp;rsquo;ll play around with VSCode and it&amp;rsquo;s open source AI extensions like &lt;a href="https://github.com/cline/cline" target="_blank" rel="noopener">Cline&lt;/a> and &lt;a href="https://github.com/RooVetGit/Roo-Code" target="_blank" rel="noopener">Roo Code&lt;/a> (which are alternatives to &lt;a href="https://www.cursor.com/en" target="_blank" rel="noopener">Cursor&lt;/a>).&lt;/p>
 &lt;h2>Using a coding Agent from the VSCode IDE&lt;span class="hx-absolute -hx-mt-20" id="using-a-coding-agent-from-the-vscode-ide">&lt;/span>
 &lt;a href="#using-a-coding-agent-from-the-vscode-ide" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>As a quick example, here&amp;rsquo;s Cline using Deepseek chat v3 to generate a simple webpage for the following prompt:&lt;/p>
