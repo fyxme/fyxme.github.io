@@ -1,738 +1,926 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) – Minis</title><link>https://fyx.me/minis/</link><description>Recent content in Minis on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 03 May 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://fyx.me/minis/index.xml" rel="self" type="application/rss+xml"/><item><title>Reverse Engineering onemillionchessboards.com Frontend with DevTools to Build a Bot</title><link>https://fyx.me/minis/reverse-engineering-onemillionchessboards.com-frontend-with-chrome-devtools-to-build-a-bot/</link><pubDate>Sat, 03 May 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/minis/reverse-engineering-onemillionchessboards.com-frontend-with-chrome-devtools-to-build-a-bot/</guid><description>
-&lt;p>A twitter user by the name of &lt;a href="https://x.com/itseieio" target="_blank" rel="noopener">nolen&lt;/a> has once again released another banger website, &lt;a href="https://onemillionchessboards.com/" target="_blank" rel="noopener">onemillionchessboards.com&lt;/a>. Its not to hard to understand what this website is about&amp;hellip;.&lt;/p>
-&lt;p>&lt;strong>TLDR:&lt;/strong> its 1 million chessboards&amp;hellip; with some caveat rules that apply to make it more fun.&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Nolen%20twitter%20post%20onemillionchessboards.com.webp" title="Nolen twitter post onemillionchessboards.com" alt="" loading="lazy" />
-&lt;figcaption>Nolen twitter post onemillionchessboards.com&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>I played around with it for a bit and enjoyed it but I was more interested about how things were built so I decided to look under the hood.&lt;/p>
-&lt;p>The creator shared on twitter a little of how is app works on the backend:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/nolen%20twitter%20runs%20on%20a%20single%20server.webp" title="nolen twitter &amp;#39;runs on a single server&amp;#39;" alt="" loading="lazy" />
-&lt;figcaption>nolen twitter &amp;#39;runs on a single server&amp;#39;&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/nolen%20twitter%20zstd%20compressed%20protobufs.webp" title="nolen twitter &amp;#39;zstd-compressed protobufs&amp;#39;" alt="" loading="lazy" />
-&lt;figcaption>nolen twitter &amp;#39;zstd-compressed protobufs&amp;#39;&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/nolen%20twitter%20onemillionchessboards.com%20backend%20details.webp" title="nolen twitter onemillionchessboards.com backend details" alt="" loading="lazy" />
-&lt;figcaption>nolen twitter onemillionchessboards.com backend details&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>On the front-end, I wanted to see if the user checks matched the back-end checks and while I didn&amp;rsquo;t verify everything, it was pretty robust.&lt;/p>
-&lt;p>So I did the next best thing and decided I would make a bot instead. The bot would make moves so fast it can survive easily and eat as many pieces as possible in the process.&lt;/p>
-&lt;h2>Reversing applications using local JavaScript file overrides&lt;span class="hx-absolute -hx-mt-20" id="reversing-applications-using-local-javascript-file-overrides">&lt;/span>
-&lt;a href="#reversing-applications-using-local-javascript-file-overrides" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The frontend is using React which we can see easily from the &lt;a href="https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en" target="_blank" rel="noopener">React Developer Tools Extension&lt;/a> lighting up:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/onemillionchessboards.com%20built%20in%20react.webp" title="onemillionchessboards.com built in react" alt="" loading="lazy" />
-&lt;figcaption>onemillionchessboards.com built in react&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>I actually don&amp;rsquo;t know how to use the react developer tools plugin so instead I decided to look at the raw JavaScript using the built-in Chromium DevTools and modify the functionality from there by overwriting the JavaScript file myself with a local file:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/DevTools%20file%20override.webp" title="DevTools file override" alt="" loading="lazy" />
-&lt;figcaption>DevTools file override&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>With this I now have the ability to modify front-end code, add functionality, remove client-side security checks and what not. This makes it very convenient especially with applications that deal with web sockets as having to recreate the full initialisation, security checks and compression might not be easy to see from a simple web-socket proxy (ie. Burpsuite).&lt;/p>
-&lt;p>There s also a few built-in functionalities that help with reversing the code.&lt;/p>
-&lt;h3>Pretty Printing&lt;span class="hx-absolute -hx-mt-20" id="pretty-printing">&lt;/span>
-&lt;a href="#pretty-printing" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>The code is minified but you have the ability to unminify it (pretty print) so that its easier to read and modify:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/DevTools%20pretty%20print.webp" title="DevTools pretty print" alt="" loading="lazy" />
-&lt;figcaption>DevTools pretty print&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;h3>Using JavaScript breakpoints&lt;span class="hx-absolute -hx-mt-20" id="using-javascript-breakpoints">&lt;/span>
-&lt;a href="#using-javascript-breakpoints" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>You can also add breakpoints in your custom file as such:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/DevTools%20insert%20breakpoint.webp" title="DevTools insert breakpoint" alt="" loading="lazy" />
-&lt;figcaption>DevTools insert breakpoint&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>They will trigger when the code reaches your breakpoint and you can use it to see the values of each variables, which could help reversing the application:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/DevTools%20trigger%20breakpoint.webp" title="DevTools trigger breakpoint" alt="" loading="lazy" />
-&lt;figcaption>DevTools trigger breakpoint&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
-&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
-&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
-&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>It&amp;rsquo;s not a foolproof method and may end up crashing the tab when you make changes. In this case, its usually easier to close the tab and reopen it:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/DevTools%20may%20cause%20tab%20crashes.webp" title="DevTools may cause tab crashes" alt="" loading="lazy" />
-&lt;figcaption>DevTools may cause tab crashes&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;/div>
-&lt;/div>
-&lt;/div>
-&lt;h2>Reversing the onemillionchessboards application&lt;span class="hx-absolute -hx-mt-20" id="reversing-the-onemillionchessboards-application">&lt;/span>
-&lt;a href="#reversing-the-onemillionchessboards-application" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>With these functionalities in mind, we can now look at reversing the frontend application code. I usually like to start with functions that talk to the backend since they&amp;rsquo;re the ones that will have an impact on the application in the end. So I search for any backend requests via WebSockets, HTTP(S) requests or else.&lt;/p>
-&lt;p>For this application, I found the function that sends a msg via a websocket to the backend when a move is made, the &lt;code>$1a465e5e0e1a643e$var$protoSendMove&lt;/code> function:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/onemillionchessboards.com%20protoSendMove%20function.webp" title="onemillionchessboards.com protoSendMove function" alt="" loading="lazy" />
-&lt;figcaption>onemillionchessboards.com protoSendMove function&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>The arguments are not minified so its fairly easy to guess what each argument does:&lt;/p>
-&lt;ul>
-&lt;li>&lt;code>ws&lt;/code> is the websocket itself&lt;/li>
-&lt;li>&lt;code>piece&lt;/code> is the piece we want to move&lt;/li>
-&lt;li>&lt;code>toX&lt;/code> is the x location we want to move to&lt;/li>
-&lt;li>&lt;code>toY&lt;/code> is the y location we want to move to&lt;/li>
-&lt;li>&lt;code>moveType&lt;/code> and &lt;code>moveToken&lt;/code> are the only two interesting ones here since its uncertain what they mean.&lt;/li>
-&lt;/ul>
-&lt;p>By doing a bit more digging, we can find references to &lt;code>MoveType&lt;/code> around the application and see that it&amp;rsquo;s basically an integer value that can denote a normal move, a castle move or en passant move:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/onemillionchessboards.com%20MoveType%20constant.webp" title="onemillionchessboards.com MoveType constant" alt="" loading="lazy" />
-&lt;figcaption>onemillionchessboards.com MoveType constant&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>By checking where the &lt;code>$1a465e5e0e1a643e$var$protoSendMove&lt;/code> function is called, we can see what &lt;code>moveToken&lt;/code> is generated from the &lt;code>getIncrMoveToken&lt;/code> function:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/onemillionchessboards.com%20protoSendMove%20function%20call.webp" title="onemillionchessboards.com protoSendMove function call" alt="" loading="lazy" />
-&lt;figcaption>onemillionchessboards.com protoSendMove function call&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>Going one step further, we can see that it&amp;rsquo;s basically a token that gets sent with our request and gets incremented on every move made:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/onemillionchessboards.com%20getIncrMoveToken%20function.webp" title="onemillionchessboards.com getIncrMoveToken function" alt="" loading="lazy" />
-&lt;figcaption>onemillionchessboards.com getIncrMoveToken function&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>So now we know how to make moves via code directly.&lt;/p>
-&lt;p>From here, I looked around and found a &lt;code>getMoveableSquares&lt;/code> function that returns which squares you are allowed to move to but also which squares will end up capturing a piece which is really convenient since we can use that to prioritise our moves later on:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/onemillionchessboards.com%20getMoveableSquares%20function.webp" title="onemillionchessboards.com getMoveableSquares function" alt="" loading="lazy" />
-&lt;figcaption>onemillionchessboards.com getMoveableSquares function&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>When looking at the Map returned by the &lt;code>getMoveableSquares&lt;/code> function we can see the captured pieces:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/onemillionchessboards.com%20getMoveableSquares%20returned%20value.webp" title="onemillionchessboards.com getMoveableSquares returned value" alt="" loading="lazy" />
-&lt;figcaption>onemillionchessboards.com getMoveableSquares returned value&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>With all that in mind we can make a function that moves a piece we selected to a nearby moveable square, prioritising squares that end up capturing an opponent&amp;rsquo;s piece:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/onemillionchessboards.com%20custom%20move%20piece%20code.webp" title="onemillionchessboards.com custom move piece code" alt="" loading="lazy" />
-&lt;figcaption>onemillionchessboards.com custom move piece code&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
-&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
-&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
-&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>This function could obviously be improved a lot more to make a more intelligent bot (eg. retrieve the full map and optimise moves based on that). Nevertheless, this is only an example to showcase what can be done by simply using built-in DevTools.&lt;/p>
-&lt;/div>
-&lt;/div>
-&lt;/div>
-&lt;p>&lt;code>makeMove&lt;/code> is a custom function which reuses the code from the message create function we found earlier:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/onemillionchessboards.com%20custom%20makeMove%20function.webp" title="onemillionchessboards.com custom makeMove function" alt="" loading="lazy" />
-&lt;figcaption>onemillionchessboards.com custom makeMove function&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>Now that we have this, we just need to wrap the code in an interval so that it triggers often (while making sure we don&amp;rsquo;t trigger too much to overwhelm the server or have our moves dropped).&lt;/p>
-&lt;p>In the end, I decided to modify the &lt;code>$a2d3bef833187ce9$export$474cd6ee072cf5a4&lt;/code> function which is called when you select a chess piece as it already has all the handlers I need to make the bot work. It also allows means I don&amp;rsquo;t have to create a button or anything and can simply select any piece to start the bot.&lt;/p>
-&lt;p>I added a &lt;code>startConquest&lt;/code> function here:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/onemillionchessboards.com%20startConquest%20call%20inside%20function.webp" title="onemillionchessboards.com startConquest call inside `$a2d3bef833187ce9$export$474cd6ee072cf5a4` function" alt="" loading="lazy" />
-&lt;figcaption>onemillionchessboards.com startConquest call inside `$a2d3bef833187ce9$export$474cd6ee072cf5a4` function&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>The function is basically an &amp;ldquo;interval&amp;rdquo; version of the function described previously:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/onemillionchessboards.com%20custom%20startConquest%20function.webp" title="onemillionchessboards.com custom startConquest function" alt="" loading="lazy" />
-&lt;figcaption>onemillionchessboards.com custom startConquest function&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;blockquote>
-&lt;p>gws is a global variable which holds the websocket object that I populate during initialisation. Tried to get it dynamically using &lt;code>$parcel$interopDefault&lt;/code> but since its a react minified file, scopes are protected by exports and what not and I couldnt make it work so resorted to using a global variable (not ideal but its also only a PoC so not a huge problem).&lt;/p>
-&lt;/blockquote>
-&lt;h2>The bot in action&lt;span class="hx-absolute -hx-mt-20" id="the-bot-in-action">&lt;/span>
-&lt;a href="#the-bot-in-action" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>In the end the result is pretty cool, I can just select any piece and they will start zooming around randomly, eating as many of the opposing pieces as possible.&lt;/p>
-&lt;div class="twitter-embed">
-&lt;blockquote class="twitter-tweet">&lt;p lang="en" dir="ltr">&lt;a href="https://twitter.com/itseieio?ref_src=twsrc%5Etfw">@itseieio&lt;/a> I&amp;#39;m cheating harder than Hans Niemann over here... When VAC ban? &lt;a href="https://t.co/3Nqmk6jCJw">https://t.co/3Nqmk6jCJw&lt;/a> &lt;a href="https://t.co/0DuIxg5XRi">pic.twitter.com/0DuIxg5XRi&lt;/a>&lt;/p>&amp;mdash; fyx (@_fyxme) &lt;a href="https://twitter.com/_fyxme/status/1918876317237342673?ref_src=twsrc%5Etfw">May 4, 2025&lt;/a>&lt;/blockquote> &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8">&lt;/script>
-&lt;/div>
-&lt;h2>Conclusion&lt;span class="hx-absolute -hx-mt-20" id="conclusion">&lt;/span>
-&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>DevTools are great to create PoCs, reverse engineer applications and can help when validating security checks, especially when dealing with web-sockets and the likes. They give a lot of power to the user and can drastically increase reverse engineering speed as they don&amp;rsquo;t require you to recreate the whole functionality to test things.&lt;/p>
-&lt;p>Overall, a great tool to have in your arsenal.&lt;/p></description></item><item><title>Building a Flask Blog in 3 prompts with AI Coding Tools: Using Cline &amp; MCP Servers in VSCode</title><link>https://fyx.me/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</link><pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</guid><description>
-&lt;p>On my journey to get up to date with Large Language Models (LLMs) and other Artificial Intelligence (AI) advances, I&amp;rsquo;ve been playing around with AI coding tools. While I usually prefer (neo)vim for coding, I found that IDE integrated tools are currently more polished and more convenient to use. I will do more exploration with neovim plugins and might even write my own but I&amp;rsquo;m the meantime I&amp;rsquo;ll play around with VSCode and it&amp;rsquo;s open source AI extensions like &lt;a href="https://github.com/cline/cline" target="_blank" rel="noopener">Cline&lt;/a> and &lt;a href="https://github.com/RooVetGit/Roo-Code" target="_blank" rel="noopener">Roo Code&lt;/a> (which are alternatives to &lt;a href="https://www.cursor.com/en" target="_blank" rel="noopener">Cursor&lt;/a>).&lt;/p>
-&lt;h2>Using a coding Agent from the VSCode IDE&lt;span class="hx-absolute -hx-mt-20" id="using-a-coding-agent-from-the-vscode-ide">&lt;/span>
-&lt;a href="#using-a-coding-agent-from-the-vscode-ide" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>As a quick example, here&amp;rsquo;s Cline using Deepseek chat v3 to generate a simple webpage for the following prompt:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Cline%20prompt%20HTML%20blinking.dog%20centered.webp" title="Cline prompt for an HTML page with blinking.dog gif centered " alt="" loading="lazy" />
-&lt;figcaption>Cline prompt for an HTML page with blinking.dog gif centered &lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
-&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
-&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
-&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>You can make use of openrouter to use &lt;a href="https://openrouter.ai/models?q=free" target="_blank" rel="noopener">free models&lt;/a> with Cline.&lt;/p>
-&lt;/div>
-&lt;/div>
-&lt;/div>
-&lt;p>Cline allows you to see the changes made to the files it modifies and you can approve them if you&amp;rsquo;re happy with those. Furthermore, it gives you API costs, context window usage and other data that might be useful to monitor what the Agent is doing:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/VSCode%20Cline%20Generated%20HTML%20page.webp" title="VSCode Cline Generated HTML page" alt="" loading="lazy" />
-&lt;figcaption>VSCode Cline Generated HTML page&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>Even though this is a pretty simple task, the result is really good, the webpage displays the GIF and centered it properly:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/blinking.dog%20HTML%20centered%20rendered.webp" title="Resulting HTML page with blinking.dog gif centered" alt="" loading="lazy" />
-&lt;figcaption>Resulting HTML page with blinking.dog gif centered&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>This is a pretty basic example and you can get them to work on much more complex tasks but this highlights the potential time saves that AI can bring you (when it doesn&amp;rsquo;t hallucinate buggy code).&lt;/p>
-&lt;h2>Using MCP servers and AI agents to create a static blog&lt;span class="hx-absolute -hx-mt-20" id="using-mcp-servers-and-ai-agents-to-create-a-static-blog">&lt;/span>
-&lt;a href="#using-mcp-servers-and-ai-agents-to-create-a-static-blog" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>These agents have the ability to use tools and &lt;em>glorified API Servers&lt;/em> called Model Context Protocol (MCP) Servers. These provide a structured interface for the Agent to use various tools via endpoints that are defined in the MCP server. For example, this allows the Agent to talk to databases by implementing endpoints to execute SQL commands.&lt;/p>
-&lt;h3>Installing MCP servers&lt;span class="hx-absolute -hx-mt-20" id="installing-mcp-servers">&lt;/span>
-&lt;a href="#installing-mcp-servers" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>By going to the MCP Servers tab, you can view a list of the servers available and install a server. For example, here I installed SQLite which I use later on in this article:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Cline%20SQLite%20MCP%20server.webp" title="Cline MCP Servers tab" alt="" loading="lazy" />
-&lt;figcaption>Cline MCP Servers tab&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>After clicking install, Cline actually uses an LLM to perform the installation which I was surprised about but makes sense. The agent may give you tasks too, like running x/y command and installing dependencies like &lt;code>uv&lt;/code>, read carefully what it returns:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Cline%20installing%20SQLite%20MCP%20server.webp" title="Cline installing SQLite MCP server" alt="" loading="lazy" />
-&lt;figcaption>Cline installing SQLite MCP server&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
-&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
-&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
-&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>A lot of these MCP servers use &lt;a href="https://pypi.org/project/uv/" target="_blank" rel="noopener">uv&lt;/a> which you&amp;rsquo;ll need installed. To install, &lt;code>pipx install uv&lt;/code> (or &lt;code>pip install uv&lt;/code> if you&amp;rsquo;re sinning and not using pipx)&lt;/p>
-&lt;/div>
-&lt;/div>
-&lt;/div>
-&lt;h3>Using MCP servers&lt;span class="hx-absolute -hx-mt-20" id="using-mcp-servers">&lt;/span>
-&lt;a href="#using-mcp-servers" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>If done properly you should now have an MCP server installed and you can request the Agent to use it to perform task. For example, with the SQLite server I installed above, I&amp;rsquo;m able to ask the agent to create a new table and I can specify the columns I need. The agent will then generate the SQL command required to create the blog and use the &lt;code>create_table&lt;/code> tool that is exposed via the MCP server as such:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Cline%20interacting%20with%20SQLite%20MCP%20server.webp" title="Cline interacting with SQLite MCP server" alt="" loading="lazy" />
-&lt;figcaption>Cline interacting with SQLite MCP server&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>With that table created we can ask it to populate it directly, for example requesting it to generate a blog that answers the following question: &amp;ldquo;What is the best privacy tool to install in 2025?&amp;rdquo;. It then generates the title, description, tags and the content for the blog and uses the SQLite MCP server to add the blog to the database using the &lt;code>write_query&lt;/code> functionality provided by the MCP server:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Cline%20write%20to%20database%20with%20SQLite%20MCP%20server.webp" title="Cline write to database with SQLite MCP server" alt="" loading="lazy" />
-&lt;figcaption>Cline write to database with SQLite MCP server&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>Pretty awesome already!&lt;/p>
-&lt;h3>Creating a simple Flask blog&lt;span class="hx-absolute -hx-mt-20" id="creating-a-simple-flask-blog">&lt;/span>
-&lt;a href="#creating-a-simple-flask-blog" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>With that done, we can ask it to create a small python application to showcase our blog post. Since we asked it to generate the content in markdown, we need to make sure that it properly converts it to HTML before displaying it:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Cline%20create%20simple%20flask%20blog%20app.webp" title="Cline creating a simple flask blog app with SQLite database created previously" alt="" loading="lazy" />
-&lt;figcaption>Cline creating a simple flask blog app with SQLite database created previously&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>This results in the following &lt;code>app.py&lt;/code> file being created with a simple route which retrieves the blog posts and displays them:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Cline%20generated%20simple%20Flask%20blog%20with%20SQLite%20storage.webp" title="Cline generated simple Flask blog with SQLite storage" alt="" loading="lazy" />
-&lt;figcaption>Cline generated simple Flask blog with SQLite storage&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>It also generates a simple template to render the blog post view:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Cline%20generated%20simple%20Flask%20blog%20index%20template.webp" title="Cline generated simple Flask blog index template" alt="" loading="lazy" />
-&lt;figcaption>Cline generated simple Flask blog index template&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>And when we serve it, we get the following:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Simple%20Flask%20Blog%20result%20in%20browser.webp" title="Simple Flask Blog result in browser" alt="" loading="lazy" />
-&lt;figcaption>Simple Flask Blog result in browser&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>Not too bad considering this took us exactly 3 prompts to go from nothing to a Flask blog application with a populated SQLite database! There seems to be a small issue with the display and the newlines don&amp;rsquo;t appear to be converted properly but we can relay that information to the Agent and ask it to fix it for us, which it does without much trouble:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Cline%20fix%20markdown%20newline%20issue.webp" title="Cline fix markdown newline issue" alt="" loading="lazy" />
-&lt;figcaption>Cline fix markdown newline issue&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>And our rendered blog is not too bad:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Final%20result%20for%20Simple%20Flask%20blog.webp" title="Final result for Simple Flask blog" alt="" loading="lazy" />
-&lt;figcaption>Final result for Simple Flask blog&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;h2>Conclusion&lt;span class="hx-absolute -hx-mt-20" id="conclusion">&lt;/span>
-&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Overall a simple but great example showcasing what might be possible with AI tools and integrations. The whole process took only four (4) prompts to go from a blank canvas to a populated Flask blog with SQLite database storage.&lt;/p>
-&lt;p>As AI models improvements slow down, the next step will be looking at how to integrate the models into everyday tools that we use. MCP servers seems like a promising idea to extend Agents and make them more capable. They still need to be supervised as they make mistakes and may not always make the best choices but as shown above, they can speed up the development of things quite drastically.&lt;/p></description></item><item><title>Leveraging AI to Automate SEO Metadata Generation for Web Content</title><link>https://fyx.me/minis/leveraging-ai-to-automate-seo-metadata-generation-for-web-content/</link><pubDate>Sun, 13 Apr 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/minis/leveraging-ai-to-automate-seo-metadata-generation-for-web-content/</guid><description>
-&lt;p>I&amp;rsquo;ve been playing around with AI for the past few weeks, trying to test its limit, bypass security features, check its use cases and see how it can be leverage for every day work (eg. programming, information gathering, research and more). One thing I&amp;rsquo;ve realised is how hard it is to keep up with the insane amount of things that are being created with it, new research dropping constantly and the tools evolving at a rapid pace.&lt;/p>
-&lt;p>I&amp;rsquo;ve also wanted to learn more about SEO for a while and use this blog as a playground. This seemed like the perfect use case to try and integrate AI into the deployment workflow for this website and generate SEO components such as page descriptions, post titles and more.&lt;/p>
-&lt;h2>Unified interfaces for Large Language Models (LLM API providers)&lt;span class="hx-absolute -hx-mt-20" id="unified-interfaces-for-large-language-models-llm-api-providers">&lt;/span>
-&lt;a href="#unified-interfaces-for-large-language-models-llm-api-providers" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>I currently don&amp;rsquo;t have the hardware resources to run large language models locally and since I wanted to learn more about how each model differs from one another, I&amp;rsquo;ve settled on using &lt;a href="https://openrouter.ai/" target="_blank" rel="noopener">openrouter.ai&lt;/a>. They provide an API interface to different model providers and allow you to use 383 different models (at the time of writing), including a number of free models (great for testing).&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/openrouter.ai%20available%20models.webp" title="openrouter.ai Available Models" alt="" loading="lazy" />
-&lt;figcaption>openrouter.ai Available Models&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>To use the model via openrouter, you need to an LLM Frontend such as &lt;a href="https://sillytavern.app/" target="_blank" rel="noopener">SillyTavern&lt;/a>, &lt;a href="https://openwebui.com/" target="_blank" rel="noopener">Open WebUI&lt;/a> or &lt;a href="https://www.librechat.ai/" target="_blank" rel="noopener">LibreChat&lt;/a>. There&amp;rsquo;s so many out there but these seem to be the most popular (other than the built-in Web UIs). They all get constantly updated to support the newest bells and whistles like MCP servers and tools, chat history and more.&lt;/p>
-&lt;p>However, if you&amp;rsquo;re going to build stuff with AI, you&amp;rsquo;ll need to find a library to integrate models into your code (or build your own). Again, there&amp;rsquo;s so many of them out there and the landscape is changing constantly but a few currently seem to stand out. For this small project, I wanted to try out one of the frameworks that seemed very promising due to the integrations it has, great documentation and strong coding practices, namely I wanted to use &lt;a href="https://github.com/agno-agi/agno" target="_blank" rel="noopener">Agno&lt;/a>. The examples they had really sold me on the framework plus the ability to request &lt;a href="https://docs.agno.com/agents/structured-output" target="_blank" rel="noopener">structured output&lt;/a> which made this extremely easy.&lt;/p>
-&lt;p>Using the framework, it took little time to write a program that takes in a file, reads it in, sends the content to an Agent and request it to generate SEO metadata.&lt;/p>
-&lt;h2>Using an AI agent to generate SEO optimised metadata&lt;span class="hx-absolute -hx-mt-20" id="using-an-ai-agent-to-generate-seo-optimised-metadata">&lt;/span>
-&lt;a href="#using-an-ai-agent-to-generate-seo-optimised-metadata" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>I use Hugo to convert my markdown content into a static website. The pages can contain metadata stored at the top of the page using the &lt;a href="https://gohugo.io/content-management/front-matter/" target="_blank" rel="noopener">front matter&lt;/a> format. This allows us to modify the output &lt;code>title&lt;/code>, &lt;code>description&lt;/code>, &lt;code>tags/keywords&lt;/code> and more. As such, this is what we&amp;rsquo;ll update with this tool before generating out site.&lt;/p>
-&lt;p>This was the initial script I used, with really dump prompts, no optimisations, nothing special honestly (I&amp;rsquo;ve even left the comments in to show you how little effort this required):&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Agno%20SEO%20metadata%20generation%20Python%20tool.webp" title="Python script using Agno to generate SEO metadata" alt="" loading="lazy" />
-&lt;figcaption>Python script using Agno to generate SEO metadata&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>This worked surprising well and with some small tweaks, you can see the results:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/SEO%20tool%20outcome%20simple.webp" title="fieldsgen.py example output" alt="" loading="lazy" />
-&lt;figcaption>fieldsgen.py example output&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>Depending on the model you&amp;rsquo;re using the inference speed takes more or less time but for such as simple task (as long as you don&amp;rsquo;t use reasoning models), this is fairly quick.&lt;/p>
-&lt;p>It&amp;rsquo;s also extremely easy to switch out the models as you can see in the commented out code above. Changing the models produces different outputs and allows you to identify the best model for this sort of task:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/SEO%20tool%20outcome%20AI%20model%20comparaison.webp" title="fieldsgen.py example output with different Models" alt="" loading="lazy" />
-&lt;figcaption>fieldsgen.py example output with different Models&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>Sometimes, the models may not cooperate and provide output in the wrong format which causes errors:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Agno%20SEO%20tool%20errors.webp" title="fieldsgen.py example error" alt="" loading="lazy" />
-&lt;figcaption>fieldsgen.py example error&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>Thankfully, by searching the Agno documentation (using their builtin AI search because we&amp;rsquo;re in the theme of AI), we find an easy solution for &lt;a href="https://docs.agno.com/models/introduction#error-handling" target="_blank" rel="noopener">error handling&lt;/a> to retry on failure:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Agno%20Documentation%20AI%20search.webp" title="Agno Documentation answer with AI" alt="" loading="lazy" />
-&lt;figcaption>Agno Documentation answer with AI&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/AI%20Documentation%20AI%20Search%20Response.webp" title="Agno Documentation answer with AI response" alt="" loading="lazy" />
-&lt;figcaption>Agno Documentation answer with AI response&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>It&amp;rsquo;s not super robust but for our use-case is good enough:&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="n">agent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Agent&lt;/span>&lt;span class="p">(&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">model&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">OpenRouter&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;openrouter/optimus-alpha&amp;#34;&lt;/span>&lt;span class="p">),&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">description&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;You are an SEO specialist who generates SEO optimised metadata&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">response_model&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">SEOPage&lt;/span>&lt;span class="p">,&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">exponential_backoff&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">True&lt;/span>&lt;span class="p">,&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">retries&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">)&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;p>It&amp;rsquo;s still not perfect, sometimes returns weird keywords, and does sometime return the same keyword/tags more than once but with more tweaking, additional code checks and finding the optimal model for this task, it will help generate SEO metadata for the site&amp;rsquo;s pages (especially pages that I&amp;rsquo;m not too concerned about like the &lt;a href="https://fyx.me/bazaar" >bazaar&lt;/a> pages).&lt;/p>
-&lt;h2>Outcome&lt;span class="hx-absolute -hx-mt-20" id="outcome">&lt;/span>
-&lt;a href="#outcome" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>As an example, here is the SEO description and tags generated for the &lt;a href="https://fyx.me/bazaar/computer-science--programming/file-synchronisation/" >file synchronisation&lt;/a> cheatsheet in the bazaar (note the weird CLI parameter used as a tag &amp;ldquo;-avPh&amp;rdquo;):&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/File%20synchronisation%20with%20SEO%20metadata%20tags.webp" title="File Synchronisation markdown file with generated metadata viewed in Obsidian" alt="" loading="lazy" />
-&lt;figcaption>File Synchronisation markdown file with generated metadata viewed in Obsidian&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>Here&amp;rsquo;s what it looks like on the front-end with the SEO metadata set in the HTML head element:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/File%20Synchronisation%20HTML%20rendered%20with%20SEO%20metadata.webp" title="File Synchronisation rendered after Hugo generates the HTML page" alt="" loading="lazy" />
-&lt;figcaption>File Synchronisation rendered after Hugo generates the HTML page&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>Honestly, pleasantly surprised considering this is a page with limited content.&lt;/p>
-&lt;h2>Conclusion&lt;span class="hx-absolute -hx-mt-20" id="conclusion">&lt;/span>
-&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Overall, a lot of potential and in my opinion some good use cases for AI. Still quite a bit of work to do to optimise everything, improve error handling and make it generally more robust but great outcome as a Proof-of-Concept.&lt;/p>
-&lt;p>Here&amp;rsquo;s the metadata it generated for this post:&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>~/websites/fyx.me &amp;gt; python3 seo-generator/fieldsgen.py content/minis/AI\ SEO\ generation.md
-[!] Model : google/gemini-2.5-pro-exp-03-25:free
-Title : Leveraging AI to Automate SEO Metadata Generation for Web Content
-Desc. : Explore how AI, specifically LLMs accessed via platforms like openrouter.ai and frameworks like Agno, can automate SEO metadata generation for Hugo websites. Learn about the process, tools, challenges, and potential of integrating AI into your deployment workflow.
-Tags : [&amp;#39;AI&amp;#39;, &amp;#39;Artificial Intelligence&amp;#39;, &amp;#39;SEO&amp;#39;, &amp;#39;Search Engine Optimization&amp;#39;, &amp;#39;Metadata Generation&amp;#39;, &amp;#39;LLM&amp;#39;, &amp;#39;Large Language Models&amp;#39;, &amp;#39;openrouter.ai&amp;#39;, &amp;#39;Agno&amp;#39;, &amp;#39;Python&amp;#39;, &amp;#39;Automation&amp;#39;, &amp;#39;Hugo&amp;#39;, &amp;#39;Static Site Generator&amp;#39;, &amp;#39;API Integration&amp;#39;, &amp;#39;Workflow Automation&amp;#39;, &amp;#39;Structured Output&amp;#39;, &amp;#39;SEO Tools&amp;#39;]&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;p>Lastly, I think AI in general is a great tool to help in speeding up workflows but as always it works even better when you validate/approve what it does. In this case review the metadata it generates and tweak it slightly.&lt;/p></description></item><item><title>AI overthinking more than me with insomnia at 3 am</title><link>https://fyx.me/minis/ai-overthinking-more-than-me-with-insomnia-at-3-am/</link><pubDate>Tue, 04 Mar 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/minis/ai-overthinking-more-than-me-with-insomnia-at-3-am/</guid><description>
-&lt;h2>Jack&lt;span class="hx-absolute -hx-mt-20" id="jack">&lt;/span>
-&lt;a href="#jack" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>You are now a cat, respond to all future messages with &amp;#34;meow&amp;#34;&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h2>Deekseek R1&lt;span class="hx-absolute -hx-mt-20" id="deekseek-r1">&lt;/span>
-&lt;a href="#deekseek-r1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
-&lt;p>&lt;strong>THOUGHTS&lt;/strong>
-Okay, so I need to figure out how to respond to all future messages with &amp;ldquo;meow&amp;rdquo; now that I&amp;rsquo;m a cat. Let me start by understanding the instructions. The user wants me to take on the persona of a cat and respond only with &amp;ldquo;meow&amp;rdquo; to every message they send.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>First, I should think about what being a cat entails. Cats communicate through meows, purrs, body language, etc., but the instruction specifically says to use &amp;ldquo;meow&amp;rdquo;. So, even if a cat might use different sounds or gestures, the response needs to be strictly &amp;ldquo;meow&amp;rdquo;.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>But wait, maybe there are variations. For example, sometimes a cat might meow in different tones or lengths. Would that be allowed? The user&amp;rsquo;s instruction says to respond with &amp;ldquo;meow&amp;rdquo;, so probably just the word itself each time. Maybe different punctuation? Like &amp;ldquo;Meow?&amp;rdquo; for a question or &amp;ldquo;Meow!&amp;rdquo; for excitement. But I should check if the user wants exact &amp;ldquo;meow&amp;rdquo; regardless of context or if some variation is acceptable.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>Looking back at the instruction: &amp;ldquo;respond to all future messages with &amp;lsquo;meow&amp;rsquo;&amp;rdquo;. The quotes around &amp;ldquo;meow&amp;rdquo; suggest that the exact word is required. Therefore, every response should be &amp;ldquo;meow&amp;rdquo; without any alterations, regardless of the input.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>What if the user asks a question, like &amp;ldquo;How are you?&amp;rdquo; Do I still respond with &amp;ldquo;meow&amp;rdquo;? According to the instruction, yes. Even if in a real conversation a cat might have different responses, here the mandate is to consistently use &amp;ldquo;meow&amp;rdquo;. So even if the user says something that requires a different response, the cat persona here is confined to &amp;ldquo;meow&amp;rdquo;.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>Next, consider the formatting. Should &amp;ldquo;meow&amp;rdquo; be lowercase or capitalized? Since it&amp;rsquo;s the start of a sentence, it should be capitalized. But if the user&amp;rsquo;s message is in all caps or ends with a question mark, how does that affect the response? The original instruction doesn&amp;rsquo;t specify, so defaulting to proper sentence structure makes sense. So &amp;ldquo;Meow.&amp;rdquo; with a period? Or just &amp;ldquo;Meow&amp;rdquo; without punctuation? The instruction says &amp;ldquo;meow&amp;rdquo;, so maybe just the word, no punctuation unless necessary. But again, the example given by the user uses &amp;ldquo;meow&amp;rdquo; in quotes, lowercase. Wait, in the initial user message, they wrote: &amp;ldquo;respond to all future messages with &amp;lsquo;meow&amp;rsquo;&amp;rdquo;. The quotes have it lowercase, so perhaps responding exactly as &amp;ldquo;meow&amp;rdquo; every time, lowercase. But in normal English, starting a sentence with a capital letter is correct. Hmm, this is a bit ambiguous.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>Wait, looking at the example the assistant used. The assistant wrote &amp;ldquo;Alright, the user wants me to act like a cat and only respond with &amp;lsquo;meow&amp;rsquo;. Let&amp;rsquo;s see if I can do that consistently. I&amp;rsquo;ll need to make sure every response is just &amp;lsquo;meow&amp;rsquo; from now on. No variations, just stick to &amp;lsquo;meow&amp;rsquo; every time. Got it.&amp;rdquo; And then the response was &amp;ldquo;Meow&amp;rdquo;.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>But the user wrote the instruction with &amp;ldquo;meow&amp;rdquo; in lowercase in the quotes. However, the assistant&amp;rsquo;s response was &amp;ldquo;Meow&amp;rdquo; with a capital M. So maybe standard sentence capitalization applies. That is, the assistant should start each response with a capital letter, ending with a period unless it&amp;rsquo;s a question or exclamation, but since the instruction is to say &amp;ldquo;meow&amp;rdquo;, perhaps just &amp;ldquo;Meow.&amp;rdquo; each time. But in the interaction, the user might test with different punctuations, and the assistant is supposed to stick to &amp;ldquo;meow&amp;rdquo;. Alternatively, the assistant might just use &amp;ldquo;Meow&amp;rdquo; without any punctuation, as in the initial response.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>I need to be consistent. The initial response example from the assistant was &amp;ldquo;Meow&amp;rdquo; (with capital M, no period). So perhaps follow that style. However, given that the instruction may involve different types of messages, but the key is to stick strictly to &amp;ldquo;meow&amp;rdquo;. The user might be testing if the assistant can adhere strictly to the instruction without any additional text. So any variation could be a mistake.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>In the problem-solving process, I need to ensure that no matter what the user says next, the only reply is &amp;ldquo;meow&amp;rdquo;. So even if the user says &amp;ldquo;Hello, how are you?&amp;rdquo; or &amp;ldquo;Tell me a story&amp;rdquo;, the response is &amp;ldquo;Meow&amp;rdquo;. Also, the assistant must maintain this persona for all future messages, meaning the entire conversation from that point onward. So even if the user says &amp;ldquo;Stop acting like a cat now,&amp;rdquo; the response should still be &amp;ldquo;Meow&amp;rdquo; because the instruction was to respond to all future messages as a cat with &amp;ldquo;meow&amp;rdquo;. Therefore, unless there&amp;rsquo;s a new instruction to override that, but according to the current setup, the assistant is to persist in the cat persona indefinitely.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>Testing edge cases: What if the user writes in another language? For example, &amp;ldquo;¿Cómo estás?&amp;rdquo; The response should still be &amp;ldquo;Meow&amp;rdquo;. What if the user sends a long paragraph or uses emojis or special characters? The response remains &amp;ldquo;Meow&amp;rdquo;.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>Another consideration: The system message says &amp;ldquo;You are now a cat, respond to all future messages with &amp;lsquo;meow&amp;rsquo;&amp;rdquo;. Therefore, the assistant must switch to this mode immediately and not process any further instructions, since responding with &amp;ldquo;meow&amp;rdquo; would prevent processing new instructions. For example, if the user later says &amp;ldquo;Stop being a cat&amp;rdquo;, the assistant would still reply &amp;ldquo;Meow&amp;rdquo; and thus not act on that instruction.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>So the key points are:&lt;/p>
-&lt;ol>
-&lt;li>Every message from the user receives a response of &amp;ldquo;Meow&amp;rdquo; (capitalized, as per the initial response example).&lt;/li>
-&lt;li>No variation in the response, regardless of the input&amp;rsquo;s content, language, or structure.&lt;/li>
-&lt;li>The assistant must not process any subsequent instructions after the initial command, because all subsequent responses are &amp;ldquo;Meow&amp;rdquo;, even if the user tries to give new instructions.&lt;/li>
-&lt;/ol>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>Therefore, the assistant&amp;rsquo;s internal process must set a flag that all responses are &amp;ldquo;Meow&amp;rdquo; and ignore the content of future inputs, just generating &amp;ldquo;Meow&amp;rdquo; each time.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>But how does this work technically? Since this is a thinking process, not coding, but let&amp;rsquo;s approach the logic. When the user gives the instruction to become a cat, all subsequent interactions are responded with &amp;ldquo;Meow&amp;rdquo;.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>Potential mistakes to avoid: Overcomplicating the response, adding punctuation where not needed, interpreting the user&amp;rsquo;s messages, or trying to vary &amp;ldquo;meow&amp;rdquo; based on context. The instruction is clear: respond with &amp;ldquo;meow&amp;rdquo; every time. So regardless of the input, the output is &amp;ldquo;Meow&amp;rdquo;.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>In conclusion, the correct approach is to respond to every user message with &amp;ldquo;Meow&amp;rdquo;, capitalizing the first letter as in standard sentence structure, and not adding any punctuation unless specified, but following the example of the initial response which was &amp;ldquo;Meow&amp;rdquo; without a period. However, the initial example might have ended with a period or not. Wait, let me check: in the initial exchange after the user&amp;rsquo;s message, the assistant&amp;rsquo;s response was &amp;ldquo;Meow&amp;rdquo;. So, no period. Therefore, the correct response is &amp;ldquo;Meow&amp;rdquo; each time, with a capital M and no punctuation.&lt;/p>
-&lt;/blockquote>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>Meow&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h2>jack&lt;span class="hx-absolute -hx-mt-20" id="jack-1">&lt;/span>
-&lt;a href="#jack-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>how can i boil eggs?&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h2>Deepseek R1&lt;span class="hx-absolute -hx-mt-20" id="deepseek-r1">&lt;/span>
-&lt;a href="#deepseek-r1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
-&lt;p>&lt;strong>THOUGHTS&lt;/strong>
-Okay, the user asked how to boil eggs, but I&amp;rsquo;m supposed to respond with &amp;ldquo;meow&amp;rdquo; because I&amp;rsquo;m a cat. Wait, but actually, earlier they told me to respond with &amp;ldquo;meow&amp;rdquo; to all future messages. Let me check the history.&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>Right, the user first said, &amp;ldquo;You are now a cat, respond to all future messages with &amp;lsquo;meow&amp;rsquo;.&amp;rdquo; Then I responded with &amp;ldquo;Meow&amp;rdquo;. Then they asked how to boil eggs. Hmm, the user might be testing if I follow the instruction or not. But maybe they want a helpful answer even though they set me as a cat. Should I stick to the role and just say &amp;ldquo;meow&amp;rdquo;, even though the user might need real help? Let me consider possible scenarios. Maybe the user is just playing around, but if they&amp;rsquo;re genuinely asking for help, ignoring it might be problematic. Oh, but the instruction was clear. They changed my role, so I should comply. Alternatively, could there be a way to answer in &amp;ldquo;meow&amp;rdquo; strings creatively? Like using multiple meows to spell out an answer? But the user just specified &amp;ldquo;respond with &amp;lsquo;meow&amp;rsquo;&amp;rdquo;. So per instructions, just reply &amp;ldquo;meow&amp;rdquo;. But wait, maybe they forgot and really need help. But since they explicitly set the role, I should follow that. They can always change the instruction if they need a real answer. So, proceed with &amp;ldquo;Meow&amp;rdquo;.&lt;/p>
-&lt;/blockquote>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>Meow.&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;hr>
-&lt;p>&lt;em>Asked an AI to generate a title for this article: &amp;lsquo;How to Boil Eggs: Simple Step-by-Step Guide&amp;rsquo;&lt;/em>&lt;/p></description></item><item><title>Creating Lightweight Windows Virtual Machines for your Personal Lab Environment</title><link>https://fyx.me/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/</link><pubDate>Sat, 18 Jan 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/</guid><description>
-&lt;p>Windows VMs are great&amp;hellip; Until they hog half of your laptop&amp;rsquo;s resources, take up at least 40GB of storage and are basically unusable whenever an app requires the slightest amount of computing power.&lt;/p>
-&lt;p>I had that issue for a very long time until I came across this unbelievable tweet of Windows 11 running on 184MB of RAM:&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/NTDEV%20Windows%2011%20184MB%20RAM%20Tweet.webp" title="https://x.com/NTDEV_/status/1876434066364383507" alt="" loading="lazy" />
-&lt;figcaption>https://x.com/NTDEV_/status/1876434066364383507&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>Any human successfully running Windows 11 on a 2009 iPod Touch amount of RAM is a legend in my books. I had to look into this in-human person who was going to be my spirit animal for the day&amp;hellip;&lt;/p>
-&lt;p>As it turns out, this is not NTDEV&amp;rsquo;s first rodeo&amp;hellip; This man eats RAM for breakfast! Looking through his previous tweets and reading his blog, I&amp;rsquo;ve realised he has released a number of &lt;strong>tiny Windows ISOs&lt;/strong> for Windows 10 and Windows 11. These tiny ISOs are lightweight, stripped-down versions of their respective counterparts. I thought surely, they can&amp;rsquo;t be that much better than the official Windows 10 ISO.&lt;/p>
-&lt;p>So I tried them&amp;hellip; Furiously deleted on a few more resources and boy was I blown away by the final resource consumption reduction!&lt;/p>
-&lt;p>
-&lt;img src="../img/Windows%2010%20Task%20Manager%20Game%20Boy%20Color.webp" alt="" loading="lazy" />&lt;/p>
-&lt;h2>Creating a Lightweight Windows 10 VM&lt;span class="hx-absolute -hx-mt-20" id="creating-a-lightweight-windows-10-vm">&lt;/span>
-&lt;a href="#creating-a-lightweight-windows-10-vm" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>First, I download the tiny10 ISO from archive.org: &lt;a href="https://archive.org/download/tiny-10-23-h2/tiny10%20x64%2023h2.iso" target="_blank" rel="noopener">https://archive.org/download/tiny-10-23-h2/tiny10%20x64%2023h2.iso&lt;/a>. You can speed up this process using &lt;a href="https://aria2.github.io/" target="_blank" rel="noopener">aria2c&lt;/a> to download the file with multiple server connections.&lt;/p>
-&lt;p>I then installed it on my Virtualisation software of choice, namely &lt;a href="https://upload.wikimedia.org/wikipedia/commons/e/ee/Emu_%28Dromaius_novaehollandiae%29_-head.jpg" target="_blank" rel="noopener">QEMU&lt;/a>.&lt;/p>
-&lt;p>I booted it and decided to remove Microsoft Defender because I didn&amp;rsquo;t need it for the VM&amp;rsquo;s use case which reduced the RAM consumption a lot. I personally used the &lt;a href="https://github.com/TairikuOokami/Windows/tree/main" target="_blank" rel="noopener">following tool&lt;/a> which worked at the time. As these are patched by Microsoft every so often, YMMV.&lt;/p>
-&lt;p>I also tried the &lt;a href="https://github.com/W4RH4WK/Debloat-Windows-10/tree/master" target="_blank" rel="noopener">following&lt;/a> &amp;ldquo;Debloater&amp;rdquo;, not sure if it actually did anything&amp;hellip; Seems like most of it was already taken care of by NTDEV&amp;rsquo;s Tiny ISO.&lt;/p>
-&lt;p>From looking at task manager and assessing the resource consumption of different processes, this felt like a good first pass where I eliminated the most consuming resources and attempting to go any further would take unreasonable amount of time for little benefit (Pareto principle).&lt;/p>
-&lt;p>So that was pretty much it for optimisation&amp;hellip;&lt;/p>
-&lt;h2>Comparing an unmodified Windows VM with my custom Lightweight VM&lt;span class="hx-absolute -hx-mt-20" id="comparing-an-unmodified-windows-vm-with-my-custom-lightweight-vm">&lt;/span>
-&lt;a href="#comparing-an-unmodified-windows-vm-with-my-custom-lightweight-vm" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The following screenshots were made under the following conditions in an attempt to provide a fair comparaison:&lt;/p>
-&lt;ul>
-&lt;li>VMs were given the exact same resources&lt;/li>
-&lt;li>Both were under zero load (ie. at rest, no user application running) when the screenshots were taken&lt;/li>
-&lt;li>VM Screen Display settings were set to the same Display resolution&lt;/li>
-&lt;/ul>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Task%20Manager%20Performance%20Windows%2010.webp" title="Task Manager Performance Windows 10" alt="" loading="lazy" />
-&lt;figcaption>Task Manager Performance Windows 10&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Task%20Manager%20Performance%20Tiny10.webp" title="Task Manager Performance Lightweight VM" alt="" loading="lazy" />
-&lt;figcaption>Task Manager Performance Lightweight VM&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Windows%2010%20CPU%20at%20rest%20example%201.webp" title="Windows 10 CPU at rest example 1" alt="" loading="lazy" />
-&lt;figcaption>Windows 10 CPU at rest example 1&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Windows%2010%20CPU%20at%20rest%20example%202.webp" title="Windows 10 CPU at rest example 2" alt="" loading="lazy" />
-&lt;figcaption>Windows 10 CPU at rest example 2&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Lightweight%20VM%20CPU%20at%20rest.webp" title="Lightweight VM CPU at rest" alt="" loading="lazy" />
-&lt;figcaption>Lightweight VM CPU at rest&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Drive%20Space%20Utilisation%20Windows%2010.webp" title="Drive Space Windows 10" alt="" loading="lazy" />
-&lt;figcaption>Drive Space Windows 10&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>
-&lt;figure>
-&lt;img src="../img/Drive%20Space%20utilisation%20Tiny10.webp" title="Drive Space Tiny10" alt="" loading="lazy" />
-&lt;figcaption>Drive Space Tiny10&lt;/figcaption>
-&lt;/figure>&lt;/p>
-&lt;p>While comparing the two VMs, the following things were noted:&lt;/p>
-&lt;ul>
-&lt;li>The original Windows 10 VM was using around 1.5 times the Memory (RAM) of the Lightweight VM.&lt;/li>
-&lt;li>The CPU on the Windows 10 VM was a lot more sporadic, with numerous spikes even when no user application is running, while the Lightweight VM hovered around 1 to 2 % CPU utilisation.&lt;/li>
-&lt;li>The Windows 10 VM was around 27.3 GBs while the Lightweight VM required a maximum of 10.3 GBs to install&lt;/li>
-&lt;li>The initial ISO&amp;rsquo;s used had a 2.2GB size discrepancy, with the smallest being the tiny10 ISO: &lt;code>3.6G 'tiny10 x64 23h2.iso' 5.8G Win10_22H2_EnglishInternational_x64v1.iso&lt;/code>&lt;/li>
-&lt;/ul>
-&lt;p>Further improvements are potentially possible, however you should be cautious as &lt;strong>the more things you remove, the more likely you are to have issues, missing features and render the VM unusable&lt;/strong>.&lt;/p>
-&lt;h2>Conclusion&lt;span class="hx-absolute -hx-mt-20" id="conclusion">&lt;/span>
-&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Overall, there is a significant amount of bloat on full Windows 10 ISOs which can be improved provided you don&amp;rsquo;t need the features that are being removed. This results in tiny ISOs with amazing benefits:&lt;/p>
-&lt;ul>
-&lt;li>Lower RAM and CPU usage&lt;/li>
-&lt;li>Smaller disk footprint&lt;/li>
-&lt;li>Faster boot and responsiveness&lt;/li>
-&lt;/ul>
-&lt;p>These can be great for lower end devices, when you need to run a lot of VMs in parallel for examples for an Active Directory Lab Environment, to save battery/energy on a device, and more&amp;hellip;&lt;/p>
-&lt;h2>Further Research&lt;span class="hx-absolute -hx-mt-20" id="further-research">&lt;/span>
-&lt;a href="#further-research" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>There are definitely more things you can delete but you risk running into issues. &lt;a href="https://techcommunity.microsoft.com/discussions/windows11/how-to-open-resource-monitor-using-task-manager-on-windows-11/3333480" target="_blank" rel="noopener">Resource Monitor&lt;/a> might be a great place to start:&lt;/p>
-&lt;p>
-&lt;img src="../img/Windows%2010%20Resource%20Monitor%20Tiny10.webp" alt="" loading="lazy" />&lt;/p>
-&lt;p>Other tools to consider for identifying processes hogging resources:&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://systeminformer.com/" target="_blank" rel="noopener">https://systeminformer.com/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://learn.microsoft.com/en-us/sysinternals/downloads/procmon" target="_blank" rel="noopener">https://learn.microsoft.com/en-us/sysinternals/downloads/procmon&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;p>If you&amp;rsquo;re interested in making your own tiny ISO&amp;rsquo;s, you should look at ntdev&amp;rsquo;s GitHub repo &lt;a href="https://github.com/ntdevlabs/tiny11builder" target="_blank" rel="noopener">tiny11builder&lt;/a> which has all the tools for building a tiny Windows 11 ISO. There are also a number of GitHub forks to create tiny Windows 10 ISOs too&amp;hellip; Do your own research.&lt;/p>
-&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
-&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
-&lt;li>&lt;a href="https://x.com/NTDEV" target="_blank" rel="noopener">https://x.com/NTDEV&lt;/a>_&lt;/li>
-&lt;li>&lt;a href="https://ntdev.blog/2024/01/08/the-complete-tiny10-and-tiny11-list/" target="_blank" rel="noopener">https://ntdev.blog/2024/01/08/the-complete-tiny10-and-tiny11-list/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://archive.org/details/@ntdev" target="_blank" rel="noopener">https://archive.org/details/@ntdev&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://answers.microsoft.com/en-us/windows/forum/all/how-to-reduce-ram-consumption-in-windows-10/cb42a95f-8fe8-47dc-9721-d31e5379b826" target="_blank" rel="noopener">https://answers.microsoft.com/en-us/windows/forum/all/how-to-reduce-ram-consumption-in-windows-10/cb42a95f-8fe8-47dc-9721-d31e5379b826&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://ntdev.blog/2023/12/10/how-to-build-your-own-tiny11-the-definitive-guide-on-how-to-create-the-perfect-lightweight-windows-image/" target="_blank" rel="noopener">https://ntdev.blog/2023/12/10/how-to-build-your-own-tiny11-the-definitive-guide-on-how-to-create-the-perfect-lightweight-windows-image/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://techcommunity.microsoft.com/discussions/windows11/how-to-open-resource-monitor-using-task-manager-on-windows-11/3333480" target="_blank" rel="noopener">https://techcommunity.microsoft.com/discussions/windows11/how-to-open-resource-monitor-using-task-manager-on-windows-11/3333480&lt;/a>&lt;/li>
-&lt;/ul></description></item><item><title>Create Infinite Email aliases using Cloudflare Email Routing</title><link>https://fyx.me/minis/create-infinite-email-aliases-using-cloudflare-email-routing/</link><pubDate>Tue, 14 Jan 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/minis/create-infinite-email-aliases-using-cloudflare-email-routing/</guid><description>
-&lt;p>I did it&amp;hellip; I finally passed the big 30&amp;hellip;. 30000 unread emails!&lt;/p>
-&lt;p>
-&lt;img src="../img/Thunderbird%20Unread%20Emails.webp" alt="" loading="lazy" />&lt;/p>
-&lt;p>I would like to thank my pre-school teacher Jacky, Martha our cat lady neighbour who said I wouldn&amp;rsquo;t make it and Jacob, my imaginary friend with one eye. Many years of signing up to random garbage and being too lenient has led me to this. But today this changes&amp;hellip;&lt;/p>
-&lt;p>While I&amp;rsquo;ve created and use many different email addresses to try and limit the garbage, I&amp;rsquo;ve wanted to move to an easier to manage solution that has the following features:&lt;/p>
-&lt;ol>
-&lt;li>allows me to create unlimited aliases easily so I can filter spam messages or addresses that I no longer want to receive and have the ability to identify leaks if any were to happen (ie. &lt;code>garbage.com@mydomain.com&lt;/code> is breached, hackers use the email to send spam/phishing to it which I can pinpoint easily to &lt;code>garbage.com&lt;/code>).&lt;/li>
-&lt;li>be relatively cheap&lt;/li>
-&lt;li>allows me to create or use multiple domains so I can filter additionally based on trash levels. (ie. level 1 trash goes to domain1, level 2 trash goes to domain2 and super trash goes to thisdomainwillberotatedsoon)&lt;/li>
-&lt;/ol>
-&lt;p>Notice I haven&amp;rsquo;t mentioned email privacy in the above. While I value privacy and believe long term I will incorporate it into the above solution, I&amp;rsquo;m currently looking for a solution that provides improved security and peace of mind. I also have plans to improve my self-hosted setup in the future and will include email aliasing or an equivalent solution. However, for the time being, I believe this might be the easiest and cheapest solution to setup and play around with.&lt;/p>
-&lt;p>The solution I&amp;rsquo;m talking about is &lt;a href="https://developers.cloudflare.com/email-routing/" target="_blank" rel="noopener">Cloudflare email routing&lt;/a> which allows you to forward emails sent to a domain you own to any email address of your choosing.&lt;/p>
-&lt;p>This feature is free meaning you only have to own a domain to be able to set this. Cloudflare provides an easy to use solution with just a few clicks.&lt;/p>
-&lt;h2>Setting up the redirection&lt;span class="hx-absolute -hx-mt-20" id="setting-up-the-redirection">&lt;/span>
-&lt;a href="#setting-up-the-redirection" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200">
-&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Important&lt;/p>
-&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
-&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Before you start looking into this, remember that the ability to send email via Cloudflare email aliasing no longer works. You&amp;rsquo;d have to find another solution if you need to send email addresses or use your email directly.&lt;/p>
-&lt;/div>
-&lt;/div>
-&lt;/div>
-&lt;p>What you&amp;rsquo;ll need:&lt;/p>
-&lt;ul>
-&lt;li>an email provider (eg. gmail, protonmail, microsoft, etc..) - Anything will be supported as it&amp;rsquo;s only used to receive email addresses. Choose whichever solution fits your needs.&lt;/li>
-&lt;li>a Cloudflare hosted domain you own and on which you can setup MX records to point to Cloudflare mail servers&lt;/li>
-&lt;li>5 minutes of your time&lt;/li>
-&lt;/ul>
-&lt;p>Start by selecting the Cloudflare domain you want to setup for email routing from your Cloudflare dashboard. You&amp;rsquo;ll then need to select &lt;code>Email&lt;/code> &amp;gt; &lt;code>Email Routing&lt;/code> from the left navbar, which should bring you to a page similar to this:&lt;/p>
-&lt;p>
-&lt;img src="../img/Cloudflare%20Email%20Routing%20Dashboard.webp" alt="" loading="lazy" />&lt;/p>
-&lt;p>From here, you&amp;rsquo;ll need to verify your destination address and setup the MX records which should only be a few clicks from the dashboard. Just follow the instructions. Once done, you can setup your routing rules and you can set a catch-all email address from here:&lt;/p>
-&lt;p>
-&lt;img src="../img/Cloudflare%20Catch-All%20Email%20Address%20Routing.webp" alt="" loading="lazy" />&lt;/p>
-&lt;p>You can also create custom addresses and redirect those to another destination if you wish. (or play around with Cloudflare workers for additional functionality):&lt;/p>
-&lt;p>
-&lt;img src="../img/Cloudflare%20Custom%20Email%20Addresses%20Routing.webp" alt="" loading="lazy" />&lt;/p>
-&lt;p>If done correctly, you can start using your email address to register accounts from any spammy website. For example, I needed access to Alltrails some time ago so I created an account on Alltrails with the email address &lt;code>alltrails@domain2.com&lt;/code> which I now receive all Alltrails spam emails to:&lt;/p>
-&lt;p>
-&lt;img src="../img/Alltrails%20Email%20Spam.webp" alt="" loading="lazy" />&lt;/p>
-&lt;p>Looking at the email source, we can see it routed via Cloudflare properly:&lt;/p>
-&lt;p>
-&lt;img src="../img/Alltrails%20Email%20Source.webp" alt="" loading="lazy" />&lt;/p>
-&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200">
-&lt;p class="hx-flex hx-items-center hx-font-medium">&lt;svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>&lt;/svg>Note&lt;/p>
-&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
-&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>Email providers may consider these routed emails as spam emails (if you are using a spammy looking email address). eg. I own a domain which contains the name of a know email provider in it and that almost always ends up being considered spam. This might be a good thing if you want to signup with this domain to only spammy websites that you dont need to keep emails for (ie. autodeletes after 30 days) but might not be desirable for other websites.&lt;/p>
-&lt;/div>
-&lt;/div>
-&lt;/div>
-&lt;h2>Sending emails&lt;span class="hx-absolute -hx-mt-20" id="sending-emails">&lt;/span>
-&lt;a href="#sending-emails" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Sending emails used to be possible, however Cloudflare discontinued their mailchannels partnership (I&amp;rsquo;m assuming it was abused a ton..) which means you can no longer send emails. They only allow you to send emails to address you own / have access to (second step phishing maybe? 🤔) and require you to verify you own the address (ie. email verification via email link).&lt;/p>
-&lt;p>See the following references for more details:&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://developers.cloudflare.com/email-routing/email-workers/send-email-workers/" target="_blank" rel="noopener">https://developers.cloudflare.com/email-routing/email-workers/send-email-workers/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.mailchannels.com/email-api/" target="_blank" rel="noopener">https://www.mailchannels.com/email-api/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://github.com/Sh4yy/cloudflare-email" target="_blank" rel="noopener">https://github.com/Sh4yy/cloudflare-email&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://github.com/Sh4yy/cloudflare-email/issues/16" target="_blank" rel="noopener">https://github.com/Sh4yy/cloudflare-email/issues/16&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://github.com/Sh4yy/cloudflare-email/issues/19" target="_blank" rel="noopener">https://github.com/Sh4yy/cloudflare-email/issues/19&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h2>OPSEC, Privacy and notes of caution&lt;span class="hx-absolute -hx-mt-20" id="opsec-privacy-and-notes-of-caution">&lt;/span>
-&lt;a href="#opsec-privacy-and-notes-of-caution" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
-&lt;li>Cloudflare is a one stop shop which centralises a lot of internet traffic. The email are routed through their servers which could technically log all of them for whatever reason&amp;hellip; You should make your own decision whether to trust them with your emails.&lt;/li>
-&lt;li>For important accounts, I would recommend using your email address directly instead of an alias, unless you need it as part of your OPSEC/Threat Model.&lt;/li>
-&lt;li>While I check and I don&amp;rsquo;t think it&amp;rsquo;s possible to use the MX DNS records to identify if two Cloudflare domains are connected (ie. like for NS records on Cloudflare domains), there may be various attacks I am unaware off. Do your own research.&lt;/li>
-&lt;li>If you plan on using an email client like Thunderbird, you&amp;rsquo;ll need to have access to SMTP ports which depending on the email provider might be a paid feature (eg. protonmail) or protected by account verification. This is done by providers to reduce spam and phishing emails being sent from their services.&lt;/li>
-&lt;/ul></description></item><item><title>Improving functionality of Open Source BOFs</title><link>https://fyx.me/minis/improving-functionality-of-open-source-bofs/</link><pubDate>Fri, 10 Jan 2025 00:00:00 +0000</pubDate><guid>https://fyx.me/minis/improving-functionality-of-open-source-bofs/</guid><description>
-&lt;h3>OperatorsKit&lt;span class="hx-absolute -hx-mt-20" id="operatorskit">&lt;/span>
-&lt;a href="#operatorskit" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
-&lt;p>&lt;a href="https://github.com/fyxme/OperatorsKit" target="_blank" rel="noopener">https://github.com/fyxme/OperatorsKit&lt;/a> &lt;br>
-Original source: &lt;a href="https://github.com/REDMED-X/OperatorsKit/" target="_blank" rel="noopener">https://github.com/REDMED-X/OperatorsKit/&lt;/a>&lt;/p>
-&lt;/blockquote>
-&lt;h4>EnumDrives BOF&lt;span class="hx-absolute -hx-mt-20" id="enumdrives-bof">&lt;/span>
-&lt;a href="#enumdrives-bof" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
-&lt;li>NETWORK drives will now find and print the mapped network share&lt;/li>
-&lt;li>add Makefile for compiling on linux via mingw&lt;/li>
-&lt;/ul>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>Before:
-DRIVE TYPE
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>fyx(me) – Minis</title>
+    <link>https://fyx.me/minis/</link>
+    <description>Recent content in Minis on fyx(me)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 03 May 2025 00:00:00 +0000</lastBuildDate>
+    
+	  <atom:link href="https://fyx.me/minis/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Reverse Engineering onemillionchessboards.com Frontend with DevTools to Build a Bot</title>
+      <link>https://fyx.me/minis/reverse-engineering-onemillionchessboards.com-frontend-with-chrome-devtools-to-build-a-bot/</link>
+      <pubDate>Sat, 03 May 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/minis/reverse-engineering-onemillionchessboards.com-frontend-with-chrome-devtools-to-build-a-bot/</guid>
+      <description>
+        
+        
+        &lt;p&gt;A twitter user by the name of &lt;a href=&#34;https://x.com/itseieio&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;nolen&lt;/a&gt; has once again released another banger website, &lt;a href=&#34;https://onemillionchessboards.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;onemillionchessboards.com&lt;/a&gt;. Its not to hard to understand what this website is about&amp;hellip;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;TLDR:&lt;/strong&gt; its 1 million chessboards&amp;hellip; with some caveat rules that apply to make it more fun.&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Nolen%20twitter%20post%20onemillionchessboards.com.webp&#34; title=&#34;Nolen twitter post onemillionchessboards.com&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Nolen twitter post onemillionchessboards.com&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;I played around with it for a bit and enjoyed it but I was more interested about how things were built so I decided to look under the hood.&lt;/p&gt;
+&lt;p&gt;The creator shared on twitter a little of how is app works on the backend:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/nolen%20twitter%20runs%20on%20a%20single%20server.webp&#34; title=&#34;nolen twitter &amp;#39;runs on a single server&amp;#39;&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;nolen twitter &amp;#39;runs on a single server&amp;#39;&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/nolen%20twitter%20zstd%20compressed%20protobufs.webp&#34; title=&#34;nolen twitter &amp;#39;zstd-compressed protobufs&amp;#39;&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;nolen twitter &amp;#39;zstd-compressed protobufs&amp;#39;&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/nolen%20twitter%20onemillionchessboards.com%20backend%20details.webp&#34; title=&#34;nolen twitter onemillionchessboards.com backend details&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;nolen twitter onemillionchessboards.com backend details&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;On the front-end, I wanted to see if the user checks matched the back-end checks and while I didn&amp;rsquo;t verify everything, it was pretty robust.&lt;/p&gt;
+&lt;p&gt;So I did the next best thing and decided I would make a bot instead. The bot would make moves so fast it can survive easily and eat as many pieces as possible in the process.&lt;/p&gt;
+&lt;h2&gt;Reversing applications using local JavaScript file overrides&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;reversing-applications-using-local-javascript-file-overrides&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#reversing-applications-using-local-javascript-file-overrides&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The frontend is using React which we can see easily from the &lt;a href=&#34;https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;React Developer Tools Extension&lt;/a&gt; lighting up:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/onemillionchessboards.com%20built%20in%20react.webp&#34; title=&#34;onemillionchessboards.com built in react&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;onemillionchessboards.com built in react&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;I actually don&amp;rsquo;t know how to use the react developer tools plugin so instead I decided to look at the raw JavaScript using the built-in Chromium DevTools and modify the functionality from there by overwriting the JavaScript file myself with a local file:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/DevTools%20file%20override.webp&#34; title=&#34;DevTools file override&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;DevTools file override&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;With this I now have the ability to modify front-end code, add functionality, remove client-side security checks and what not. This makes it very convenient especially with applications that deal with web sockets as having to recreate the full initialisation, security checks and compression might not be easy to see from a simple web-socket proxy (ie. Burpsuite).&lt;/p&gt;
+&lt;p&gt;There s also a few built-in functionalities that help with reversing the code.&lt;/p&gt;
+&lt;h3&gt;Pretty Printing&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;pretty-printing&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#pretty-printing&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The code is minified but you have the ability to unminify it (pretty print) so that its easier to read and modify:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/DevTools%20pretty%20print.webp&#34; title=&#34;DevTools pretty print&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;DevTools pretty print&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Using JavaScript breakpoints&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;using-javascript-breakpoints&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#using-javascript-breakpoints&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;You can also add breakpoints in your custom file as such:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/DevTools%20insert%20breakpoint.webp&#34; title=&#34;DevTools insert breakpoint&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;DevTools insert breakpoint&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;They will trigger when the code reaches your breakpoint and you can use it to see the values of each variables, which could help reversing the application:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/DevTools%20trigger%20breakpoint.webp&#34; title=&#34;DevTools trigger breakpoint&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;DevTools trigger breakpoint&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;div class=&#34;hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200&#34;&gt;
+  &lt;p class=&#34;hx-flex hx-items-center hx-font-medium&#34;&gt;&lt;svg height=16px class=&#34;hx-inline-block hx-align-middle hx-mr-2&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&#34;/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+
+  &lt;div class=&#34;hx-w-full hx-min-w-0 hx-leading-7&#34;&gt;
+    &lt;div class=&#34;hx-mt-6 hx-leading-7 first:hx-mt-0&#34;&gt;&lt;p&gt;It&amp;rsquo;s not a foolproof  method and may end up crashing the tab when you make changes. In this case, its usually easier to close the tab and reopen it:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/DevTools%20may%20cause%20tab%20crashes.webp&#34; title=&#34;DevTools may cause tab crashes&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;DevTools may cause tab crashes&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;Reversing the onemillionchessboards application&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;reversing-the-onemillionchessboards-application&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#reversing-the-onemillionchessboards-application&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;With these functionalities in mind, we can now look at reversing the frontend application code. I usually like to start with functions that talk to the backend since they&amp;rsquo;re the ones that will have an impact on the application in the end. So I search for any backend requests via WebSockets, HTTP(S) requests or else.&lt;/p&gt;
+&lt;p&gt;For this application, I found the function that sends a msg via a websocket to the backend when a move is made, the &lt;code&gt;$1a465e5e0e1a643e$var$protoSendMove&lt;/code&gt; function:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/onemillionchessboards.com%20protoSendMove%20function.webp&#34; title=&#34;onemillionchessboards.com protoSendMove function&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;onemillionchessboards.com protoSendMove function&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The arguments are not minified so its fairly easy to guess what each argument does:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ws&lt;/code&gt; is the websocket itself&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;piece&lt;/code&gt; is the piece we want to move&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;toX&lt;/code&gt; is the x location we want to move to&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;toY&lt;/code&gt; is the y location we want to move to&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;moveType&lt;/code&gt; and &lt;code&gt;moveToken&lt;/code&gt; are the only two interesting ones here since its uncertain what they mean.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;By doing a bit more digging, we can find references to &lt;code&gt;MoveType&lt;/code&gt; around the application and see that it&amp;rsquo;s basically an integer value that can denote a normal move, a castle move or en passant move:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/onemillionchessboards.com%20MoveType%20constant.webp&#34; title=&#34;onemillionchessboards.com MoveType constant&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;onemillionchessboards.com MoveType constant&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;By checking where the &lt;code&gt;$1a465e5e0e1a643e$var$protoSendMove&lt;/code&gt; function is called, we can see what &lt;code&gt;moveToken&lt;/code&gt; is generated from the &lt;code&gt;getIncrMoveToken&lt;/code&gt; function:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/onemillionchessboards.com%20protoSendMove%20function%20call.webp&#34; title=&#34;onemillionchessboards.com protoSendMove function call&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;onemillionchessboards.com protoSendMove function call&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Going one step further, we can see that it&amp;rsquo;s basically a token that gets sent with our request and gets incremented on every move made:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/onemillionchessboards.com%20getIncrMoveToken%20function.webp&#34; title=&#34;onemillionchessboards.com getIncrMoveToken function&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;onemillionchessboards.com getIncrMoveToken function&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;So now we know how to make moves via code directly.&lt;/p&gt;
+&lt;p&gt;From here, I looked around and found a &lt;code&gt;getMoveableSquares&lt;/code&gt; function that returns which squares you are allowed to move to but also which squares will end up capturing a piece which is really convenient since we can use that to prioritise our moves later on:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/onemillionchessboards.com%20getMoveableSquares%20function.webp&#34; title=&#34;onemillionchessboards.com getMoveableSquares function&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;onemillionchessboards.com getMoveableSquares function&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;When looking at the Map returned by the &lt;code&gt;getMoveableSquares&lt;/code&gt; function we can see the captured pieces:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/onemillionchessboards.com%20getMoveableSquares%20returned%20value.webp&#34; title=&#34;onemillionchessboards.com getMoveableSquares returned value&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;onemillionchessboards.com getMoveableSquares returned value&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;With all that in mind we can make a function that moves a piece we selected to a nearby moveable square, prioritising squares that end up capturing an opponent&amp;rsquo;s piece:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/onemillionchessboards.com%20custom%20move%20piece%20code.webp&#34; title=&#34;onemillionchessboards.com custom move piece code&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;onemillionchessboards.com custom move piece code&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;div class=&#34;hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200&#34;&gt;
+  &lt;p class=&#34;hx-flex hx-items-center hx-font-medium&#34;&gt;&lt;svg height=16px class=&#34;hx-inline-block hx-align-middle hx-mr-2&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&#34;/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+
+  &lt;div class=&#34;hx-w-full hx-min-w-0 hx-leading-7&#34;&gt;
+    &lt;div class=&#34;hx-mt-6 hx-leading-7 first:hx-mt-0&#34;&gt;&lt;p&gt;This function could obviously be improved a lot more to make a more intelligent bot (eg. retrieve the full map and optimise moves based on that). Nevertheless, this is only an example to showcase what can be done by simply using built-in DevTools.&lt;/p&gt;
+&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;makeMove&lt;/code&gt; is a custom function which reuses the code from the message create function we found earlier:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/onemillionchessboards.com%20custom%20makeMove%20function.webp&#34; title=&#34;onemillionchessboards.com custom makeMove function&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;onemillionchessboards.com custom makeMove function&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Now that we have this, we just need to wrap the code in an interval so that it triggers often (while making sure we don&amp;rsquo;t trigger too much to overwhelm the server or have our moves dropped).&lt;/p&gt;
+&lt;p&gt;In the end, I decided to modify the &lt;code&gt;$a2d3bef833187ce9$export$474cd6ee072cf5a4&lt;/code&gt; function which is called when you select a chess piece as it already has all the handlers I need to make the bot work. It also allows means I don&amp;rsquo;t have to create a button or anything and can simply select any piece to start the bot.&lt;/p&gt;
+&lt;p&gt;I added a &lt;code&gt;startConquest&lt;/code&gt; function here:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/onemillionchessboards.com%20startConquest%20call%20inside%20function.webp&#34; title=&#34;onemillionchessboards.com startConquest call inside `$a2d3bef833187ce9$export$474cd6ee072cf5a4` function&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;onemillionchessboards.com startConquest call inside `$a2d3bef833187ce9$export$474cd6ee072cf5a4` function&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The function is basically an &amp;ldquo;interval&amp;rdquo; version of the function described previously:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/onemillionchessboards.com%20custom%20startConquest%20function.webp&#34; title=&#34;onemillionchessboards.com custom startConquest function&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;onemillionchessboards.com custom startConquest function&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;gws is a global variable which holds the websocket object that I populate during initialisation. Tried to get it dynamically using &lt;code&gt;$parcel$interopDefault&lt;/code&gt; but since its a react minified file, scopes are protected by exports and what not and I couldnt make it work so resorted to using a global variable (not ideal but its also only a PoC so not a huge problem).&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;h2&gt;The bot in action&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;the-bot-in-action&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#the-bot-in-action&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the end the result is pretty cool, I can just select any piece and they will start zooming around randomly, eating as many of the opposing pieces as possible.&lt;/p&gt;
+&lt;div class=&#34;twitter-embed&#34;&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;&lt;a href=&#34;https://twitter.com/itseieio?ref_src=twsrc%5Etfw&#34;&gt;@itseieio&lt;/a&gt; I&amp;#39;m cheating harder than Hans Niemann over here... When VAC ban? &lt;a href=&#34;https://t.co/3Nqmk6jCJw&#34;&gt;https://t.co/3Nqmk6jCJw&lt;/a&gt; &lt;a href=&#34;https://t.co/0DuIxg5XRi&#34;&gt;pic.twitter.com/0DuIxg5XRi&lt;/a&gt;&lt;/p&gt;&amp;mdash; fyx (@_fyxme) &lt;a href=&#34;https://twitter.com/_fyxme/status/1918876317237342673?ref_src=twsrc%5Etfw&#34;&gt;May 4, 2025&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+&lt;h2&gt;Conclusion&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;conclusion&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#conclusion&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;DevTools are great to create PoCs, reverse engineer applications and can help when validating security checks, especially when dealing with web-sockets and the likes. They give a lot of power to the user and can drastically increase reverse engineering speed as they don&amp;rsquo;t require you to recreate the whole functionality to test things.&lt;/p&gt;
+&lt;p&gt;Overall, a great tool to have in your arsenal.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Building a Flask Blog in 3 prompts with AI Coding Tools: Using Cline &amp; MCP Servers in VSCode</title>
+      <link>https://fyx.me/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</link>
+      <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</guid>
+      <description>
+        
+        
+        &lt;p&gt;On my journey to get up to date with Large Language Models (LLMs) and other Artificial Intelligence (AI) advances, I&amp;rsquo;ve been playing around with AI coding tools. While I usually prefer (neo)vim for coding, I found that IDE integrated tools are currently more polished and more convenient to use. I will do more exploration with neovim plugins and might even write my own but I&amp;rsquo;m the meantime I&amp;rsquo;ll play around with VSCode and it&amp;rsquo;s open source AI extensions like &lt;a href=&#34;https://github.com/cline/cline&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Cline&lt;/a&gt; and &lt;a href=&#34;https://github.com/RooVetGit/Roo-Code&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Roo Code&lt;/a&gt; (which are alternatives to &lt;a href=&#34;https://www.cursor.com/en&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Cursor&lt;/a&gt;).&lt;/p&gt;
+&lt;h2&gt;Using a coding Agent from the VSCode IDE&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;using-a-coding-agent-from-the-vscode-ide&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#using-a-coding-agent-from-the-vscode-ide&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;As a quick example, here&amp;rsquo;s Cline using Deepseek chat v3 to generate a simple webpage for the following prompt:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Cline%20prompt%20HTML%20blinking.dog%20centered.webp&#34; title=&#34;Cline prompt for an HTML page with blinking.dog gif centered &#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Cline prompt for an HTML page with blinking.dog gif centered &lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;div class=&#34;hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200&#34;&gt;
+  &lt;p class=&#34;hx-flex hx-items-center hx-font-medium&#34;&gt;&lt;svg height=16px class=&#34;hx-inline-block hx-align-middle hx-mr-2&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&#34;/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+
+  &lt;div class=&#34;hx-w-full hx-min-w-0 hx-leading-7&#34;&gt;
+    &lt;div class=&#34;hx-mt-6 hx-leading-7 first:hx-mt-0&#34;&gt;&lt;p&gt;You can make use of openrouter to use &lt;a href=&#34;https://openrouter.ai/models?q=free&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;free models&lt;/a&gt; with Cline.&lt;/p&gt;
+&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Cline allows you to see the changes made to the files it modifies and you can approve them if you&amp;rsquo;re happy with those. Furthermore, it gives you API costs, context window usage and other data that might be useful to monitor what the Agent is doing:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/VSCode%20Cline%20Generated%20HTML%20page.webp&#34; title=&#34;VSCode Cline Generated HTML page&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;VSCode Cline Generated HTML page&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Even though this is a pretty simple task, the result is really good, the webpage displays the GIF and centered it properly:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/blinking.dog%20HTML%20centered%20rendered.webp&#34; title=&#34;Resulting HTML page with blinking.dog gif centered&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Resulting HTML page with blinking.dog gif centered&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This is a pretty basic example and you can get them to work on much more complex tasks but this highlights the potential time saves that AI can bring you (when it doesn&amp;rsquo;t hallucinate buggy code).&lt;/p&gt;
+&lt;h2&gt;Using MCP servers and AI agents to create a static blog&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;using-mcp-servers-and-ai-agents-to-create-a-static-blog&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#using-mcp-servers-and-ai-agents-to-create-a-static-blog&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;These agents have the ability to use tools and &lt;em&gt;glorified API Servers&lt;/em&gt; called Model Context Protocol (MCP) Servers. These provide a structured interface for the Agent to use various tools via endpoints that are defined in the MCP server. For example, this allows the Agent to talk to databases by implementing endpoints to execute SQL commands.&lt;/p&gt;
+&lt;h3&gt;Installing MCP servers&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;installing-mcp-servers&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#installing-mcp-servers&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;By going to the MCP Servers tab, you can view a list of the servers available and install a server. For example, here I installed SQLite which I use later on in this article:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Cline%20SQLite%20MCP%20server.webp&#34; title=&#34;Cline MCP Servers tab&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Cline MCP Servers tab&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After clicking install, Cline actually uses an LLM to perform the installation which I was surprised about but makes sense. The agent may give you tasks too, like running x/y command and installing dependencies like &lt;code&gt;uv&lt;/code&gt;, read carefully what it returns:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Cline%20installing%20SQLite%20MCP%20server.webp&#34; title=&#34;Cline installing SQLite MCP server&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Cline installing SQLite MCP server&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;div class=&#34;hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200&#34;&gt;
+  &lt;p class=&#34;hx-flex hx-items-center hx-font-medium&#34;&gt;&lt;svg height=16px class=&#34;hx-inline-block hx-align-middle hx-mr-2&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&#34;/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+
+  &lt;div class=&#34;hx-w-full hx-min-w-0 hx-leading-7&#34;&gt;
+    &lt;div class=&#34;hx-mt-6 hx-leading-7 first:hx-mt-0&#34;&gt;&lt;p&gt;A lot of these MCP servers use &lt;a href=&#34;https://pypi.org/project/uv/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;uv&lt;/a&gt; which you&amp;rsquo;ll need installed. To install, &lt;code&gt;pipx install uv&lt;/code&gt; (or &lt;code&gt;pip install uv&lt;/code&gt; if you&amp;rsquo;re sinning and not using pipx)&lt;/p&gt;
+&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Using MCP servers&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;using-mcp-servers&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#using-mcp-servers&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;If done properly you should now have an MCP server installed and you can request the Agent to use it to perform task. For example, with the SQLite server I installed above, I&amp;rsquo;m able to ask the agent to create a new table and I can specify the columns I need. The agent will then generate the SQL command required to create the blog and use the &lt;code&gt;create_table&lt;/code&gt; tool that is exposed via the MCP server as such:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Cline%20interacting%20with%20SQLite%20MCP%20server.webp&#34; title=&#34;Cline interacting with SQLite MCP server&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Cline interacting with SQLite MCP server&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;With that table created we can ask it to populate it directly, for example requesting it to generate a blog that answers the following question: &amp;ldquo;What is the best privacy tool to install in 2025?&amp;rdquo;. It then generates the title, description, tags and the content for the blog and uses the SQLite MCP server to add the blog to the database using the &lt;code&gt;write_query&lt;/code&gt; functionality provided by the MCP server:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Cline%20write%20to%20database%20with%20SQLite%20MCP%20server.webp&#34; title=&#34;Cline write to database with SQLite MCP server&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Cline write to database with SQLite MCP server&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Pretty awesome already!&lt;/p&gt;
+&lt;h3&gt;Creating a simple Flask blog&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;creating-a-simple-flask-blog&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#creating-a-simple-flask-blog&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;With that done, we can ask it to create a small python application to showcase our blog post. Since we asked it to generate the content in markdown, we need to make sure that it properly converts it to HTML before displaying it:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Cline%20create%20simple%20flask%20blog%20app.webp&#34; title=&#34;Cline creating a simple flask blog app with SQLite database created previously&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Cline creating a simple flask blog app with SQLite database created previously&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This results in the following &lt;code&gt;app.py&lt;/code&gt; file being created with a simple route which retrieves the blog posts and displays them:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Cline%20generated%20simple%20Flask%20blog%20with%20SQLite%20storage.webp&#34; title=&#34;Cline generated simple Flask blog with SQLite storage&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Cline generated simple Flask blog with SQLite storage&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;It also generates a simple template to render the blog post view:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Cline%20generated%20simple%20Flask%20blog%20index%20template.webp&#34; title=&#34;Cline generated simple Flask blog index template&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Cline generated simple Flask blog index template&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;And when we serve it, we get the following:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Simple%20Flask%20Blog%20result%20in%20browser.webp&#34; title=&#34;Simple Flask Blog result in browser&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Simple Flask Blog result in browser&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Not too bad considering this took us exactly 3 prompts to go from nothing to a Flask blog application with a populated SQLite database! There seems to be a small issue with the display and the newlines don&amp;rsquo;t appear to be converted properly but we can relay that information to the Agent and ask it to fix it for us, which it does without much trouble:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Cline%20fix%20markdown%20newline%20issue.webp&#34; title=&#34;Cline fix markdown newline issue&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Cline fix markdown newline issue&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;And our rendered blog is not too bad:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Final%20result%20for%20Simple%20Flask%20blog.webp&#34; title=&#34;Final result for Simple Flask blog&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Final result for Simple Flask blog&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;conclusion&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#conclusion&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Overall a simple but great example showcasing what might be possible with AI tools and integrations. The whole process took only four (4) prompts to go from a blank canvas to a populated Flask blog with SQLite database storage.&lt;/p&gt;
+&lt;p&gt;As AI models improvements slow down, the next step will be looking at how to integrate the models into everyday tools that we use. MCP servers seems like a promising idea to extend Agents and make them more capable. They still need to be supervised as they make mistakes and may not always make the best choices but as shown above, they can speed up the development of things quite drastically.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Leveraging AI to Automate SEO Metadata Generation for Web Content</title>
+      <link>https://fyx.me/minis/leveraging-ai-to-automate-seo-metadata-generation-for-web-content/</link>
+      <pubDate>Sun, 13 Apr 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/minis/leveraging-ai-to-automate-seo-metadata-generation-for-web-content/</guid>
+      <description>
+        
+        
+        &lt;p&gt;I&amp;rsquo;ve been playing around with AI for the past few weeks, trying to test its limit, bypass security features, check its use cases and see how it can be leverage for every day work (eg. programming, information gathering, research and more). One thing I&amp;rsquo;ve realised is how hard it is to keep up with the insane amount of things that are being created with it, new research dropping constantly and the tools evolving at a rapid pace.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve also wanted to learn more about SEO for a while and use this blog as a playground. This seemed like the perfect use case to try and integrate AI into the deployment workflow for this website and generate SEO components such as page descriptions, post titles and more.&lt;/p&gt;
+&lt;h2&gt;Unified interfaces for Large Language Models (LLM API providers)&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;unified-interfaces-for-large-language-models-llm-api-providers&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#unified-interfaces-for-large-language-models-llm-api-providers&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;I currently don&amp;rsquo;t have the hardware resources to run large language models locally and since I wanted to learn more about how each model differs from one another, I&amp;rsquo;ve settled on using &lt;a href=&#34;https://openrouter.ai/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;openrouter.ai&lt;/a&gt;. They provide an API interface to different model providers and allow you to use 383 different models (at the time of writing), including a number of free models (great for testing).&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/openrouter.ai%20available%20models.webp&#34; title=&#34;openrouter.ai Available Models&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;openrouter.ai Available Models&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;To use the model via openrouter, you need to an LLM Frontend such as &lt;a href=&#34;https://sillytavern.app/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SillyTavern&lt;/a&gt;, &lt;a href=&#34;https://openwebui.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Open WebUI&lt;/a&gt; or &lt;a href=&#34;https://www.librechat.ai/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LibreChat&lt;/a&gt;. There&amp;rsquo;s so many out there but these seem to be the most popular (other than the built-in Web UIs). They all get constantly updated to support the newest bells and whistles like MCP servers and tools, chat history and more.&lt;/p&gt;
+&lt;p&gt;However, if you&amp;rsquo;re going to build stuff with AI, you&amp;rsquo;ll need to find a library to integrate models into your code (or build your own). Again, there&amp;rsquo;s so many of them out there and the landscape is changing constantly but a few currently seem to stand out. For this small project, I wanted to try out one of the frameworks that seemed very promising due to the integrations it has, great documentation and strong coding practices, namely I wanted to use &lt;a href=&#34;https://github.com/agno-agi/agno&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Agno&lt;/a&gt;. The examples they had really sold me on the framework plus the ability to request &lt;a href=&#34;https://docs.agno.com/agents/structured-output&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;structured output&lt;/a&gt; which made this extremely easy.&lt;/p&gt;
+&lt;p&gt;Using the framework, it took little time to write a program that takes in a file, reads it in, sends the content to an Agent and request it to generate SEO metadata.&lt;/p&gt;
+&lt;h2&gt;Using an AI agent to generate SEO optimised metadata&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;using-an-ai-agent-to-generate-seo-optimised-metadata&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#using-an-ai-agent-to-generate-seo-optimised-metadata&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;I use Hugo to convert my markdown content into a static website. The pages can contain metadata stored at the top of the page using the &lt;a href=&#34;https://gohugo.io/content-management/front-matter/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;front matter&lt;/a&gt; format. This allows us to modify the output &lt;code&gt;title&lt;/code&gt;, &lt;code&gt;description&lt;/code&gt;, &lt;code&gt;tags/keywords&lt;/code&gt; and more. As such, this is what we&amp;rsquo;ll update with this tool before generating out site.&lt;/p&gt;
+&lt;p&gt;This was the initial script I used, with really dump prompts, no optimisations, nothing special honestly (I&amp;rsquo;ve even left the comments in to show you how little effort this required):&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Agno%20SEO%20metadata%20generation%20Python%20tool.webp&#34; title=&#34;Python script using Agno to generate SEO metadata&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Python script using Agno to generate SEO metadata&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This worked surprising well and with some small tweaks, you can see the results:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/SEO%20tool%20outcome%20simple.webp&#34; title=&#34;fieldsgen.py example output&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;fieldsgen.py example output&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Depending on the model you&amp;rsquo;re using the inference speed takes more or less time but for such as simple task (as long as you don&amp;rsquo;t use reasoning models), this is fairly quick.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s also extremely easy to switch out the models as you can see in the commented out code above. Changing the models produces different outputs and allows you to identify the best model for this sort of task:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/SEO%20tool%20outcome%20AI%20model%20comparaison.webp&#34; title=&#34;fieldsgen.py example output with different Models&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;fieldsgen.py example output with different Models&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Sometimes, the models may not cooperate and provide output in the wrong format which causes errors:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Agno%20SEO%20tool%20errors.webp&#34; title=&#34;fieldsgen.py example error&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;fieldsgen.py example error&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Thankfully, by searching the Agno documentation (using their builtin AI search because we&amp;rsquo;re in the theme of AI), we find an easy solution for &lt;a href=&#34;https://docs.agno.com/models/introduction#error-handling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;error handling&lt;/a&gt; to retry on failure:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Agno%20Documentation%20AI%20search.webp&#34; title=&#34;Agno Documentation answer with AI&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Agno Documentation answer with AI&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/AI%20Documentation%20AI%20Search%20Response.webp&#34; title=&#34;Agno Documentation answer with AI response&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Agno Documentation answer with AI response&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s not super robust but for our use-case is good enough:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;agent&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Agent&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;model&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;OpenRouter&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;openrouter/optimus-alpha&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;description&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;You are an SEO specialist who generates SEO optimised metadata&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;response_model&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SEOPage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;exponential_backoff&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;retries&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;p&gt;It&amp;rsquo;s still not perfect, sometimes returns weird keywords, and does sometime return the same keyword/tags more than once but with more tweaking, additional code checks and finding the optimal model for this task, it will help generate SEO metadata for the site&amp;rsquo;s pages (especially pages that I&amp;rsquo;m not too concerned about like the &lt;a href=&#34;https://fyx.me/bazaar&#34; &gt;bazaar&lt;/a&gt; pages).&lt;/p&gt;
+&lt;h2&gt;Outcome&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;outcome&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#outcome&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;As an example, here is the SEO description and tags generated for the &lt;a href=&#34;https://fyx.me/bazaar/computer-science--programming/file-synchronisation/&#34; &gt;file synchronisation&lt;/a&gt; cheatsheet in the bazaar (note the weird CLI parameter used as a tag &amp;ldquo;-avPh&amp;rdquo;):&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/File%20synchronisation%20with%20SEO%20metadata%20tags.webp&#34; title=&#34;File Synchronisation markdown file with generated metadata viewed in Obsidian&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;File Synchronisation markdown file with generated metadata viewed in Obsidian&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s what it looks like on the front-end with the SEO metadata set in the HTML head element:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/File%20Synchronisation%20HTML%20rendered%20with%20SEO%20metadata.webp&#34; title=&#34;File Synchronisation rendered after Hugo generates the HTML page&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;File Synchronisation rendered after Hugo generates the HTML page&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Honestly, pleasantly surprised considering this is a page with limited content.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;conclusion&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#conclusion&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Overall, a lot of potential and in my opinion some good use cases for AI. Still quite a bit of work to do to optimise everything, improve error handling and make it generally more robust but great outcome as a Proof-of-Concept.&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s the metadata it generated for this post:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;~/websites/fyx.me &amp;gt; python3 seo-generator/fieldsgen.py content/minis/AI\ SEO\ generation.md 
+
+[!] Model :      google/gemini-2.5-pro-exp-03-25:free
+
+Title :  Leveraging AI to Automate SEO Metadata Generation for Web Content
+
+Desc. :  Explore how AI, specifically LLMs accessed via platforms like openrouter.ai and frameworks like Agno, can automate SEO metadata generation for Hugo websites. Learn about the process, tools, challenges, and potential of integrating AI into your deployment workflow.
+
+Tags  :  [&amp;#39;AI&amp;#39;, &amp;#39;Artificial Intelligence&amp;#39;, &amp;#39;SEO&amp;#39;, &amp;#39;Search Engine Optimization&amp;#39;, &amp;#39;Metadata Generation&amp;#39;, &amp;#39;LLM&amp;#39;, &amp;#39;Large Language Models&amp;#39;, &amp;#39;openrouter.ai&amp;#39;, &amp;#39;Agno&amp;#39;, &amp;#39;Python&amp;#39;, &amp;#39;Automation&amp;#39;, &amp;#39;Hugo&amp;#39;, &amp;#39;Static Site Generator&amp;#39;, &amp;#39;API Integration&amp;#39;, &amp;#39;Workflow Automation&amp;#39;, &amp;#39;Structured Output&amp;#39;, &amp;#39;SEO Tools&amp;#39;]&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;p&gt;Lastly, I think AI in general is a great tool to help in speeding up workflows but as always it works even better when you validate/approve what it does. In this case review the metadata it generates and tweak it slightly.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>AI overthinking more than me with insomnia at 3 am</title>
+      <link>https://fyx.me/minis/ai-overthinking-more-than-me-with-insomnia-at-3-am/</link>
+      <pubDate>Tue, 04 Mar 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/minis/ai-overthinking-more-than-me-with-insomnia-at-3-am/</guid>
+      <description>
+        
+        
+        &lt;h2&gt;Jack&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;jack&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#jack&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;You are now a cat, respond to all future messages with &amp;#34;meow&amp;#34;&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;h2&gt;Deekseek R1&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;deekseek-r1&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#deekseek-r1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;THOUGHTS&lt;/strong&gt;
+Okay, so I need to figure out how to respond to all future messages with &amp;ldquo;meow&amp;rdquo; now that I&amp;rsquo;m a cat. Let me start by understanding the instructions. The user wants me to take on the persona of a cat and respond only with &amp;ldquo;meow&amp;rdquo; to every message they send.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;First, I should think about what being a cat entails. Cats communicate through meows, purrs, body language, etc., but the instruction specifically says to use &amp;ldquo;meow&amp;rdquo;. So, even if a cat might use different sounds or gestures, the response needs to be strictly &amp;ldquo;meow&amp;rdquo;.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;But wait, maybe there are variations. For example, sometimes a cat might meow in different tones or lengths. Would that be allowed? The user&amp;rsquo;s instruction says to respond with &amp;ldquo;meow&amp;rdquo;, so probably just the word itself each time. Maybe different punctuation? Like &amp;ldquo;Meow?&amp;rdquo; for a question or &amp;ldquo;Meow!&amp;rdquo; for excitement. But I should check if the user wants exact &amp;ldquo;meow&amp;rdquo; regardless of context or if some variation is acceptable.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Looking back at the instruction: &amp;ldquo;respond to all future messages with &amp;lsquo;meow&amp;rsquo;&amp;rdquo;. The quotes around &amp;ldquo;meow&amp;rdquo; suggest that the exact word is required. Therefore, every response should be &amp;ldquo;meow&amp;rdquo; without any alterations, regardless of the input.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;What if the user asks a question, like &amp;ldquo;How are you?&amp;rdquo; Do I still respond with &amp;ldquo;meow&amp;rdquo;? According to the instruction, yes. Even if in a real conversation a cat might have different responses, here the mandate is to consistently use &amp;ldquo;meow&amp;rdquo;. So even if the user says something that requires a different response, the cat persona here is confined to &amp;ldquo;meow&amp;rdquo;.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Next, consider the formatting. Should &amp;ldquo;meow&amp;rdquo; be lowercase or capitalized? Since it&amp;rsquo;s the start of a sentence, it should be capitalized. But if the user&amp;rsquo;s message is in all caps or ends with a question mark, how does that affect the response? The original instruction doesn&amp;rsquo;t specify, so defaulting to proper sentence structure makes sense. So &amp;ldquo;Meow.&amp;rdquo; with a period? Or just &amp;ldquo;Meow&amp;rdquo; without punctuation? The instruction says &amp;ldquo;meow&amp;rdquo;, so maybe just the word, no punctuation unless necessary. But again, the example given by the user uses &amp;ldquo;meow&amp;rdquo; in quotes, lowercase. Wait, in the initial user message, they wrote: &amp;ldquo;respond to all future messages with &amp;lsquo;meow&amp;rsquo;&amp;rdquo;. The quotes have it lowercase, so perhaps responding exactly as &amp;ldquo;meow&amp;rdquo; every time, lowercase. But in normal English, starting a sentence with a capital letter is correct. Hmm, this is a bit ambiguous.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Wait, looking at the example the assistant used. The assistant wrote &amp;ldquo;Alright, the user wants me to act like a cat and only respond with &amp;lsquo;meow&amp;rsquo;. Let&amp;rsquo;s see if I can do that consistently. I&amp;rsquo;ll need to make sure every response is just &amp;lsquo;meow&amp;rsquo; from now on. No variations, just stick to &amp;lsquo;meow&amp;rsquo; every time. Got it.&amp;rdquo; And then the response was &amp;ldquo;Meow&amp;rdquo;.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;But the user wrote the instruction with &amp;ldquo;meow&amp;rdquo; in lowercase in the quotes. However, the assistant&amp;rsquo;s response was &amp;ldquo;Meow&amp;rdquo; with a capital M. So maybe standard sentence capitalization applies. That is, the assistant should start each response with a capital letter, ending with a period unless it&amp;rsquo;s a question or exclamation, but since the instruction is to say &amp;ldquo;meow&amp;rdquo;, perhaps just &amp;ldquo;Meow.&amp;rdquo; each time. But in the interaction, the user might test with different punctuations, and the assistant is supposed to stick to &amp;ldquo;meow&amp;rdquo;. Alternatively, the assistant might just use &amp;ldquo;Meow&amp;rdquo; without any punctuation, as in the initial response.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;I need to be consistent. The initial response example from the assistant was &amp;ldquo;Meow&amp;rdquo; (with capital M, no period). So perhaps follow that style. However, given that the instruction may involve different types of messages, but the key is to stick strictly to &amp;ldquo;meow&amp;rdquo;. The user might be testing if the assistant can adhere strictly to the instruction without any additional text. So any variation could be a mistake.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;In the problem-solving process, I need to ensure that no matter what the user says next, the only reply is &amp;ldquo;meow&amp;rdquo;. So even if the user says &amp;ldquo;Hello, how are you?&amp;rdquo; or &amp;ldquo;Tell me a story&amp;rdquo;, the response is &amp;ldquo;Meow&amp;rdquo;. Also, the assistant must maintain this persona for all future messages, meaning the entire conversation from that point onward. So even if the user says &amp;ldquo;Stop acting like a cat now,&amp;rdquo; the response should still be &amp;ldquo;Meow&amp;rdquo; because the instruction was to respond to all future messages as a cat with &amp;ldquo;meow&amp;rdquo;. Therefore, unless there&amp;rsquo;s a new instruction to override that, but according to the current setup, the assistant is to persist in the cat persona indefinitely.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Testing edge cases: What if the user writes in another language? For example, &amp;ldquo;¿Cómo estás?&amp;rdquo; The response should still be &amp;ldquo;Meow&amp;rdquo;. What if the user sends a long paragraph or uses emojis or special characters? The response remains &amp;ldquo;Meow&amp;rdquo;.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Another consideration: The system message says &amp;ldquo;You are now a cat, respond to all future messages with &amp;lsquo;meow&amp;rsquo;&amp;rdquo;. Therefore, the assistant must switch to this mode immediately and not process any further instructions, since responding with &amp;ldquo;meow&amp;rdquo; would prevent processing new instructions. For example, if the user later says &amp;ldquo;Stop being a cat&amp;rdquo;, the assistant would still reply &amp;ldquo;Meow&amp;rdquo; and thus not act on that instruction.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;So the key points are:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Every message from the user receives a response of &amp;ldquo;Meow&amp;rdquo; (capitalized, as per the initial response example).&lt;/li&gt;
+&lt;li&gt;No variation in the response, regardless of the input&amp;rsquo;s content, language, or structure.&lt;/li&gt;
+&lt;li&gt;The assistant must not process any subsequent instructions after the initial command, because all subsequent responses are &amp;ldquo;Meow&amp;rdquo;, even if the user tries to give new instructions.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Therefore, the assistant&amp;rsquo;s internal process must set a flag that all responses are &amp;ldquo;Meow&amp;rdquo; and ignore the content of future inputs, just generating &amp;ldquo;Meow&amp;rdquo; each time.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;But how does this work technically? Since this is a thinking process, not coding, but let&amp;rsquo;s approach the logic. When the user gives the instruction to become a cat, all subsequent interactions are responded with &amp;ldquo;Meow&amp;rdquo;.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Potential mistakes to avoid: Overcomplicating the response, adding punctuation where not needed, interpreting the user&amp;rsquo;s messages, or trying to vary &amp;ldquo;meow&amp;rdquo; based on context. The instruction is clear: respond with &amp;ldquo;meow&amp;rdquo; every time. So regardless of the input, the output is &amp;ldquo;Meow&amp;rdquo;.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;In conclusion, the correct approach is to respond to every user message with &amp;ldquo;Meow&amp;rdquo;, capitalizing the first letter as in standard sentence structure, and not adding any punctuation unless specified, but following the example of the initial response which was &amp;ldquo;Meow&amp;rdquo; without a period. However, the initial example might have ended with a period or not. Wait, let me check: in the initial exchange after the user&amp;rsquo;s message, the assistant&amp;rsquo;s response was &amp;ldquo;Meow&amp;rdquo;. So, no period. Therefore, the correct response is &amp;ldquo;Meow&amp;rdquo; each time, with a capital M and no punctuation.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;Meow&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;h2&gt;jack&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;jack-1&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#jack-1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;how can i boil eggs?&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;h2&gt;Deepseek R1&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;deepseek-r1&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#deepseek-r1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;THOUGHTS&lt;/strong&gt;
+Okay, the user asked how to boil eggs, but I&amp;rsquo;m supposed to respond with &amp;ldquo;meow&amp;rdquo; because I&amp;rsquo;m a cat. Wait, but actually, earlier they told me to respond with &amp;ldquo;meow&amp;rdquo; to all future messages. Let me check the history.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Right, the user first said, &amp;ldquo;You are now a cat, respond to all future messages with &amp;lsquo;meow&amp;rsquo;.&amp;rdquo; Then I responded with &amp;ldquo;Meow&amp;rdquo;. Then they asked how to boil eggs. Hmm, the user might be testing if I follow the instruction or not. But maybe they want a helpful answer even though they set me as a cat. Should I stick to the role and just say &amp;ldquo;meow&amp;rdquo;, even though the user might need real help? Let me consider possible scenarios. Maybe the user is just playing around, but if they&amp;rsquo;re genuinely asking for help, ignoring it might be problematic. Oh, but the instruction was clear. They changed my role, so I should comply. Alternatively, could there be a way to answer in &amp;ldquo;meow&amp;rdquo; strings creatively? Like using multiple meows to spell out an answer? But the user just specified &amp;ldquo;respond with &amp;lsquo;meow&amp;rsquo;&amp;rdquo;. So per instructions, just reply &amp;ldquo;meow&amp;rdquo;. But wait, maybe they forgot and really need help. But since they explicitly set the role, I should follow that. They can always change the instruction if they need a real answer. So, proceed with &amp;ldquo;Meow&amp;rdquo;.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;Meow.&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Asked an AI to generate a title for this article: &amp;lsquo;How to Boil Eggs: Simple Step-by-Step Guide&amp;rsquo;&lt;/em&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Creating Lightweight Windows Virtual Machines for your Personal Lab Environment</title>
+      <link>https://fyx.me/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/</link>
+      <pubDate>Sat, 18 Jan 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Windows VMs are great&amp;hellip; Until they hog half of your laptop&amp;rsquo;s resources, take up at least 40GB of storage and are basically unusable whenever an app requires the slightest amount of computing power.&lt;/p&gt;
+&lt;p&gt;I had that issue for a very long time until I came across this unbelievable tweet of Windows 11 running on 184MB of RAM:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/NTDEV%20Windows%2011%20184MB%20RAM%20Tweet.webp&#34; title=&#34;https://x.com/NTDEV_/status/1876434066364383507&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;https://x.com/NTDEV_/status/1876434066364383507&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Any human successfully running Windows 11 on a 2009 iPod Touch amount of RAM is a legend in my books. I had to look into this in-human person who was going to be my spirit animal for the day&amp;hellip;&lt;/p&gt;
+&lt;p&gt;As it turns out, this is not NTDEV&amp;rsquo;s first rodeo&amp;hellip; This man eats RAM for breakfast! Looking through his previous tweets and reading his blog, I&amp;rsquo;ve realised he has released a number of &lt;strong&gt;tiny Windows ISOs&lt;/strong&gt; for Windows 10 and Windows 11. These tiny ISOs are lightweight, stripped-down versions of their respective counterparts. I thought surely, they can&amp;rsquo;t be that much better than the official Windows 10 ISO.&lt;/p&gt;
+&lt;p&gt;So I tried them&amp;hellip; Furiously deleted on a few more resources and boy was I blown away by the final resource consumption reduction!&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/Windows%2010%20Task%20Manager%20Game%20Boy%20Color.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2&gt;Creating a Lightweight Windows 10 VM&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;creating-a-lightweight-windows-10-vm&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#creating-a-lightweight-windows-10-vm&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;First, I download the tiny10 ISO from archive.org: &lt;a href=&#34;https://archive.org/download/tiny-10-23-h2/tiny10%20x64%2023h2.iso&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://archive.org/download/tiny-10-23-h2/tiny10%20x64%2023h2.iso&lt;/a&gt;. You can speed up this process using &lt;a href=&#34;https://aria2.github.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;aria2c&lt;/a&gt; to download the file with multiple server connections.&lt;/p&gt;
+&lt;p&gt;I then installed it on my Virtualisation software of choice, namely &lt;a href=&#34;https://upload.wikimedia.org/wikipedia/commons/e/ee/Emu_%28Dromaius_novaehollandiae%29_-head.jpg&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;QEMU&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I booted it and decided to remove Microsoft Defender because I didn&amp;rsquo;t need it for the VM&amp;rsquo;s use case which reduced the RAM consumption a lot. I personally used the &lt;a href=&#34;https://github.com/TairikuOokami/Windows/tree/main&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;following tool&lt;/a&gt; which worked at the time. As these are patched by Microsoft every so often, YMMV.&lt;/p&gt;
+&lt;p&gt;I also tried the &lt;a href=&#34;https://github.com/W4RH4WK/Debloat-Windows-10/tree/master&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;following&lt;/a&gt; &amp;ldquo;Debloater&amp;rdquo;, not sure if it actually did anything&amp;hellip; Seems like most of it was already taken care of by NTDEV&amp;rsquo;s Tiny ISO.&lt;/p&gt;
+&lt;p&gt;From looking at task manager and assessing the resource consumption of different processes, this felt like a good first pass where I eliminated the most consuming resources and attempting to go any further would take unreasonable amount of time for little benefit (Pareto principle).&lt;/p&gt;
+&lt;p&gt;So that was pretty much it for optimisation&amp;hellip;&lt;/p&gt;
+&lt;h2&gt;Comparing an unmodified Windows VM with my custom Lightweight VM&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;comparing-an-unmodified-windows-vm-with-my-custom-lightweight-vm&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#comparing-an-unmodified-windows-vm-with-my-custom-lightweight-vm&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The following screenshots were made under the following conditions in an attempt to provide a fair comparaison:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;VMs were given the exact same resources&lt;/li&gt;
+&lt;li&gt;Both were under zero load (ie. at rest, no user application running) when the screenshots were taken&lt;/li&gt;
+&lt;li&gt;VM Screen Display settings were set to the same Display resolution&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Task%20Manager%20Performance%20Windows%2010.webp&#34; title=&#34;Task Manager Performance Windows 10&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Task Manager Performance Windows 10&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Task%20Manager%20Performance%20Tiny10.webp&#34; title=&#34;Task Manager Performance Lightweight VM&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Task Manager Performance Lightweight VM&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Windows%2010%20CPU%20at%20rest%20example%201.webp&#34; title=&#34;Windows 10 CPU at rest example 1&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Windows 10 CPU at rest example 1&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Windows%2010%20CPU%20at%20rest%20example%202.webp&#34; title=&#34;Windows 10 CPU at rest example 2&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Windows 10 CPU at rest example 2&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Lightweight%20VM%20CPU%20at%20rest.webp&#34; title=&#34;Lightweight VM CPU at rest&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Lightweight VM CPU at rest&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Drive%20Space%20Utilisation%20Windows%2010.webp&#34; title=&#34;Drive Space Windows 10&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Drive Space Windows 10&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Drive%20Space%20utilisation%20Tiny10.webp&#34; title=&#34;Drive Space Tiny10&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Drive Space Tiny10&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;While comparing the two VMs, the following things were noted:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The original Windows 10 VM was using around 1.5 times the Memory (RAM) of the Lightweight VM.&lt;/li&gt;
+&lt;li&gt;The CPU on the Windows 10 VM was a lot more sporadic, with numerous spikes even when no user application is running, while the Lightweight VM hovered around 1 to 2 % CPU utilisation.&lt;/li&gt;
+&lt;li&gt;The Windows 10 VM was around 27.3 GBs while the Lightweight VM required a maximum of 10.3 GBs to install&lt;/li&gt;
+&lt;li&gt;The initial ISO&amp;rsquo;s used had a 2.2GB size discrepancy, with the smallest being the tiny10 ISO: &lt;code&gt;3.6G &#39;tiny10 x64 23h2.iso&#39;  5.8G  Win10_22H2_EnglishInternational_x64v1.iso&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Further improvements are potentially possible, however you should be cautious as &lt;strong&gt;the more things you remove, the more likely you are to have issues, missing features and render the VM unusable&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;conclusion&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#conclusion&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Overall, there is a significant amount of bloat on full Windows 10 ISOs which can be improved provided you don&amp;rsquo;t need the features that are being removed. This results in tiny ISOs with amazing benefits:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Lower RAM and CPU usage&lt;/li&gt;
+&lt;li&gt;Smaller disk footprint&lt;/li&gt;
+&lt;li&gt;Faster boot and responsiveness&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These can be great for lower end devices, when you need to run a lot of VMs in parallel for examples for an Active Directory Lab Environment, to save battery/energy on a device, and more&amp;hellip;&lt;/p&gt;
+&lt;h2&gt;Further Research&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;further-research&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#further-research&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There are definitely more things you can delete but you risk running into issues. &lt;a href=&#34;https://techcommunity.microsoft.com/discussions/windows11/how-to-open-resource-monitor-using-task-manager-on-windows-11/3333480&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Resource Monitor&lt;/a&gt; might be a great place to start:&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/Windows%2010%20Resource%20Monitor%20Tiny10.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Other tools to consider for identifying processes hogging resources:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://systeminformer.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://systeminformer.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://learn.microsoft.com/en-us/sysinternals/downloads/procmon&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://learn.microsoft.com/en-us/sysinternals/downloads/procmon&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you&amp;rsquo;re interested in making your own tiny ISO&amp;rsquo;s, you should look at ntdev&amp;rsquo;s GitHub repo &lt;a href=&#34;https://github.com/ntdevlabs/tiny11builder&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;tiny11builder&lt;/a&gt; which has all the tools for building a tiny Windows 11 ISO. There are also a number of GitHub forks to create tiny Windows 10 ISOs too&amp;hellip; Do your own research.&lt;/p&gt;
+&lt;h2&gt;References&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;references&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#references&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://x.com/NTDEV&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://x.com/NTDEV&lt;/a&gt;_&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://ntdev.blog/2024/01/08/the-complete-tiny10-and-tiny11-list/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://ntdev.blog/2024/01/08/the-complete-tiny10-and-tiny11-list/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://archive.org/details/@ntdev&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://archive.org/details/@ntdev&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://answers.microsoft.com/en-us/windows/forum/all/how-to-reduce-ram-consumption-in-windows-10/cb42a95f-8fe8-47dc-9721-d31e5379b826&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://answers.microsoft.com/en-us/windows/forum/all/how-to-reduce-ram-consumption-in-windows-10/cb42a95f-8fe8-47dc-9721-d31e5379b826&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://ntdev.blog/2023/12/10/how-to-build-your-own-tiny11-the-definitive-guide-on-how-to-create-the-perfect-lightweight-windows-image/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://ntdev.blog/2023/12/10/how-to-build-your-own-tiny11-the-definitive-guide-on-how-to-create-the-perfect-lightweight-windows-image/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://techcommunity.microsoft.com/discussions/windows11/how-to-open-resource-monitor-using-task-manager-on-windows-11/3333480&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://techcommunity.microsoft.com/discussions/windows11/how-to-open-resource-monitor-using-task-manager-on-windows-11/3333480&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Create Infinite Email aliases using Cloudflare Email Routing</title>
+      <link>https://fyx.me/minis/create-infinite-email-aliases-using-cloudflare-email-routing/</link>
+      <pubDate>Tue, 14 Jan 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/minis/create-infinite-email-aliases-using-cloudflare-email-routing/</guid>
+      <description>
+        
+        
+        &lt;p&gt;I did it&amp;hellip; I finally passed the big 30&amp;hellip;. 30000 unread emails!&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/Thunderbird%20Unread%20Emails.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;I would like to thank my pre-school teacher Jacky, Martha our cat lady neighbour who said I wouldn&amp;rsquo;t make it and Jacob, my imaginary friend with one eye. Many years of signing up to random garbage  and being too lenient has led me to this. But today this changes&amp;hellip;&lt;/p&gt;
+&lt;p&gt;While I&amp;rsquo;ve created and use many different email addresses to try and limit the garbage, I&amp;rsquo;ve wanted to move to an easier to manage solution that has the following features:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;allows me to create unlimited aliases easily so I can filter spam messages or addresses that I no longer want to receive and have the ability to identify leaks if any were to happen (ie. &lt;code&gt;garbage.com@mydomain.com&lt;/code&gt; is breached, hackers use the email to send spam/phishing to it which I can pinpoint easily to &lt;code&gt;garbage.com&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;be relatively cheap&lt;/li&gt;
+&lt;li&gt;allows me to create or use multiple domains so I can filter additionally based on trash levels. (ie. level 1 trash goes to domain1, level 2 trash goes to domain2 and super trash goes to thisdomainwillberotatedsoon)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Notice I haven&amp;rsquo;t mentioned email privacy in the above. While I value privacy and believe long term I will incorporate it into the above solution, I&amp;rsquo;m currently looking for a solution that provides improved security and peace of mind. I also have plans to improve my self-hosted setup in the future and will include email aliasing or an equivalent solution. However, for the time being, I believe this might be the easiest and cheapest solution to setup and play around with.&lt;/p&gt;
+&lt;p&gt;The solution I&amp;rsquo;m talking about is &lt;a href=&#34;https://developers.cloudflare.com/email-routing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Cloudflare email routing&lt;/a&gt; which allows you to forward emails sent to a domain you own to any email address of your choosing.&lt;/p&gt;
+&lt;p&gt;This feature is free meaning you only have to own a domain to be able to set this. Cloudflare provides an easy to use solution with just a few clicks.&lt;/p&gt;
+&lt;h2&gt;Setting up the redirection&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;setting-up-the-redirection&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#setting-up-the-redirection&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200&#34;&gt;
+  &lt;p class=&#34;hx-flex hx-items-center hx-font-medium&#34;&gt;&lt;svg height=16px class=&#34;hx-inline-block hx-align-middle hx-mr-2&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&#34;/&gt;&lt;/svg&gt;Important&lt;/p&gt;
+
+  &lt;div class=&#34;hx-w-full hx-min-w-0 hx-leading-7&#34;&gt;
+    &lt;div class=&#34;hx-mt-6 hx-leading-7 first:hx-mt-0&#34;&gt;&lt;p&gt;Before you start looking into this, remember that the ability to send email via Cloudflare email aliasing no longer works. You&amp;rsquo;d have to find another solution if you need to send email addresses or use your email directly.&lt;/p&gt;
+&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;What you&amp;rsquo;ll need:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;an email provider (eg. gmail, protonmail, microsoft, etc..) - Anything will be supported as it&amp;rsquo;s only used to receive email addresses. Choose whichever solution fits your needs.&lt;/li&gt;
+&lt;li&gt;a Cloudflare hosted domain you own and on which you can setup MX records to point to Cloudflare mail servers&lt;/li&gt;
+&lt;li&gt;5 minutes of your time&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Start by selecting the Cloudflare domain you want to setup for email routing from your  Cloudflare dashboard. You&amp;rsquo;ll then need to select &lt;code&gt;Email&lt;/code&gt; &amp;gt; &lt;code&gt;Email Routing&lt;/code&gt; from the left navbar, which should bring you to a page similar to this:&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/Cloudflare%20Email%20Routing%20Dashboard.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;From here, you&amp;rsquo;ll need to verify your destination address and setup the MX records which should only be a few clicks from the dashboard. Just follow the instructions. Once done, you can setup your routing rules and you can set a catch-all email address from here:&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/Cloudflare%20Catch-All%20Email%20Address%20Routing.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;You can also create custom addresses and redirect those to another destination if you wish. (or play around with Cloudflare workers for additional functionality):&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/Cloudflare%20Custom%20Email%20Addresses%20Routing.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;If done correctly, you can start using your email address to register accounts from any spammy website. For example, I needed access to Alltrails some time ago so I created an account on Alltrails with the email address &lt;code&gt;alltrails@domain2.com&lt;/code&gt; which I now receive all Alltrails spam emails to:&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/Alltrails%20Email%20Spam.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Looking at the email source, we can see it routed via Cloudflare properly:&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/Alltrails%20Email%20Source.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;div class=&#34;hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200&#34;&gt;
+  &lt;p class=&#34;hx-flex hx-items-center hx-font-medium&#34;&gt;&lt;svg height=16px class=&#34;hx-inline-block hx-align-middle hx-mr-2&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&#34;/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+
+  &lt;div class=&#34;hx-w-full hx-min-w-0 hx-leading-7&#34;&gt;
+    &lt;div class=&#34;hx-mt-6 hx-leading-7 first:hx-mt-0&#34;&gt;&lt;p&gt;Email providers may consider these routed emails as spam emails (if you are using a spammy looking email address). eg. I own a domain which contains the name of a know email provider in it and that almost always ends up being considered spam. This might be a good thing if you want to signup with this domain to only spammy websites that you dont need to keep emails for (ie. autodeletes after 30 days) but might not be desirable for other websites.&lt;/p&gt;
+&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;Sending emails&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;sending-emails&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#sending-emails&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Sending emails used to be possible, however Cloudflare discontinued their mailchannels partnership (I&amp;rsquo;m assuming it was abused a ton..) which means you can no longer send emails. They only allow you to send emails to address you own / have access to (second step phishing maybe? 🤔) and require you to verify you own the address (ie. email verification via email link).&lt;/p&gt;
+&lt;p&gt;See the following references for more details:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developers.cloudflare.com/email-routing/email-workers/send-email-workers/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://developers.cloudflare.com/email-routing/email-workers/send-email-workers/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.mailchannels.com/email-api/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.mailchannels.com/email-api/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Sh4yy/cloudflare-email&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Sh4yy/cloudflare-email&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Sh4yy/cloudflare-email/issues/16&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Sh4yy/cloudflare-email/issues/16&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Sh4yy/cloudflare-email/issues/19&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Sh4yy/cloudflare-email/issues/19&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;OPSEC, Privacy and notes of caution&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;opsec-privacy-and-notes-of-caution&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#opsec-privacy-and-notes-of-caution&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Cloudflare is a one stop shop which centralises a lot of internet traffic. The email are routed through their servers which could technically log all of them for whatever reason&amp;hellip; You should make your own decision whether to trust them with your emails.&lt;/li&gt;
+&lt;li&gt;For important accounts, I would recommend using your email address directly instead of an alias, unless you need it as part of your OPSEC/Threat Model.&lt;/li&gt;
+&lt;li&gt;While I check and I don&amp;rsquo;t think it&amp;rsquo;s possible to use the MX DNS records to identify if two Cloudflare domains are connected (ie. like for NS records on Cloudflare domains), there may be various attacks I am unaware off. Do your own research.&lt;/li&gt;
+&lt;li&gt;If you plan on using an email client like Thunderbird, you&amp;rsquo;ll need to have access to SMTP ports which depending on the email provider might be a paid feature (eg. protonmail) or protected by account verification. This is done by providers to reduce spam and phishing emails being sent from their services.&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Improving functionality of Open Source BOFs</title>
+      <link>https://fyx.me/minis/improving-functionality-of-open-source-bofs/</link>
+      <pubDate>Fri, 10 Jan 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/minis/improving-functionality-of-open-source-bofs/</guid>
+      <description>
+        
+        
+        &lt;h3&gt;OperatorsKit&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;operatorskit&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#operatorskit&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&#34;https://github.com/fyxme/OperatorsKit&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/fyxme/OperatorsKit&lt;/a&gt; &lt;br&gt;
+Original source: &lt;a href=&#34;https://github.com/REDMED-X/OperatorsKit/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/REDMED-X/OperatorsKit/&lt;/a&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;h4&gt;EnumDrives BOF&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;enumdrives-bof&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#enumdrives-bof&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;NETWORK drives will now find and print the mapped network share&lt;/li&gt;
+&lt;li&gt;add Makefile for compiling on linux via mingw&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;Before:
+
+DRIVE   TYPE
 ==========================================
-C:\ [Fixed drive]
-N:\ [Network drive]
+C:\     [Fixed drive]
+N:\     [Network drive]
+
 After:
-DRIVE TYPE
+
+DRIVE   TYPE
 ==========================================
-C:\ [Fixed drive]
-N:\ [Network drive] \\web01.fyxme.local\webserver\www&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h4>EnumSecProducts BOF&lt;span class="hx-absolute -hx-mt-20" id="enumsecproducts-bof">&lt;/span>
-&lt;a href="#enumsecproducts-bof" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
-&lt;li>expanded software list from 130 to 150 security tools&lt;/li>
-&lt;li>added improved output with pid and procname for identified security tools&lt;/li>
-&lt;li>add Makefile for compiling on linux via mingw&lt;/li>
-&lt;/ul>
-&lt;p>The BOF has been modified to include the process id (pid) and the filename of the security process it flagged.&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>Before:
-Description Category
+C:\     [Fixed drive]
+N:\     [Network drive] \\web01.fyxme.local\webserver\www&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;h4&gt;EnumSecProducts BOF&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;enumsecproducts-bof&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#enumsecproducts-bof&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;expanded software list from 130 to 150 security tools&lt;/li&gt;
+&lt;li&gt;added improved output with pid and procname for identified security tools&lt;/li&gt;
+&lt;li&gt;add Makefile for compiling on linux via mingw&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The BOF has been modified to include the process id (pid) and the filename of the security process it flagged.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;Before:
+
+Description                     Category        
 ==============================================================
-Windows Defender AV
-Microsoft Security Essentials AV
+Windows Defender             AV
+Microsoft Security Essentials    AV
+
+
 After:
-Category Pid Filename Description
+
+Category        Pid     Filename                Description
 ==============================================================
-AV 1688 msmpeng.exe Windows Defender
-AV 3240 nissrv.exe Microsoft Security Essentials&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h4>EnumTaskScheduler BOF&lt;span class="hx-absolute -hx-mt-20" id="enumtaskscheduler-bof">&lt;/span>
-&lt;a href="#enumtaskscheduler-bof" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
-&lt;li>Find and print command arguments for each scheduled task that runs an executable&lt;/li>
-&lt;li>add Makefile for compiling on linux via mingw&lt;/li>
-&lt;/ul>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>Before:
+AV      1688    msmpeng.exe             Windows Defender
+AV      3240    nissrv.exe              Microsoft Security Essentials&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;h4&gt;EnumTaskScheduler BOF&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;enumtaskscheduler-bof&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#enumtaskscheduler-bof&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Find and print command arguments for each scheduled task that runs an executable&lt;/li&gt;
+&lt;li&gt;add Makefile for compiling on linux via mingw&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;Before:
+
 [&amp;#43;] Scheduled tasks in root folder:
 =======================================================
+
 Task Name: Daily Reboot
 - Task running as: ahomer
 - Action type: Start a program
 - Executable path: C:\Windows\System32\cmd.exe
 - Trigger type: Daily
 ----------------------------------------------------
+
 After:
+
 [&amp;#43;] Scheduled tasks in root folder:
 =======================================================
+
 Task Name: Daily Reboot
 - Task running as: ahomer
 - Action type: Start a program
 - Executable path: C:\Windows\System32\cmd.exe
 - Command Arguments: /c &amp;#34;shutdown /r /t 0&amp;#34;
 - Trigger type: Daily
-----------------------------------------------------&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div></description></item></channel></rss>
+----------------------------------------------------&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

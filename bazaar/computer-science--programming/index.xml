@@ -1,569 +1,821 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fyx(me) –</title><link>https://fyx.me/bazaar/computer-science--programming/</link><description>Recent content on fyx(me)</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://fyx.me/bazaar/computer-science--programming/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://fyx.me/bazaar/computer-science--programming/ai-tools/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/ai-tools/</guid><description>
-&lt;h2>&lt;a href="https://docs.cline.bot/" target="_blank" rel="noopener">Cline&lt;/a>&lt;span class="hx-absolute -hx-mt-20" id="clinehttpsdocsclinebot">&lt;/span>
-&lt;a href="#clinehttpsdocsclinebot" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
-&lt;p>Cline is an AI development assistant which integrates with Microsoft Visual Studio Code. It provides an interface between your IDE and LLMs facilitating code development, increasing productivity and lowering the barrier to entry for new coders. Depending on permissions, Cline can read/write files, execute commands, use your web browser, and expand its capabilities with Model Context Protocol servers.&lt;/p>
-&lt;/blockquote>
-&lt;h3>What Can Cline Do?&lt;span class="hx-absolute -hx-mt-20" id="what-can-cline-do">&lt;/span>
-&lt;a href="#what-can-cline-do" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Cline is your AI assistant that can:&lt;/p>
-&lt;ul>
-&lt;li>Edit and create files in your project&lt;/li>
-&lt;li>Run terminal commands&lt;/li>
-&lt;li>Search and analyze your code&lt;/li>
-&lt;li>Help debug and fix issues&lt;/li>
-&lt;li>Automate repetitive tasks&lt;/li>
-&lt;li>Integrate with external tools&lt;/li>
-&lt;/ul>
-&lt;h3>Usage&lt;span class="hx-absolute -hx-mt-20" id="usage">&lt;/span>
-&lt;a href="#usage" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
-&lt;li>&lt;strong>Start a Task&lt;/strong>
-&lt;ul>
-&lt;li>Type your request in the chat&lt;/li>
-&lt;li>Example: &amp;ldquo;Create a new React component called Header&amp;rdquo;&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;strong>Provide Context&lt;/strong>
-&lt;ul>
-&lt;li>Use @ mentions to add files, folders, or URLs&lt;/li>
-&lt;li>Example: &amp;ldquo;@file:src/components/App.tsx&amp;rdquo;&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;strong>Review Changes&lt;/strong>
-&lt;ul>
-&lt;li>Cline will show diffs before making changes&lt;/li>
-&lt;li>You can edit or reject changes&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ol></description></item><item><title/><link>https://fyx.me/bazaar/computer-science--programming/docker/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/docker/</guid><description>
-&lt;h3>Migrating docker volume from one server to another&lt;span class="hx-absolute -hx-mt-20" id="migrating-docker-volume-from-one-server-to-another">&lt;/span>
-&lt;a href="#migrating-docker-volume-from-one-server-to-another" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>Using &lt;code>docker run&lt;/code> + &lt;code>tar&lt;/code> (Manual Backup &amp;amp; Restore)**&lt;span class="hx-absolute -hx-mt-20" id="using-docker-run--tar-manual-backup--restore">&lt;/span>
-&lt;a href="#using-docker-run--tar-manual-backup--restore" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ol>
-&lt;li>&lt;strong>Stop the container&lt;/strong> (if running):&lt;/li>
-&lt;/ol>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">docker stop &amp;lt;container_name&amp;gt;&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;ol start="2">
-&lt;li>&lt;strong>Create a backup of the volume&lt;/strong> on the source host:&lt;/li>
-&lt;/ol>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">docker run --rm -v &amp;lt;volume_name&amp;gt;:/volume -v &lt;span class="k">$(&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="k">)&lt;/span>:/backup busybox tar czf /backup/&amp;lt;backup_file&amp;gt;.tar.gz -C /volume ./&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;p>&lt;em>This creates a compressed &lt;code>.tar.gz&lt;/code> file with all volume data.&lt;/em>&lt;/p>
-&lt;ol start="3">
-&lt;li>&lt;strong>Transfer the backup file&lt;/strong> to the new host using &lt;code>scp&lt;/code>, &lt;code>rsync&lt;/code>, or any file transfer method&lt;/li>
-&lt;/ol>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">scp &amp;lt;backup_file&amp;gt;.tar.gz user@new_host:/path/to/backup/&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;ol start="4">
-&lt;li>&lt;strong>Restore the volume&lt;/strong> on the destination host:&lt;/li>
-&lt;/ol>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">docker volume create &amp;lt;new_volume_name&amp;gt;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker run --rm -v &amp;lt;new_volume_name&amp;gt;:/volume -v &lt;span class="k">$(&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="k">)&lt;/span>:/backup busybox sh -c &lt;span class="s2">&amp;#34;tar xzf /backup/&amp;lt;backup_file&amp;gt;.tar.gz -C /volume&amp;#34;&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;p>&lt;em>This extracts the backup into a new volume.&lt;/em>&lt;/p>
-&lt;ol start="5">
-&lt;li>&lt;strong>Start your container&lt;/strong> with the new volume:&lt;/li>
-&lt;/ol>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">docker run -v &amp;lt;new_volume_name&amp;gt;:/path/in/container ...&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div></description></item><item><title/><link>https://fyx.me/bazaar/computer-science--programming/file-synchronisation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/file-synchronisation/</guid><description>
-&lt;h2>Rsync&lt;span class="hx-absolute -hx-mt-20" id="rsync">&lt;/span>
-&lt;a href="#rsync" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code># rsync -avPh src dst
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>fyx(me) – </title>
+    <link>https://fyx.me/bazaar/computer-science--programming/</link>
+    <description>Recent content on fyx(me)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	  <atom:link href="https://fyx.me/bazaar/computer-science--programming/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title></title>
+      <link>https://fyx.me/bazaar/computer-science--programming/ai-tools/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/computer-science--programming/ai-tools/</guid>
+      <description>
+        
+        
+        &lt;h2&gt;&lt;a href=&#34;https://docs.cline.bot/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Cline&lt;/a&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;clinehttpsdocsclinebot&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#clinehttpsdocsclinebot&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;blockquote&gt;
+  &lt;p&gt;Cline is an AI development assistant which integrates with Microsoft Visual Studio Code. It provides an interface between your IDE and LLMs facilitating code development, increasing productivity and lowering the barrier to entry for new coders. Depending on permissions, Cline can read/write files, execute commands, use your web browser, and expand its capabilities with Model Context Protocol servers.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;h3&gt;What Can Cline Do?&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;what-can-cline-do&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#what-can-cline-do&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Cline is your AI assistant that can:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Edit and create files in your project&lt;/li&gt;
+&lt;li&gt;Run terminal commands&lt;/li&gt;
+&lt;li&gt;Search and analyze your code&lt;/li&gt;
+&lt;li&gt;Help debug and fix issues&lt;/li&gt;
+&lt;li&gt;Automate repetitive tasks&lt;/li&gt;
+&lt;li&gt;Integrate with external tools&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Usage&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;usage&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#usage&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Start a Task&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;Type your request in the chat&lt;/li&gt;
+&lt;li&gt;Example: &amp;ldquo;Create a new React component called Header&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Provide Context&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;Use @ mentions to add files, folders, or URLs&lt;/li&gt;
+&lt;li&gt;Example: &amp;ldquo;@file:src/components/App.tsx&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Review Changes&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;Cline will show diffs before making changes&lt;/li&gt;
+&lt;li&gt;You can edit or reject changes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://fyx.me/bazaar/computer-science--programming/docker/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/computer-science--programming/docker/</guid>
+      <description>
+        
+        
+        &lt;h3&gt;Migrating docker volume from one server to another&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;migrating-docker-volume-from-one-server-to-another&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#migrating-docker-volume-from-one-server-to-another&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Using &lt;code&gt;docker run&lt;/code&gt; + &lt;code&gt;tar&lt;/code&gt; (Manual Backup &amp;amp; Restore)**&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;using-docker-run--tar-manual-backup--restore&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#using-docker-run--tar-manual-backup--restore&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Stop the container&lt;/strong&gt; (if running):&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker stop &amp;lt;container_name&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;&lt;strong&gt;Create a backup of the volume&lt;/strong&gt; on the source host:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker run --rm -v &amp;lt;volume_name&amp;gt;:/volume -v &lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;:/backup busybox tar czf /backup/&amp;lt;backup_file&amp;gt;.tar.gz -C /volume ./&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;This creates a compressed &lt;code&gt;.tar.gz&lt;/code&gt; file with all volume data.&lt;/em&gt;&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;&lt;strong&gt;Transfer the backup file&lt;/strong&gt; to the new host using &lt;code&gt;scp&lt;/code&gt;, &lt;code&gt;rsync&lt;/code&gt;, or any file transfer method&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;scp &amp;lt;backup_file&amp;gt;.tar.gz user@new_host:/path/to/backup/&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;&lt;strong&gt;Restore the volume&lt;/strong&gt; on the destination host:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker volume create &amp;lt;new_volume_name&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker run --rm -v &amp;lt;new_volume_name&amp;gt;:/volume -v &lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;:/backup busybox sh -c &lt;span class=&#34;s2&#34;&gt;&amp;#34;tar xzf /backup/&amp;lt;backup_file&amp;gt;.tar.gz -C /volume&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;This extracts the backup into a new volume.&lt;/em&gt;&lt;/p&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;&lt;strong&gt;Start your container&lt;/strong&gt; with the new volume:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker run -v &amp;lt;new_volume_name&amp;gt;:/path/in/container ...&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://fyx.me/bazaar/computer-science--programming/file-synchronisation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/computer-science--programming/file-synchronisation/</guid>
+      <description>
+        
+        
+        &lt;h2&gt;Rsync&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;rsync&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#rsync&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;# rsync -avPh src dst
 rsync -avPh example test@10.10.10.10:.
+
 # needs to be installed on both local and remote
 # apt update &amp;amp;&amp;amp; apt get install rsync
-#&amp;#39;use -avP&amp;#39; and &amp;#39;know how a trailing slash changes what rsync does&amp;#39; are basically the two rules that cover 99% of all rsync usage.&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div></description></item><item><title/><link>https://fyx.me/bazaar/computer-science--programming/git/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/git/</guid><description>
-&lt;h3>Git signing&lt;span class="hx-absolute -hx-mt-20" id="git-signing">&lt;/span>
-&lt;a href="#git-signing" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Get git signing key ID:&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code># get keys
+
+#&amp;#39;use -avP&amp;#39; and &amp;#39;know how a trailing slash changes what rsync does&amp;#39; are basically the two rules that cover 99% of all rsync usage.&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://fyx.me/bazaar/computer-science--programming/git/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/computer-science--programming/git/</guid>
+      <description>
+        
+        
+        &lt;h3&gt;Git signing&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;git-signing&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#git-signing&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Get git signing key ID:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;# get keys
 gpg --list-secret-keys --keyid-format SHORT
+
 # key id is the one after rsa4096
-rsa4096/XXXXXXXX&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;p>Setup &lt;code>.gitconfig&lt;/code> to sign automatically:&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div class="filename" dir="auto">.gitconfig&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>user&lt;span class="o">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">useConfigOnly&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">true&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">email&lt;/span> &lt;span class="o">=&lt;/span> ...
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">signingkey&lt;/span> &lt;span class="o">=&lt;/span> &amp;lt;XXXXXXXX&amp;gt;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>commit&lt;span class="o">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">gpgSign&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">true&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>tag&lt;span class="o">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">gpgSign&lt;/span> &lt;span class="o">=&lt;/span> true&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;blockquote>
-&lt;p>ref: &lt;a href="https://git-scm.com/book/ms/v2/Git-Tools-Signing-Your-Work" target="_blank" rel="noopener">https://git-scm.com/book/ms/v2/Git-Tools-Signing-Your-Work&lt;/a> &lt;br />
-ref: &lt;a href="https://withblue.ink/2020/05/17/how-and-why-to-sign-git-commits.html" target="_blank" rel="noopener">https://withblue.ink/2020/05/17/how-and-why-to-sign-git-commits.html&lt;/a>&lt;/p>
-&lt;/blockquote>
-&lt;h3>Git diff(ing): Generating and Applying code patches&lt;span class="hx-absolute -hx-mt-20" id="git-diffing-generating-and-applying-code-patches">&lt;/span>
-&lt;a href="#git-diffing-generating-and-applying-code-patches" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># GENERATING&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># head -1 &lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git format-patch -1 HEAD
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># head - 3 to head&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git format-patch HEAD~3..HEAD
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># generating a single patch across multiple commits&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git format-patch cc1dde0dd^..6de6d4b06 --stdout &amp;gt; foo.patch
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># generating diff from tags (can use --stat to only get the number of lines changed)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git diff 2.0.0 1.0.0 --stat
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># generating patches for uncommited changes&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git diff &amp;gt; my-changes.patch
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># APPLYING&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git apply &amp;lt;patch-file&amp;gt;&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;blockquote>
-&lt;p>ref: &lt;a href="https://www.geeksforgeeks.org/how-to-generate-and-apply-patches-with-git/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/how-to-generate-and-apply-patches-with-git/&lt;/a>&lt;/p>
-&lt;/blockquote>
-&lt;h4>Using linux diff command&lt;span class="hx-absolute -hx-mt-20" id="using-linux-diff-command">&lt;/span>
-&lt;a href="#using-linux-diff-command" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Can also be done from linux diff commands directly:&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># GENERATING&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># new code has the new changes we want to make as part of the patch&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">diff -ru &amp;lt;old code&amp;gt; &amp;lt;new code&amp;gt; &amp;gt; mychanges.patch
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># APPLYING&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># need to be in the directory in which you want to make the diff changes from&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">patch -i mychanges.patch&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h3>Encrypted git repos&lt;span class="hx-absolute -hx-mt-20" id="encrypted-git-repos">&lt;/span>
-&lt;a href="#encrypted-git-repos" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
-&lt;p class="hx-flex hx-items-center hx-font-medium">Tbd&lt;/p>
-&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
-&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;/div>
-&lt;/div>
-&lt;/div>
-&lt;ul>
-&lt;li>&lt;a href="https://git-annex.branchable.com/tips/fully_encrypted_git_repositories_with_gcrypt/" target="_blank" rel="noopener">https://git-annex.branchable.com/tips/fully_encrypted_git_repositories_with_gcrypt/&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h3>Git Convetional Commits&lt;span class="hx-absolute -hx-mt-20" id="git-convetional-commits">&lt;/span>
-&lt;a href="#git-convetional-commits" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>See &lt;a href="../versioning/" >versioning&lt;/a>&lt;/p></description></item><item><title/><link>https://fyx.me/bazaar/computer-science--programming/image-modifications/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/image-modifications/</guid><description>
-&lt;h2>Converting PDF to png&lt;span class="hx-absolute -hx-mt-20" id="converting-pdf-to-png">&lt;/span>
-&lt;a href="#converting-pdf-to-png" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Using imagemagick:&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">convert example.pdf example.png&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;p>If you get an error about some PDF policy, make sure you have ghostcript installed (&lt;code>gs --version&lt;/code>) and comment out the following line in the &lt;code>/etc/ImageMagick-6/policy.xml&lt;/code> file:&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;policy&lt;/span> &lt;span class="na">domain=&lt;/span>&lt;span class="s">&amp;#34;coder&amp;#34;&lt;/span> &lt;span class="na">rights=&lt;/span>&lt;span class="s">&amp;#34;none&amp;#34;&lt;/span> &lt;span class="na">pattern=&lt;/span>&lt;span class="s">&amp;#34;PDF&amp;#34;&lt;/span> &lt;span class="nt">/&amp;gt;&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div></description></item><item><title/><link>https://fyx.me/bazaar/computer-science--programming/latex/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/latex/</guid><description>
-&lt;h2>Pandoc&lt;span class="hx-absolute -hx-mt-20" id="pandoc">&lt;/span>
-&lt;a href="#pandoc" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>Installation&lt;span class="hx-absolute -hx-mt-20" id="installation">&lt;/span>
-&lt;a href="#installation" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>sudo apt update
-sudo apt install pandoc&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h3>Latex to PDF&lt;span class="hx-absolute -hx-mt-20" id="latex-to-pdf">&lt;/span>
-&lt;a href="#latex-to-pdf" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>pandoc example.tex -o example.pdf --pdf-engine=pdflatex
+rsa4096/XXXXXXXX&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;p&gt;Setup &lt;code&gt;.gitconfig&lt;/code&gt; to sign automatically:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;div class=&#34;filename&#34; dir=&#34;auto&#34;&gt;.gitconfig&lt;/div&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;user&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nv&#34;&gt;useConfigOnly&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nv&#34;&gt;email&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; ...
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nv&#34;&gt;signingkey&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &amp;lt;XXXXXXXX&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;commit&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nv&#34;&gt;gpgSign&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;tag&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nv&#34;&gt;gpgSign&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; true&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;ref: &lt;a href=&#34;https://git-scm.com/book/ms/v2/Git-Tools-Signing-Your-Work&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://git-scm.com/book/ms/v2/Git-Tools-Signing-Your-Work&lt;/a&gt; &lt;br /&gt;
+ref: &lt;a href=&#34;https://withblue.ink/2020/05/17/how-and-why-to-sign-git-commits.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://withblue.ink/2020/05/17/how-and-why-to-sign-git-commits.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;h3&gt;Git diff(ing): Generating and Applying code patches&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;git-diffing-generating-and-applying-code-patches&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#git-diffing-generating-and-applying-code-patches&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# GENERATING&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# head -1 &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git format-patch -1 HEAD
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# head - 3 to head&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git format-patch HEAD~3..HEAD
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# generating a single patch across multiple commits&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git format-patch cc1dde0dd^..6de6d4b06 --stdout &amp;gt; foo.patch
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# generating diff from tags (can use --stat to only get the number of lines changed)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git diff 2.0.0 1.0.0 --stat
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# generating patches for uncommited changes&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git diff &amp;gt; my-changes.patch
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# APPLYING&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git apply &amp;lt;patch-file&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;ref: &lt;a href=&#34;https://www.geeksforgeeks.org/how-to-generate-and-apply-patches-with-git/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.geeksforgeeks.org/how-to-generate-and-apply-patches-with-git/&lt;/a&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;h4&gt;Using linux diff command&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;using-linux-diff-command&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#using-linux-diff-command&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Can also be done from linux diff commands directly:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# GENERATING&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# new code has the new changes we want to make as part of the patch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;diff -ru &amp;lt;old code&amp;gt; &amp;lt;new code&amp;gt; &amp;gt; mychanges.patch
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# APPLYING&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# need to be in the directory in which you want to make the diff changes from&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;patch -i mychanges.patch&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;h3&gt;Encrypted git repos&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;encrypted-git-repos&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#encrypted-git-repos&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300&#34;&gt;
+  &lt;p class=&#34;hx-flex hx-items-center hx-font-medium&#34;&gt;Tbd&lt;/p&gt;
+
+  &lt;div class=&#34;hx-w-full hx-min-w-0 hx-leading-7&#34;&gt;
+    &lt;div class=&#34;hx-mt-6 hx-leading-7 first:hx-mt-0&#34;&gt;&lt;p&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://git-annex.branchable.com/tips/fully_encrypted_git_repositories_with_gcrypt/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://git-annex.branchable.com/tips/fully_encrypted_git_repositories_with_gcrypt/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Git Convetional Commits&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;git-convetional-commits&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#git-convetional-commits&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;See &lt;a href=&#34;../versioning/&#34; &gt;versioning&lt;/a&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://fyx.me/bazaar/computer-science--programming/image-modifications/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/computer-science--programming/image-modifications/</guid>
+      <description>
+        
+        
+        &lt;h2&gt;Converting PDF to png&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;converting-pdf-to-png&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#converting-pdf-to-png&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Using imagemagick:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;convert example.pdf example.png&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;p&gt;If you get an error about some PDF policy, make sure you have ghostcript installed (&lt;code&gt;gs --version&lt;/code&gt;) and comment out the following line in the &lt;code&gt;/etc/ImageMagick-6/policy.xml&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;policy&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;domain=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;coder&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;rights=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;none&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;pattern=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;PDF&amp;#34;&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;/&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://fyx.me/bazaar/computer-science--programming/latex/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/computer-science--programming/latex/</guid>
+      <description>
+        
+        
+        &lt;h2&gt;Pandoc&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;pandoc&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#pandoc&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Installation&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;installation&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#installation&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;sudo apt update
+sudo apt install pandoc&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;h3&gt;Latex to PDF&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;latex-to-pdf&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#latex-to-pdf&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;pandoc example.tex -o example.pdf --pdf-engine=pdflatex
+
 # xelatex supports more fonts and might give better results. YMMV.
 pandoc example.tex -o example.pdf --pdf-engine=xelatex
+
 # adding metadata
 pandoc example.tex -o example.pdf \
---pdf-engine=xelatex \
---template=my_template.tex \ # Use a custom template
---metadata title=&amp;#34;My PDF&amp;#34; \ # Set document metadata
---metadata author=&amp;#34;fyx(me)&amp;#34;&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;blockquote>
-&lt;p>Ref: &lt;a href="https://www.reddit.com/r/LaTeX/comments/cj0j8h/pdflatex_or_xelatex/" target="_blank" rel="noopener">https://www.reddit.com/r/LaTeX/comments/cj0j8h/pdflatex_or_xelatex/&lt;/a>&lt;/p>
-&lt;/blockquote>
-&lt;h4>Installing &lt;code>pdflatex&lt;/code> and &lt;code>xelatex&lt;/code> engines&lt;span class="hx-absolute -hx-mt-20" id="installing-pdflatex-and-xelatex-engines">&lt;/span>
-&lt;a href="#installing-pdflatex-and-xelatex-engines" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>sudo apt update
-sudo apt install texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-xetex&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div></description></item><item><title/><link>https://fyx.me/bazaar/computer-science--programming/orchestration-workflows/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/orchestration-workflows/</guid><description>
-&lt;h3>Workflow orchestration&lt;span class="hx-absolute -hx-mt-20" id="workflow-orchestration">&lt;/span>
-&lt;a href="#workflow-orchestration" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-rounded-lg hx-border hx-py-2 ltr:hx-pr-4 rtl:hx-pl-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
-&lt;div class="ltr:hx-pl-3 ltr:hx-pr-2 rtl:hx-pr-3 rtl:hx-pl-2">&lt;/div>
-&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
-&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;strong>tldr:&lt;/strong> A fancy &lt;code>cron&lt;/code> runner with advanced workflow management, status monitoring, alerting, etc&amp;hellip;&lt;/p>
-&lt;p>Cyber security use cases:&lt;/p>
-&lt;ul>
-&lt;li>Monitoring tasks&lt;/li>
-&lt;li>Scheduled offensive/defensive scan triggers&lt;/li>
-&lt;li>Daily Enumeration workflows&lt;/li>
-&lt;li>data pipelines&lt;/li>
-&lt;li>and more&amp;hellip;&lt;/li>
-&lt;/ul>
-&lt;/div>
-&lt;/div>
-&lt;/div>
-&lt;h4>Prefect&lt;span class="hx-absolute -hx-mt-20" id="prefect">&lt;/span>
-&lt;a href="#prefect" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
-&lt;p>&lt;strong>Prefect&lt;/strong> offers modern orchestration solutions to empower data teams to build resilient workflows that scale with versatile resource needs.&lt;/p>
-&lt;p>Ref: &lt;a href="https://www.prefect.io/" target="_blank" rel="noopener">https://www.prefect.io/&lt;/a>&lt;/p>
-&lt;/blockquote>
-&lt;p>
-&lt;img src="../img/prefect.png" alt="Prefect Dashboard" loading="lazy" />&lt;/p>
-&lt;h4>Apache Airflow&lt;span class="hx-absolute -hx-mt-20" id="apache-airflow">&lt;/span>
-&lt;a href="#apache-airflow" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
-&lt;p>&lt;strong>Apache Airflow®&lt;/strong> is a platform created by the community to programmatically author, schedule and monitor workflows.&lt;/p>
-&lt;p>Ref: &lt;a href="https://airflow.apache.org/" target="_blank" rel="noopener">https://airflow.apache.org/&lt;/a>&lt;/p>
-&lt;/blockquote>
-&lt;p>
-&lt;img src="../img/apache-airflow.png" alt="Apache Airflow Dashboard" loading="lazy" />&lt;/p>
-&lt;h3>Difference between CI-CD runners and Workflow orchestrators&lt;span class="hx-absolute -hx-mt-20" id="difference-between-ci-cd-runners-and-workflow-orchestrators">&lt;/span>
-&lt;a href="#difference-between-ci-cd-runners-and-workflow-orchestrators" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Difference between CI-CD runners like &lt;code>Github actions&lt;/code> and Workflow orchestrators like &lt;code>Airflow&lt;/code> and &lt;code>Perfect&lt;/code>?&lt;/p>
-&lt;blockquote>
-&lt;p>As to the differences, GitHub actions is generally a &amp;ldquo;on commit, do something&amp;rdquo;, like build an image, run tests, linting, build documentation, etc. It&amp;rsquo;s a tool generally to automate actions on your repository.&lt;/p>
-&lt;p>Airflow and Prefect are orchestration systems. They&amp;rsquo;re not tied to a repo and can do a wider variety of things. For example, every day at 4am run a daily report for the prior business day. Every weekend retain our ML models by spinning up some Amazon ECS tasks. Every half an hour hit an external API and digest it&amp;rsquo;s data into our data lake.&lt;/p>
-&lt;p>[&amp;hellip;] GitHub actions&amp;hellip; Can be shoehorned to do orchestration in a limited fashion, but it&amp;rsquo;s not quite the intent.&lt;/p>
-&lt;p>Prefect and airflow are, however, explicitly designed to do it. For Prefect, that means I dictate how things are run (containers, dask workers, other), I can specific what to happen on failure (retry, pagerduty alert, slack warnings, etc), and many other things that in general make my life easier bridging the proof of concept to fully productionised system easier.&lt;/p>
-&lt;p>Ref: &lt;a href="https://www.reddit.com/r/mlops/comments/13ulfux/airflow_vs_github_actions_workflows/" target="_blank" rel="noopener">https://www.reddit.com/r/mlops/comments/13ulfux/airflow_vs_github_actions_workflows/&lt;/a>&lt;/p>
-&lt;/blockquote></description></item><item><title/><link>https://fyx.me/bazaar/computer-science--programming/versioning/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/versioning/</guid><description>
-&lt;h3>Semver : Semantic versioning&lt;span class="hx-absolute -hx-mt-20" id="semver--semantic-versioning">&lt;/span>
-&lt;a href="#semver--semantic-versioning" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
-&lt;p>ref: &lt;a href="https://semver.org/" target="_blank" rel="noopener">https://semver.org/&lt;/a>&lt;/p>
-&lt;/blockquote>
-&lt;p>Given a version number MAJOR.MINOR.PATCH, increment the:&lt;/p>
-&lt;ol>
-&lt;li>MAJOR version when you make incompatible API changes&lt;/li>
-&lt;li>MINOR version when you add functionality in a backward compatible manner&lt;/li>
-&lt;li>PATCH version when you make backward compatible bug fixes&lt;/li>
-&lt;/ol>
-&lt;p>Additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format.&lt;/p>
-&lt;p>Other ref:&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://www.conventionalcommits.org/en/v1.0.0/" target="_blank" rel="noopener">https://www.conventionalcommits.org/en/v1.0.0/&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h3>Conventional commits&lt;span class="hx-absolute -hx-mt-20" id="conventional-commits">&lt;/span>
-&lt;a href="#conventional-commits" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
-&lt;p class="hx-flex hx-items-center hx-font-medium">Tldr&lt;/p>
-&lt;div class="hx-w-full hx-min-w-0 hx-leading-7">
-&lt;div class="hx-mt-6 hx-leading-7 first:hx-mt-0">&lt;p>&lt;strong>Commit formats:&lt;/strong> &lt;code>feat(parser): add ability to parse arrays&lt;/code> &lt;br>
-&lt;strong>Tags:&lt;/strong> &lt;code>feat, fix, build, chore, ci, docs, style, refactor, perf, test&lt;/code>&lt;br>
-&lt;strong>Breaking changes:&lt;/strong> a footer &lt;code>BREAKING CHANGE:&lt;/code>, or appends a &lt;code>!&lt;/code> after the type/scope (eg. &lt;code>fix(parser)!: fixed CVE-XXX by adding input validation&lt;/code>)&lt;/p>
-&lt;/div>
-&lt;/div>
-&lt;/div>
-&lt;p>The Conventional Commits specification is a lightweight convention on top of commit messages. It provides an easy set of rules for creating an explicit commit history; which makes it easier to write automated tools on top of. This convention dovetails with &lt;a href="http://semver.org" target="_blank" rel="noopener">SemVer&lt;/a>, by describing the features, fixes, and breaking changes made in commit messages.&lt;/p>
-&lt;p>The commit message should be structured as follows:&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>&amp;lt;type&amp;gt;[optional scope]: &amp;lt;description&amp;gt;
+    --pdf-engine=xelatex \
+    --template=my_template.tex \  # Use a custom template
+    --metadata title=&amp;#34;My PDF&amp;#34; \     # Set document metadata
+    --metadata author=&amp;#34;fyx(me)&amp;#34;&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Ref: &lt;a href=&#34;https://www.reddit.com/r/LaTeX/comments/cj0j8h/pdflatex_or_xelatex/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.reddit.com/r/LaTeX/comments/cj0j8h/pdflatex_or_xelatex/&lt;/a&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;h4&gt;Installing &lt;code&gt;pdflatex&lt;/code&gt; and &lt;code&gt;xelatex&lt;/code&gt; engines&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;installing-pdflatex-and-xelatex-engines&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#installing-pdflatex-and-xelatex-engines&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;sudo apt update
+sudo apt install texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-xetex&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://fyx.me/bazaar/computer-science--programming/orchestration-workflows/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/computer-science--programming/orchestration-workflows/</guid>
+      <description>
+        
+        
+        &lt;h3&gt;Workflow orchestration&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;workflow-orchestration&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#workflow-orchestration&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hx-overflow-x-auto hx-mt-6 hx-flex hx-rounded-lg hx-border hx-py-2 ltr:hx-pr-4 rtl:hx-pl-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300&#34;&gt;
+  &lt;div class=&#34;ltr:hx-pl-3 ltr:hx-pr-2 rtl:hx-pr-3 rtl:hx-pl-2&#34;&gt;&lt;/div&gt;
+
+  &lt;div class=&#34;hx-w-full hx-min-w-0 hx-leading-7&#34;&gt;
+    &lt;div class=&#34;hx-mt-6 hx-leading-7 first:hx-mt-0&#34;&gt;&lt;p&gt;&lt;strong&gt;tldr:&lt;/strong&gt; A fancy &lt;code&gt;cron&lt;/code&gt; runner with advanced workflow management, status monitoring, alerting, etc&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Cyber security use cases:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Monitoring tasks&lt;/li&gt;
+&lt;li&gt;Scheduled offensive/defensive scan triggers&lt;/li&gt;
+&lt;li&gt;Daily Enumeration workflows&lt;/li&gt;
+&lt;li&gt;data pipelines&lt;/li&gt;
+&lt;li&gt;and more&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h4&gt;Prefect&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;prefect&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#prefect&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Prefect&lt;/strong&gt; offers modern orchestration solutions to empower data teams to build resilient workflows that scale with versatile resource needs.&lt;/p&gt;
+&lt;p&gt;Ref: &lt;a href=&#34;https://www.prefect.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.prefect.io/&lt;/a&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/prefect.png&#34; alt=&#34;Prefect Dashboard&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h4&gt;Apache Airflow&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;apache-airflow&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#apache-airflow&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Apache Airflow®&lt;/strong&gt; is a platform created by the community to programmatically author, schedule and monitor workflows.&lt;/p&gt;
+&lt;p&gt;Ref: &lt;a href=&#34;https://airflow.apache.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://airflow.apache.org/&lt;/a&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/apache-airflow.png&#34; alt=&#34;Apache Airflow Dashboard&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h3&gt;Difference between CI-CD runners and Workflow orchestrators&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;difference-between-ci-cd-runners-and-workflow-orchestrators&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#difference-between-ci-cd-runners-and-workflow-orchestrators&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Difference between CI-CD runners like &lt;code&gt;Github actions&lt;/code&gt; and Workflow orchestrators like &lt;code&gt;Airflow&lt;/code&gt; and &lt;code&gt;Perfect&lt;/code&gt;?&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;As to the differences, GitHub actions is generally a &amp;ldquo;on commit, do something&amp;rdquo;, like build an image, run tests, linting, build documentation, etc. It&amp;rsquo;s a tool generally to automate actions on your repository.&lt;/p&gt;
+&lt;p&gt;Airflow and Prefect are orchestration systems. They&amp;rsquo;re not tied to a repo and can do a wider variety of things. For example, every day at 4am run a daily report for the prior business day. Every weekend retain our ML models by spinning up some Amazon ECS tasks. Every half an hour hit an external API and digest it&amp;rsquo;s data into our data lake.&lt;/p&gt;
+&lt;p&gt;[&amp;hellip;] GitHub actions&amp;hellip; Can be shoehorned to do orchestration in a limited fashion, but it&amp;rsquo;s not quite the intent.&lt;/p&gt;
+&lt;p&gt;Prefect and airflow are, however, explicitly designed to do it. For Prefect, that means I dictate how things are run (containers, dask workers, other), I can specific what to happen on failure (retry, pagerduty alert, slack warnings, etc), and many other things that in general make my life easier bridging the proof of concept to fully productionised system easier.&lt;/p&gt;
+&lt;p&gt;Ref: &lt;a href=&#34;https://www.reddit.com/r/mlops/comments/13ulfux/airflow_vs_github_actions_workflows/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.reddit.com/r/mlops/comments/13ulfux/airflow_vs_github_actions_workflows/&lt;/a&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://fyx.me/bazaar/computer-science--programming/versioning/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/computer-science--programming/versioning/</guid>
+      <description>
+        
+        
+        &lt;h3&gt;Semver : Semantic versioning&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;semver--semantic-versioning&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#semver--semantic-versioning&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;blockquote&gt;
+  &lt;p&gt;ref: &lt;a href=&#34;https://semver.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://semver.org/&lt;/a&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;p&gt;Given a version number MAJOR.MINOR.PATCH, increment the:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;MAJOR version when you make incompatible API changes&lt;/li&gt;
+&lt;li&gt;MINOR version when you add functionality in a backward compatible manner&lt;/li&gt;
+&lt;li&gt;PATCH version when you make backward compatible bug fixes&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format.&lt;/p&gt;
+&lt;p&gt;Other ref:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.conventionalcommits.org/en/v1.0.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.conventionalcommits.org/en/v1.0.0/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Conventional commits&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;conventional-commits&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#conventional-commits&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300&#34;&gt;
+  &lt;p class=&#34;hx-flex hx-items-center hx-font-medium&#34;&gt;Tldr&lt;/p&gt;
+
+  &lt;div class=&#34;hx-w-full hx-min-w-0 hx-leading-7&#34;&gt;
+    &lt;div class=&#34;hx-mt-6 hx-leading-7 first:hx-mt-0&#34;&gt;&lt;p&gt;&lt;strong&gt;Commit formats:&lt;/strong&gt; &lt;code&gt;feat(parser): add ability to parse arrays&lt;/code&gt; &lt;br&gt;
+&lt;strong&gt;Tags:&lt;/strong&gt; &lt;code&gt;feat, fix, build, chore, ci, docs, style, refactor, perf, test&lt;/code&gt;&lt;br&gt;
+&lt;strong&gt;Breaking changes:&lt;/strong&gt; a footer &lt;code&gt;BREAKING CHANGE:&lt;/code&gt;, or appends a &lt;code&gt;!&lt;/code&gt; after the type/scope (eg. &lt;code&gt;fix(parser)!: fixed CVE-XXX by adding input validation&lt;/code&gt;)&lt;/p&gt;
+&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The Conventional Commits specification is a lightweight convention on top of commit messages. It provides an easy set of rules for creating an explicit commit history; which makes it easier to write automated tools on top of. This convention dovetails with &lt;a href=&#34;http://semver.org&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SemVer&lt;/a&gt;, by describing the features, fixes, and breaking changes made in commit messages.&lt;/p&gt;
+&lt;p&gt;The commit message should be structured as follows:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;type&amp;gt;[optional scope]: &amp;lt;description&amp;gt;
+
 [optional body]
-[optional footer(s)]&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;p>The commit contains the following structural elements, to communicate intent to the consumers of your library:&lt;/p>
-&lt;ol>
-&lt;li>&lt;strong>fix:&lt;/strong> a commit of the &lt;em>type&lt;/em> &lt;code>fix&lt;/code> patches a bug in your codebase (this correlates with &lt;code>PATCH&lt;/code> in Semantic Versioning).&lt;/li>
-&lt;li>&lt;strong>feat:&lt;/strong> a commit of the &lt;em>type&lt;/em> &lt;code>feat&lt;/code> introduces a new feature to the codebase (this correlates with &lt;code>MINOR&lt;/code> in Semantic Versioning).&lt;/li>
-&lt;li>&lt;strong>BREAKING CHANGE:&lt;/strong> a commit that has a footer &lt;code>BREAKING CHANGE:&lt;/code>, or appends a &lt;code>!&lt;/code> after the type/scope, introduces a breaking API change (correlating with &lt;code>MAJOR&lt;/code> in Semantic Versioning). A BREAKING CHANGE can be part of commits of any &lt;em>type&lt;/em>.&lt;/li>
-&lt;li>&lt;em>types&lt;/em> other than &lt;code>fix:&lt;/code> and &lt;code>feat:&lt;/code> are allowed, for example &lt;a href="https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional" target="_blank" rel="noopener">@commitlint/config-conventional&lt;/a> (based on the &lt;a href="https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines" target="_blank" rel="noopener">Angular convention&lt;/a>) recommends &lt;code>build:&lt;/code>, &lt;code>chore:&lt;/code>, &lt;code>ci:&lt;/code>, &lt;code>docs:&lt;/code>, &lt;code>style:&lt;/code>, &lt;code>refactor:&lt;/code>, &lt;code>perf:&lt;/code>, &lt;code>test:&lt;/code>, and others.&lt;/li>
-&lt;li>&lt;em>footers&lt;/em> other than &lt;code>BREAKING CHANGE: &amp;lt;description&amp;gt;&lt;/code> may be provided and follow a convention similar to &lt;a href="https://git-scm.com/docs/git-interpret-trailers" target="_blank" rel="noopener">git trailer format&lt;/a>.&lt;/li>
-&lt;/ol>
-&lt;p>Additional types are not mandated by the Conventional Commits specification, and have no implicit effect in Semantic Versioning (unless they include a BREAKING CHANGE). A scope may be provided to a commit’s type, to provide additional contextual information and is contained within parenthesis, e.g., &lt;code>feat(parser): add ability to parse arrays&lt;/code>.&lt;/p>
-&lt;blockquote>
-&lt;p>Ref: &lt;a href="https://www.conventionalcommits.org/en/v1.0.0/" target="_blank" rel="noopener">https://www.conventionalcommits.org/en/v1.0.0/&lt;/a>&lt;/p>
-&lt;/blockquote></description></item><item><title/><link>https://fyx.me/bazaar/computer-science--programming/web-dev-cheatsheet/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/web-dev-cheatsheet/</guid><description>
-&lt;h3>Tech stack TLDR&lt;span class="hx-absolute -hx-mt-20" id="tech-stack-tldr">&lt;/span>
-&lt;a href="#tech-stack-tldr" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>- Frontend: svelte / react / *nothing* (aka html &amp;#43; javascript)
+
+[optional footer(s)]&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;p&gt;The commit contains the following structural elements, to communicate intent to the consumers of your library:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;fix:&lt;/strong&gt; a commit of the &lt;em&gt;type&lt;/em&gt; &lt;code&gt;fix&lt;/code&gt; patches a bug in your codebase (this correlates with &lt;code&gt;PATCH&lt;/code&gt;  in Semantic Versioning).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;feat:&lt;/strong&gt; a commit of the &lt;em&gt;type&lt;/em&gt; &lt;code&gt;feat&lt;/code&gt; introduces a new feature to the codebase (this correlates with &lt;code&gt;MINOR&lt;/code&gt; in Semantic Versioning).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;BREAKING CHANGE:&lt;/strong&gt; a commit that has a footer &lt;code&gt;BREAKING CHANGE:&lt;/code&gt;, or appends a &lt;code&gt;!&lt;/code&gt; after the type/scope, introduces a breaking API change (correlating with &lt;code&gt;MAJOR&lt;/code&gt; in Semantic Versioning). A BREAKING CHANGE can be part of commits of any &lt;em&gt;type&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;types&lt;/em&gt; other than &lt;code&gt;fix:&lt;/code&gt; and &lt;code&gt;feat:&lt;/code&gt; are allowed, for example &lt;a href=&#34;https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;@commitlint/config-conventional&lt;/a&gt; (based on the &lt;a href=&#34;https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Angular convention&lt;/a&gt;) recommends &lt;code&gt;build:&lt;/code&gt;, &lt;code&gt;chore:&lt;/code&gt;, &lt;code&gt;ci:&lt;/code&gt;, &lt;code&gt;docs:&lt;/code&gt;, &lt;code&gt;style:&lt;/code&gt;, &lt;code&gt;refactor:&lt;/code&gt;, &lt;code&gt;perf:&lt;/code&gt;, &lt;code&gt;test:&lt;/code&gt;, and others.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;footers&lt;/em&gt; other than &lt;code&gt;BREAKING CHANGE: &amp;lt;description&amp;gt;&lt;/code&gt; may be provided and follow a convention similar to &lt;a href=&#34;https://git-scm.com/docs/git-interpret-trailers&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;git trailer format&lt;/a&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Additional types are not mandated by the Conventional Commits specification, and have no implicit effect in Semantic Versioning (unless they include a BREAKING CHANGE). A scope may be provided to a commit’s type, to provide additional contextual information and is contained within parenthesis, e.g., &lt;code&gt;feat(parser): add ability to parse arrays&lt;/code&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Ref: &lt;a href=&#34;https://www.conventionalcommits.org/en/v1.0.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.conventionalcommits.org/en/v1.0.0/&lt;/a&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://fyx.me/bazaar/computer-science--programming/web-dev-cheatsheet/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/computer-science--programming/web-dev-cheatsheet/</guid>
+      <description>
+        
+        
+        &lt;h3&gt;Tech stack TLDR&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;tech-stack-tldr&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#tech-stack-tldr&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;- Frontend: svelte / react / *nothing* (aka html &amp;#43; javascript)
 - Backend: Nextjs (javascript) / express (javascript) / flask (python) / Laravel (php)
 - CSS: Tailwindcss
-- Runtime:
-- Javascript (express / nextjs): Deno or Bun - https://docs.deno.com/examples/next_tutorial/
-- Good comparaison here: https://betterstack.com/community/guides/scaling-nodejs/nodejs-vs-deno-vs-bun/#security
-- PHP (laravel): Nginx for easy mode, but recommend FrankenPHP or swoole for speed
-- https://laravel.com/docs/11.x/deployment#server-configuration
-- https://dev.to/dimdev/performance-benchmark-of-php-runtimes-2lmc
-- Python (flask): WSGI server like Gunicorn (might be worth using supervisor too)
-- https://shivamrana.me/2020/05/flask-prod/
+- Runtime: 
+	- Javascript (express / nextjs): Deno or Bun - https://docs.deno.com/examples/next_tutorial/
+		- Good comparaison here: https://betterstack.com/community/guides/scaling-nodejs/nodejs-vs-deno-vs-bun/#security
+	- PHP (laravel):  Nginx for easy mode, but recommend FrankenPHP or swoole for speed
+		- https://laravel.com/docs/11.x/deployment#server-configuration
+		- https://dev.to/dimdev/performance-benchmark-of-php-runtimes-2lmc
+	- Python (flask): WSGI server like Gunicorn (might be worth using supervisor too)
+		- https://shivamrana.me/2020/05/flask-prod/
+
 - Databases:
-- sqlite (for prototyping or small ass website)
-- postgresql
-- [optional] supabase
-- Other:
-- Queue system (and caching): Redis
-- Secrets manager: Hashicorp Vault
-- Reverse proxy: (anton Putra on youtube has great comparaisons)
-- HAProxy for speed and when using TLS
-- caddy for ease of use and when using TLS
-- nginx for speed and stability
-- traefik for ease of use with orchestrators like docker
-- sending emails:
-- resend.com&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h3>CSS frameworks&lt;span class="hx-absolute -hx-mt-20" id="css-frameworks">&lt;/span>
-&lt;a href="#css-frameworks" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Utility-based:&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://tailwindcss.com/" target="_blank" rel="noopener">https://tailwindcss.com/&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;p>Classless (good for prototyping):&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://simplecss.org/" target="_blank" rel="noopener">https://simplecss.org/&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h3>Branding&lt;span class="hx-absolute -hx-mt-20" id="branding">&lt;/span>
-&lt;a href="#branding" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>Colors&lt;span class="hx-absolute -hx-mt-20" id="colors">&lt;/span>
-&lt;a href="#colors" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Choosing colors:&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://coolors.co" target="_blank" rel="noopener">https://coolors.co&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.tailwindshades.com/" target="_blank" rel="noopener">https://www.tailwindshades.com/&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;p>Color wheels and color theory:&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://www.figma.com/color-wheel/" target="_blank" rel="noopener">https://www.figma.com/color-wheel/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.canva.com/colors/color-wheel/" target="_blank" rel="noopener">https://www.canva.com/colors/color-wheel/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.flux-academy.com/blog/ultimate-guide-to-choosing-colors-for-web-design" target="_blank" rel="noopener">https://www.flux-academy.com/blog/ultimate-guide-to-choosing-colors-for-web-design&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h4>Fonts&lt;span class="hx-absolute -hx-mt-20" id="fonts">&lt;/span>
-&lt;a href="#fonts" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
-&lt;li>&lt;a href="https://fonts.google.com/" target="_blank" rel="noopener">https://fonts.google.com/&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h4>Icons&lt;span class="hx-absolute -hx-mt-20" id="icons">&lt;/span>
-&lt;a href="#icons" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Generic:&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://lucide.dev/" target="_blank" rel="noopener">https://lucide.dev/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://heroicons.com/" target="_blank" rel="noopener">https://heroicons.com/&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;p>Brand Icons:&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://simpleicons.org/" target="_blank" rel="noopener">https://simpleicons.org/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://github.com/homarr-labs/dashboard-icons/blob/main/ICONS.md" target="_blank" rel="noopener">https://github.com/homarr-labs/dashboard-icons/blob/main/ICONS.md&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h4>Design and image editing&lt;span class="hx-absolute -hx-mt-20" id="design-and-image-editing">&lt;/span>
-&lt;a href="#design-and-image-editing" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
-&lt;li>&lt;a href="https://figma.com" target="_blank" rel="noopener">https://figma.com&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.photopea.com/" target="_blank" rel="noopener">https://www.photopea.com/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://canva.com/" target="_blank" rel="noopener">https://canva.com/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.gimp.org/" target="_blank" rel="noopener">https://www.gimp.org/&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h4>Free Stock Photos / placeholder content&lt;span class="hx-absolute -hx-mt-20" id="free-stock-photos--placeholder-content">&lt;/span>
-&lt;a href="#free-stock-photos--placeholder-content" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Favorites:&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://unsplash.com/" target="_blank" rel="noopener">https://unsplash.com/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.pexels.com/" target="_blank" rel="noopener">https://www.pexels.com/&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;p>Others:&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://www.pexels.com/" target="_blank" rel="noopener">https://www.pexels.com/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://pixabay.com/" target="_blank" rel="noopener">https://pixabay.com/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://coverr.co/" target="_blank" rel="noopener">https://coverr.co/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://unsplash.com/" target="_blank" rel="noopener">https://unsplash.com/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://pikwizard.com/" target="_blank" rel="noopener">https://pikwizard.com/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.videezy.com/" target="_blank" rel="noopener">https://www.videezy.com/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://mixkit.co/" target="_blank" rel="noopener">https://mixkit.co/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.canva.com/" target="_blank" rel="noopener">https://www.canva.com/&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://mixkit.co/free-stock-video/" target="_blank" rel="noopener">https://mixkit.co/free-stock-video/&lt;/a>&lt;/li>
-&lt;li>gfycat.com - free videos that do need citation&lt;/li>
-&lt;li>&lt;a href="https://avopix.com/premium-videos" target="_blank" rel="noopener">https://avopix.com/premium-videos&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;p>Ref:&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://www.reddit.com/r/PartneredYoutube/comments/11l3hnn/is_there_any_place_i_can_get_cheaper_or_free/" target="_blank" rel="noopener">https://www.reddit.com/r/PartneredYoutube/comments/11l3hnn/is_there_any_place_i_can_get_cheaper_or_free/&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h4>Illustrations&lt;span class="hx-absolute -hx-mt-20" id="illustrations">&lt;/span>
-&lt;a href="#illustrations" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
-&lt;li>&lt;a href="https://undraw.co/illustrations/2" target="_blank" rel="noopener">https://undraw.co/illustrations/2&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h3>SEO&lt;span class="hx-absolute -hx-mt-20" id="seo">&lt;/span>
-&lt;a href="#seo" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>Blogging&lt;span class="hx-absolute -hx-mt-20" id="blogging">&lt;/span>
-&lt;a href="#blogging" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
-&lt;li>For non-tech-savvy: &lt;a href="https://ghost.org/" target="_blank" rel="noopener">https://ghost.org/&lt;/a>&lt;/li>
-&lt;li>For tech-savvy (static site generator): &lt;a href="https://gohugo.io/" target="_blank" rel="noopener">https://gohugo.io/&lt;/a>&lt;/li>
-&lt;/ul></description></item><item><title/><link>https://fyx.me/bazaar/computer-science--programming/web-proxies/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://fyx.me/bazaar/computer-science--programming/web-proxies/</guid><description>
-&lt;h3>Caddy&lt;span class="hx-absolute -hx-mt-20" id="caddy">&lt;/span>
-&lt;a href="#caddy" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>Common infinite redirect issues&lt;span class="hx-absolute -hx-mt-20" id="common-infinite-redirect-issues">&lt;/span>
-&lt;a href="#common-infinite-redirect-issues" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
-&lt;li>cloudflare not in Full TLS mode (strict)&lt;/li>
-&lt;/ul>
-&lt;blockquote>
-&lt;p>The “classic” issue with Cloudflare proxy is when the client connects to Cloudflare over TLS but Cloudflare connects to Caddy over HTTP (Flexible mode), causing Caddy redirecting Cloudflare to HTTPS, but the end client is already on HTTPS, so they try again… and receive a redirect to what looks like the same place, ad nauseum.&lt;/p>
-&lt;/blockquote>
-&lt;ul>
-&lt;li>cloudflare dns token is not whitelisted from ipv4 or ipv6&lt;/li>
-&lt;/ul>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>$ journalctl -xeu caddy.service
+	- sqlite (for prototyping or small ass website)
+	- postgresql
+		- [optional] supabase
+
+- Other: 
+	- Queue system (and caching): Redis
+	- Secrets manager: Hashicorp Vault
+	- Reverse proxy: (anton Putra on youtube has great comparaisons) 
+		- HAProxy for speed and when using TLS
+		- caddy for ease of use and when using TLS
+		- nginx for speed and stability
+		- traefik for ease of use with orchestrators like docker
+	- sending emails:
+		- resend.com&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;h3&gt;CSS frameworks&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;css-frameworks&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#css-frameworks&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Utility-based:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://tailwindcss.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://tailwindcss.com/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Classless (good for prototyping):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://simplecss.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://simplecss.org/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Branding&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;branding&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#branding&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Colors&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;colors&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#colors&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Choosing colors:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://coolors.co&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://coolors.co&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.tailwindshades.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.tailwindshades.com/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Color wheels and color theory:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.figma.com/color-wheel/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.figma.com/color-wheel/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.canva.com/colors/color-wheel/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.canva.com/colors/color-wheel/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.flux-academy.com/blog/ultimate-guide-to-choosing-colors-for-web-design&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.flux-academy.com/blog/ultimate-guide-to-choosing-colors-for-web-design&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Fonts&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;fonts&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#fonts&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://fonts.google.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://fonts.google.com/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Icons&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;icons&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#icons&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Generic:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://lucide.dev/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://lucide.dev/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://heroicons.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://heroicons.com/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Brand Icons:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://simpleicons.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://simpleicons.org/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/homarr-labs/dashboard-icons/blob/main/ICONS.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/homarr-labs/dashboard-icons/blob/main/ICONS.md&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Design and image editing&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;design-and-image-editing&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#design-and-image-editing&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://figma.com&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://figma.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.photopea.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.photopea.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://canva.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://canva.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.gimp.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.gimp.org/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Free Stock Photos / placeholder content&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;free-stock-photos--placeholder-content&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#free-stock-photos--placeholder-content&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Favorites:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://unsplash.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://unsplash.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.pexels.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.pexels.com/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Others:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.pexels.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.pexels.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://pixabay.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://pixabay.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://coverr.co/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://coverr.co/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://unsplash.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://unsplash.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://pikwizard.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://pikwizard.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.videezy.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.videezy.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://mixkit.co/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://mixkit.co/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.canva.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.canva.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://mixkit.co/free-stock-video/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://mixkit.co/free-stock-video/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;gfycat.com - free videos that do need citation&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://avopix.com/premium-videos&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://avopix.com/premium-videos&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Ref:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.reddit.com/r/PartneredYoutube/comments/11l3hnn/is_there_any_place_i_can_get_cheaper_or_free/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.reddit.com/r/PartneredYoutube/comments/11l3hnn/is_there_any_place_i_can_get_cheaper_or_free/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Illustrations&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;illustrations&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#illustrations&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://undraw.co/illustrations/2&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://undraw.co/illustrations/2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;SEO&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;seo&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#seo&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Blogging&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;blogging&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#blogging&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;For non-tech-savvy: &lt;a href=&#34;https://ghost.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://ghost.org/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;For tech-savvy (static site generator): &lt;a href=&#34;https://gohugo.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://gohugo.io/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://fyx.me/bazaar/computer-science--programming/web-proxies/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/computer-science--programming/web-proxies/</guid>
+      <description>
+        
+        
+        &lt;h3&gt;Caddy&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;caddy&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#caddy&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Common infinite redirect issues&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;common-infinite-redirect-issues&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#common-infinite-redirect-issues&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;cloudflare not in Full TLS mode (strict)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;The “classic” issue with Cloudflare proxy is when the client connects to Cloudflare over TLS but Cloudflare connects to Caddy over HTTP (Flexible mode), causing Caddy redirecting Cloudflare to HTTPS, but the end client is already on HTTPS, so they try again… and receive a redirect to what looks like the same place, ad nauseum.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;cloudflare dns token is not whitelisted from ipv4 or ipv6&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;$ journalctl -xeu caddy.service
+
 ...
-Code:9109 Message:Cannot use the access token from location: &amp;lt;ip&amp;gt; &lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;ul>
-&lt;li>hostname not being passed down&lt;/li>
-&lt;/ul>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>sub.example.com {
-reverse_proxy http://localhost:10002 {
-header_up Host {http.reverse_proxy.upstream.host}
-}
-}&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;ul>
-&lt;li>dont forget to reload the service after fixing issues&lt;/li>
-&lt;/ul>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;pre>&lt;code>sudo systemctl reload caddy&lt;/code>&lt;/pre>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div></description></item></channel></rss>
+
+Code:9109 Message:Cannot use the access token from location: &amp;lt;ip&amp;gt; &lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;hostname not being passed down&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;sub.example.com {
+    reverse_proxy http://localhost:10002 {
+        header_up Host {http.reverse_proxy.upstream.host}
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;dont forget to reload the service after fixing issues&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;sudo systemctl reload caddy&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>
