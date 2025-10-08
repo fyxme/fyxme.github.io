@@ -24,7 +24,7 @@
   <meta itemprop="description" content="Demonstrating its cheaper to rent cloud GPUs and brute-force weak ISP router passwords than to pay 1 year of internet service fees. Article includes hashcat benchmarks (RTX 3090-5090), vast.ai price-to-performance comparison, keyspace maths &amp; mitigations.">
   <meta itemprop="datePublished" content="2025-08-16T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-08-16T00:00:00+00:00">
-  <meta itemprop="wordCount" content="2504">
+  <meta itemprop="wordCount" content="2502">
   <meta itemprop="image" content="https://fyx.me/opengraph/content-articles-isp-default-wifi-passwords-are-costlier-to-keep-than-to-crack-value-optimised-cloud-gpu-password-cracking.webp">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://fyx.me/opengraph/content-articles-isp-default-wifi-passwords-are-costlier-to-keep-than-to-crack-value-optimised-cloud-gpu-password-cracking.webp">
@@ -778,7 +778,7 @@
                   <div class="group-hover:hx-underline">fyx(me)</div>
                 </a></div>
         <div class="content">
-          <p>This article won&rsquo;t tell you how bad the Canadian oligopoly is, there&rsquo;s already posts ranging from <a href="https://www.techdirt.com/2008/03/25/its-good-to-be-a-monopoly-bell-canada-tells-isps-to-shut-up-and-accept-traffic-shaping/" target="_blank" rel="noopener">2008</a> to <a href="https://www.davidmoscrop.com/p/prices-rise-again-we-must-dismantle" target="_blank" rel="noopener">2024</a> to tell you all about that! Instead, I&rsquo;ll focus on their poor default WiFi password standards. I&rsquo;m mentioning Canadian Internet Service Providers (ISPs) as an example here but so many ISPs and router manufacturers decide to set worse default passwords then your 3 year old toddler&hellip;</p>
+          <p>This article won&rsquo;t tell you how bad the Canadian Internet Service Providers (ISP) oligopoly is, there&rsquo;s already posts ranging from <a href="https://www.techdirt.com/2008/03/25/its-good-to-be-a-monopoly-bell-canada-tells-isps-to-shut-up-and-accept-traffic-shaping/" target="_blank" rel="noopener">2008</a> to <a href="https://www.davidmoscrop.com/p/prices-rise-again-we-must-dismantle" target="_blank" rel="noopener">2024</a> to tell you all about that! Instead, I&rsquo;ll focus on their poor default WiFi password standards. I&rsquo;m mentioning Canadian ISPs as an example here but so many ISPs and router manufacturers decide to set worse default passwords then your 3 year old toddler&hellip;</p>
 <p><em>I&rsquo;m not going to name any ISPs directly because I don&rsquo;t want to annoy anyone and I&rsquo;m just writing this for education purposes. I will use fictional password patterns that may or may not resemble real ISP default WiFi Passwords.</em></p>
 <h2>Identifying Default Router Password Patterns<span class="hx-absolute -hx-mt-20" id="identifying-default-router-password-patterns"></span>
     <a href="#identifying-default-router-password-patterns" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>If you have a physical router, simply grab the router and look for the &ldquo;password&rdquo; line on the sticker behind it&hellip;</p>
@@ -852,7 +852,7 @@ pattern = 18 x charset</code></pre><div class="hextra-code-copy-btn-container hx
 </span></span><span class="line"><span class="cl">HelloWorld	WPA*01*09cd77f4bf8f32034914268c4980c40e*321bf0d198e4*8a429335416d*48656c6c6f576f726c64***
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># Showing the hash can be cracked using hashcat</span>
-</span></span><span class="line"><span class="cl">$ hashcat -m <span class="m">22000</span> hash.txt  wl.txt                                                                                 lo at kali
+</span></span><span class="line"><span class="cl">$ hashcat -m <span class="m">22000</span> hash.txt wl.txt
 </span></span><span class="line"><span class="cl">hashcat <span class="o">(</span>v6.2.6<span class="o">)</span> starting
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="o">[</span>...redacted <span class="k">for</span> readability...<span class="o">]</span>
