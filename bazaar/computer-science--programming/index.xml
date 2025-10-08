@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>fyx(me) – </title>
-    <link>http://localhost:1313/bazaar/computer-science--programming/</link>
+    <link>https://fyx.me/bazaar/computer-science--programming/</link>
     <description>Recent content on fyx(me)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	  <atom:link href="http://localhost:1313/bazaar/computer-science--programming/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="https://fyx.me/bazaar/computer-science--programming/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -16,10 +16,10 @@
     
     <item>
       <title></title>
-      <link>http://localhost:1313/bazaar/computer-science--programming/ai-tools/</link>
+      <link>https://fyx.me/bazaar/computer-science--programming/ai-tools/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/computer-science--programming/ai-tools/</guid>
+      <guid>https://fyx.me/bazaar/computer-science--programming/ai-tools/</guid>
       <description>
         
         
@@ -65,10 +65,10 @@
     
     <item>
       <title></title>
-      <link>http://localhost:1313/bazaar/computer-science--programming/dependency-visualisation/</link>
+      <link>https://fyx.me/bazaar/computer-science--programming/dependency-visualisation/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/computer-science--programming/dependency-visualisation/</guid>
+      <guid>https://fyx.me/bazaar/computer-science--programming/dependency-visualisation/</guid>
       <description>
         
         
@@ -150,10 +150,10 @@ wheel==0.34.2&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-co
     
     <item>
       <title></title>
-      <link>http://localhost:1313/bazaar/computer-science--programming/docker/</link>
+      <link>https://fyx.me/bazaar/computer-science--programming/docker/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/computer-science--programming/docker/</guid>
+      <guid>https://fyx.me/bazaar/computer-science--programming/docker/</guid>
       <description>
         
         
@@ -258,10 +258,10 @@ wheel==0.34.2&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-co
     
     <item>
       <title></title>
-      <link>http://localhost:1313/bazaar/computer-science--programming/file-synchronisation/</link>
+      <link>https://fyx.me/bazaar/computer-science--programming/file-synchronisation/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/computer-science--programming/file-synchronisation/</guid>
+      <guid>https://fyx.me/bazaar/computer-science--programming/file-synchronisation/</guid>
       <description>
         
         
@@ -293,10 +293,10 @@ rsync -avPh example test@10.10.10.10:.
     
     <item>
       <title></title>
-      <link>http://localhost:1313/bazaar/computer-science--programming/git/</link>
+      <link>https://fyx.me/bazaar/computer-science--programming/git/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/computer-science--programming/git/</guid>
+      <guid>https://fyx.me/bazaar/computer-science--programming/git/</guid>
       <description>
         
         
@@ -432,10 +432,10 @@ ref: &lt;a href=&#34;https://withblue.ink/2020/05/17/how-and-why-to-sign-git-com
     
     <item>
       <title></title>
-      <link>http://localhost:1313/bazaar/computer-science--programming/image-modifications/</link>
+      <link>https://fyx.me/bazaar/computer-science--programming/image-modifications/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/computer-science--programming/image-modifications/</guid>
+      <guid>https://fyx.me/bazaar/computer-science--programming/image-modifications/</guid>
       <description>
         
         
@@ -478,10 +478,10 @@ ref: &lt;a href=&#34;https://withblue.ink/2020/05/17/how-and-why-to-sign-git-com
     
     <item>
       <title></title>
-      <link>http://localhost:1313/bazaar/computer-science--programming/latex/</link>
+      <link>https://fyx.me/bazaar/computer-science--programming/latex/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/computer-science--programming/latex/</guid>
+      <guid>https://fyx.me/bazaar/computer-science--programming/latex/</guid>
       <description>
         
         
@@ -556,10 +556,10 @@ sudo apt install texlive-latex-base texlive-latex-extra texlive-fonts-recommende
     
     <item>
       <title></title>
-      <link>http://localhost:1313/bazaar/computer-science--programming/orchestration-workflows/</link>
+      <link>https://fyx.me/bazaar/computer-science--programming/orchestration-workflows/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/computer-science--programming/orchestration-workflows/</guid>
+      <guid>https://fyx.me/bazaar/computer-science--programming/orchestration-workflows/</guid>
       <description>
         
         
@@ -613,10 +613,10 @@ sudo apt install texlive-latex-base texlive-latex-extra texlive-fonts-recommende
     
     <item>
       <title></title>
-      <link>http://localhost:1313/bazaar/computer-science--programming/versioning/</link>
+      <link>https://fyx.me/bazaar/computer-science--programming/versioning/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/computer-science--programming/versioning/</guid>
+      <guid>https://fyx.me/bazaar/computer-science--programming/versioning/</guid>
       <description>
         
         
@@ -687,10 +687,10 @@ sudo apt install texlive-latex-base texlive-latex-extra texlive-fonts-recommende
     
     <item>
       <title></title>
-      <link>http://localhost:1313/bazaar/computer-science--programming/web-dev-cheatsheet/</link>
+      <link>https://fyx.me/bazaar/computer-science--programming/web-dev-cheatsheet/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/computer-science--programming/web-dev-cheatsheet/</guid>
+      <guid>https://fyx.me/bazaar/computer-science--programming/web-dev-cheatsheet/</guid>
       <description>
         
         
@@ -821,10 +821,10 @@ sudo apt install texlive-latex-base texlive-latex-extra texlive-fonts-recommende
     
     <item>
       <title></title>
-      <link>http://localhost:1313/bazaar/computer-science--programming/web-proxies/</link>
+      <link>https://fyx.me/bazaar/computer-science--programming/web-proxies/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/computer-science--programming/web-proxies/</guid>
+      <guid>https://fyx.me/bazaar/computer-science--programming/web-proxies/</guid>
       <description>
         
         

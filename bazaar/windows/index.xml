@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>fyx(me) – Windows</title>
-    <link>http://localhost:1313/bazaar/windows/</link>
+    <link>https://fyx.me/bazaar/windows/</link>
     <description>Recent content in Windows on fyx(me)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	  <atom:link href="http://localhost:1313/bazaar/windows/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="https://fyx.me/bazaar/windows/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -16,10 +16,10 @@
     
     <item>
       <title>Active Directory</title>
-      <link>http://localhost:1313/bazaar/windows/active-directory/</link>
+      <link>https://fyx.me/bazaar/windows/active-directory/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/windows/active-directory/</guid>
+      <guid>https://fyx.me/bazaar/windows/active-directory/</guid>
       <description>
         
         
@@ -33,10 +33,10 @@
     
     <item>
       <title>Privilege Escalation</title>
-      <link>http://localhost:1313/bazaar/windows/privilege-escalation/</link>
+      <link>https://fyx.me/bazaar/windows/privilege-escalation/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/windows/privilege-escalation/</guid>
+      <guid>https://fyx.me/bazaar/windows/privilege-escalation/</guid>
       <description>
         
         
@@ -104,10 +104,10 @@ Ref: &lt;a href=&#34;https://learn.microsoft.com/en-us/windows-server/administra
     
     <item>
       <title>Post Exploitation &amp; Looting</title>
-      <link>http://localhost:1313/bazaar/windows/post-exploitation--looting/</link>
+      <link>https://fyx.me/bazaar/windows/post-exploitation--looting/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/windows/post-exploitation--looting/</guid>
+      <guid>https://fyx.me/bazaar/windows/post-exploitation--looting/</guid>
       <description>
         
         
@@ -184,10 +184,10 @@ Ref: &lt;a href=&#34;https://learn.microsoft.com/en-us/windows-server/administra
     
     <item>
       <title>Defence Evasion</title>
-      <link>http://localhost:1313/bazaar/windows/defence-evasion/</link>
+      <link>https://fyx.me/bazaar/windows/defence-evasion/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/windows/defence-evasion/</guid>
+      <guid>https://fyx.me/bazaar/windows/defence-evasion/</guid>
       <description>
         
         
@@ -379,10 +379,10 @@ Ref: &lt;a href=&#34;https://github.com/hfiref0x/UACME&#34; target=&#34;_blank&#
     
     <item>
       <title>Misc Snippets</title>
-      <link>http://localhost:1313/bazaar/windows/misc-snippets/</link>
+      <link>https://fyx.me/bazaar/windows/misc-snippets/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/windows/misc-snippets/</guid>
+      <guid>https://fyx.me/bazaar/windows/misc-snippets/</guid>
       <description>
         
         
@@ -485,10 +485,10 @@ You may also have issues with DNS if your routing is not set properly&lt;/p&gt;
     
     <item>
       <title></title>
-      <link>http://localhost:1313/bazaar/windows/forensics/</link>
+      <link>https://fyx.me/bazaar/windows/forensics/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/windows/forensics/</guid>
+      <guid>https://fyx.me/bazaar/windows/forensics/</guid>
       <description>
         
         
@@ -575,10 +575,10 @@ Ref: &lt;a href=&#34;https://learn.microsoft.com/en-us/windows-server/administra
     
     <item>
       <title></title>
-      <link>http://localhost:1313/bazaar/windows/outlook-exchange-server/</link>
+      <link>https://fyx.me/bazaar/windows/outlook-exchange-server/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/bazaar/windows/outlook-exchange-server/</guid>
+      <guid>https://fyx.me/bazaar/windows/outlook-exchange-server/</guid>
       <description>
         
         
