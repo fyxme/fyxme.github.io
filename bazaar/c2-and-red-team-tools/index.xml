@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>fyx(me) – </title>
-    <link>https://fyx.me/bazaar/c2-and-red-team-tools/</link>
+    <link>http://localhost:1313/bazaar/c2-and-red-team-tools/</link>
     <description>Recent content on fyx(me)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	  <atom:link href="https://fyx.me/bazaar/c2-and-red-team-tools/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="http://localhost:1313/bazaar/c2-and-red-team-tools/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -16,10 +16,10 @@
     
     <item>
       <title></title>
-      <link>https://fyx.me/bazaar/c2-and-red-team-tools/havoc/</link>
+      <link>http://localhost:1313/bazaar/c2-and-red-team-tools/havoc/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://fyx.me/bazaar/c2-and-red-team-tools/havoc/</guid>
+      <guid>http://localhost:1313/bazaar/c2-and-red-team-tools/havoc/</guid>
       <description>
         
         
@@ -248,10 +248,10 @@ dotnet inline-execute &amp;#34;/tools/SharpCollection/NetFramework_4.7_Any/Sharp
     
     <item>
       <title></title>
-      <link>https://fyx.me/bazaar/c2-and-red-team-tools/malware-droppers/</link>
+      <link>http://localhost:1313/bazaar/c2-and-red-team-tools/malware-droppers/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://fyx.me/bazaar/c2-and-red-team-tools/malware-droppers/</guid>
+      <guid>http://localhost:1313/bazaar/c2-and-red-team-tools/malware-droppers/</guid>
       <description>
         
         

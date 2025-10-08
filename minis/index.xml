@@ -1,13 +1,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>fyx(me) – Minis</title>
-    <link>https://fyx.me/minis/</link>
+    <link>http://localhost:1313/minis/</link>
     <description>Recent content in Minis on fyx(me)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 03 May 2025 00:00:00 +0000</lastBuildDate>
     
-	  <atom:link href="https://fyx.me/minis/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="http://localhost:1313/minis/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -17,10 +17,10 @@
     
     <item>
       <title>Reverse Engineering onemillionchessboards.com Frontend with DevTools to Build a Bot</title>
-      <link>https://fyx.me/minis/reverse-engineering-onemillionchessboards.com-frontend-with-chrome-devtools-to-build-a-bot/</link>
+      <link>http://localhost:1313/minis/reverse-engineering-onemillionchessboards.com-frontend-with-chrome-devtools-to-build-a-bot/</link>
       <pubDate>Sat, 03 May 2025 00:00:00 +0000</pubDate>
       
-      <guid>https://fyx.me/minis/reverse-engineering-onemillionchessboards.com-frontend-with-chrome-devtools-to-build-a-bot/</guid>
+      <guid>http://localhost:1313/minis/reverse-engineering-onemillionchessboards.com-frontend-with-chrome-devtools-to-build-a-bot/</guid>
       <description>
         
         
@@ -197,10 +197,10 @@
     
     <item>
       <title>Building a Flask Blog in 3 prompts with AI Coding Tools: Using Cline &amp; MCP Servers in VSCode</title>
-      <link>https://fyx.me/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</link>
+      <link>http://localhost:1313/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</link>
       <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
       
-      <guid>https://fyx.me/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</guid>
+      <guid>http://localhost:1313/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</guid>
       <description>
         
         
@@ -316,10 +316,10 @@
     
     <item>
       <title>Leveraging AI to Automate SEO Metadata Generation for Web Content</title>
-      <link>https://fyx.me/minis/leveraging-ai-to-automate-seo-metadata-generation-for-web-content/</link>
+      <link>http://localhost:1313/minis/leveraging-ai-to-automate-seo-metadata-generation-for-web-content/</link>
       <pubDate>Sun, 13 Apr 2025 00:00:00 +0000</pubDate>
       
-      <guid>https://fyx.me/minis/leveraging-ai-to-automate-seo-metadata-generation-for-web-content/</guid>
+      <guid>http://localhost:1313/minis/leveraging-ai-to-automate-seo-metadata-generation-for-web-content/</guid>
       <description>
         
         
@@ -395,9 +395,9 @@
 
   
 &lt;/div&gt;
-&lt;p&gt;It&amp;rsquo;s still not perfect, sometimes returns weird keywords, and does sometime return the same keyword/tags more than once but with more tweaking, additional code checks and finding the optimal model for this task, it will help generate SEO metadata for the site&amp;rsquo;s pages (especially pages that I&amp;rsquo;m not too concerned about like the &lt;a href=&#34;https://fyx.me/bazaar&#34; &gt;bazaar&lt;/a&gt; pages).&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s still not perfect, sometimes returns weird keywords, and does sometime return the same keyword/tags more than once but with more tweaking, additional code checks and finding the optimal model for this task, it will help generate SEO metadata for the site&amp;rsquo;s pages (especially pages that I&amp;rsquo;m not too concerned about like the &lt;a href=&#34;http://localhost:1313/bazaar&#34; &gt;bazaar&lt;/a&gt; pages).&lt;/p&gt;
 &lt;h2&gt;Outcome&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;outcome&#34;&gt;&lt;/span&gt;
-    &lt;a href=&#34;#outcome&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;As an example, here is the SEO description and tags generated for the &lt;a href=&#34;https://fyx.me/bazaar/computer-science--programming/file-synchronisation/&#34; &gt;file synchronisation&lt;/a&gt; cheatsheet in the bazaar (note the weird CLI parameter used as a tag &amp;ldquo;-avPh&amp;rdquo;):&lt;/p&gt;
+    &lt;a href=&#34;#outcome&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;As an example, here is the SEO description and tags generated for the &lt;a href=&#34;http://localhost:1313/bazaar/computer-science--programming/file-synchronisation/&#34; &gt;file synchronisation&lt;/a&gt; cheatsheet in the bazaar (note the weird CLI parameter used as a tag &amp;ldquo;-avPh&amp;rdquo;):&lt;/p&gt;
 &lt;p&gt;
     &lt;figure&gt;
     &lt;img src=&#34;../img/File%20synchronisation%20with%20SEO%20metadata%20tags.webp&#34; title=&#34;File Synchronisation markdown file with generated metadata viewed in Obsidian&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
@@ -443,10 +443,10 @@ Tags  :  [&amp;#39;AI&amp;#39;, &amp;#39;Artificial Intelligence&amp;#39;, &amp;
     
     <item>
       <title>AI overthinking more than me with insomnia at 3 am</title>
-      <link>https://fyx.me/minis/ai-overthinking-more-than-me-with-insomnia-at-3-am/</link>
+      <link>http://localhost:1313/minis/ai-overthinking-more-than-me-with-insomnia-at-3-am/</link>
       <pubDate>Tue, 04 Mar 2025 00:00:00 +0000</pubDate>
       
-      <guid>https://fyx.me/minis/ai-overthinking-more-than-me-with-insomnia-at-3-am/</guid>
+      <guid>http://localhost:1313/minis/ai-overthinking-more-than-me-with-insomnia-at-3-am/</guid>
       <description>
         
         
@@ -605,10 +605,10 @@ Okay, the user asked how to boil eggs, but I&amp;rsquo;m supposed to respond wit
     
     <item>
       <title>Creating Lightweight Windows Virtual Machines for your Personal Lab Environment</title>
-      <link>https://fyx.me/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/</link>
+      <link>http://localhost:1313/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/</link>
       <pubDate>Sat, 18 Jan 2025 00:00:00 +0000</pubDate>
       
-      <guid>https://fyx.me/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/</guid>
+      <guid>http://localhost:1313/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/</guid>
       <description>
         
         
@@ -714,10 +714,10 @@ Okay, the user asked how to boil eggs, but I&amp;rsquo;m supposed to respond wit
     
     <item>
       <title>Create Infinite Email aliases using Cloudflare Email Routing</title>
-      <link>https://fyx.me/minis/create-infinite-email-aliases-using-cloudflare-email-routing/</link>
+      <link>http://localhost:1313/minis/create-infinite-email-aliases-using-cloudflare-email-routing/</link>
       <pubDate>Tue, 14 Jan 2025 00:00:00 +0000</pubDate>
       
-      <guid>https://fyx.me/minis/create-infinite-email-aliases-using-cloudflare-email-routing/</guid>
+      <guid>http://localhost:1313/minis/create-infinite-email-aliases-using-cloudflare-email-routing/</guid>
       <description>
         
         
@@ -795,10 +795,10 @@ Okay, the user asked how to boil eggs, but I&amp;rsquo;m supposed to respond wit
     
     <item>
       <title>Improving functionality of Open Source BOFs</title>
-      <link>https://fyx.me/minis/improving-functionality-of-open-source-bofs/</link>
+      <link>http://localhost:1313/minis/improving-functionality-of-open-source-bofs/</link>
       <pubDate>Fri, 10 Jan 2025 00:00:00 +0000</pubDate>
       
-      <guid>https://fyx.me/minis/improving-functionality-of-open-source-bofs/</guid>
+      <guid>http://localhost:1313/minis/improving-functionality-of-open-source-bofs/</guid>
       <description>
         
         

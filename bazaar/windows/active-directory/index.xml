@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>fyx(me) – Active Directory</title>
-    <link>https://fyx.me/bazaar/windows/active-directory/</link>
+    <link>http://localhost:1313/bazaar/windows/active-directory/</link>
     <description>Recent content in Active Directory on fyx(me)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	  <atom:link href="https://fyx.me/bazaar/windows/active-directory/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="http://localhost:1313/bazaar/windows/active-directory/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -16,10 +16,10 @@
     
     <item>
       <title></title>
-      <link>https://fyx.me/bazaar/windows/active-directory/lateral-movement/</link>
+      <link>http://localhost:1313/bazaar/windows/active-directory/lateral-movement/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://fyx.me/bazaar/windows/active-directory/lateral-movement/</guid>
+      <guid>http://localhost:1313/bazaar/windows/active-directory/lateral-movement/</guid>
       <description>
         
         
@@ -202,10 +202,10 @@
     
     <item>
       <title>AD Enumeration</title>
-      <link>https://fyx.me/bazaar/windows/active-directory/ad-enumeration/</link>
+      <link>http://localhost:1313/bazaar/windows/active-directory/ad-enumeration/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://fyx.me/bazaar/windows/active-directory/ad-enumeration/</guid>
+      <guid>http://localhost:1313/bazaar/windows/active-directory/ad-enumeration/</guid>
       <description>
         
         
@@ -369,10 +369,10 @@ execute-assembly C:\Tools\ADSearch\ADSearch\bin\Release\ADSearch.exe --search &a
     
     <item>
       <title>MSSQL</title>
-      <link>https://fyx.me/bazaar/windows/active-directory/mssql/</link>
+      <link>http://localhost:1313/bazaar/windows/active-directory/mssql/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://fyx.me/bazaar/windows/active-directory/mssql/</guid>
+      <guid>http://localhost:1313/bazaar/windows/active-directory/mssql/</guid>
       <description>
         
         

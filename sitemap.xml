@@ -2,126 +2,135 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://fyx.me/bazaar/windows/active-directory/</loc>
+    <loc>http://localhost:1313/bazaar/windows/active-directory/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/windows/</loc>
+    <loc>http://localhost:1313/bazaar/windows/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/windows/privilege-escalation/</loc>
+    <loc>http://localhost:1313/bazaar/windows/privilege-escalation/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/linux/</loc>
+    <loc>http://localhost:1313/bazaar/linux/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/windows/post-exploitation--looting/</loc>
+    <loc>http://localhost:1313/bazaar/windows/post-exploitation--looting/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/phishing/</loc>
+    <loc>http://localhost:1313/bazaar/phishing/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/web-exploitation/</loc>
+    <loc>http://localhost:1313/bazaar/web-exploitation/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/c2-and-red-team-tools/</loc>
+    <loc>http://localhost:1313/bazaar/c2-and-red-team-tools/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/other-cheatsheets/</loc>
+    <loc>http://localhost:1313/bazaar/other-cheatsheets/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/windows/defence-evasion/</loc>
+    <loc>http://localhost:1313/bazaar/windows/defence-evasion/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/windows/misc-snippets/</loc>
+    <loc>http://localhost:1313/bazaar/windows/misc-snippets/</loc>
   </url><url>
-    <loc>https://fyx.me/articles/</loc>
+    <loc>http://localhost:1313/articles/</loc>
+    <lastmod>2025-08-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/articles/exploring-autonomous-llm-agents-for-capture-the-flag-problem-solving-using-context-engineering-rag-and-open-source-models/</loc>
+    <lastmod>2025-08-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2025-08-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/articles/isp-default-wifi-passwords-are-costlier-to-keep-than-to-crack-value-optimised-cloud-gpu-password-cracking/</loc>
     <lastmod>2025-08-16T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://fyx.me/</loc>
-    <lastmod>2025-08-16T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://fyx.me/articles/isp-default-wifi-passwords-are-costlier-to-keep-than-to-crack-value-optimised-cloud-gpu-password-cracking/</loc>
-    <lastmod>2025-08-16T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://fyx.me/minis/</loc>
+    <loc>http://localhost:1313/minis/</loc>
     <lastmod>2025-05-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://fyx.me/minis/reverse-engineering-onemillionchessboards.com-frontend-with-chrome-devtools-to-build-a-bot/</loc>
+    <loc>http://localhost:1313/minis/reverse-engineering-onemillionchessboards.com-frontend-with-chrome-devtools-to-build-a-bot/</loc>
     <lastmod>2025-05-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://fyx.me/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</loc>
+    <loc>http://localhost:1313/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/</loc>
     <lastmod>2025-04-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://fyx.me/minis/leveraging-ai-to-automate-seo-metadata-generation-for-web-content/</loc>
+    <loc>http://localhost:1313/minis/leveraging-ai-to-automate-seo-metadata-generation-for-web-content/</loc>
     <lastmod>2025-04-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://fyx.me/minis/ai-overthinking-more-than-me-with-insomnia-at-3-am/</loc>
+    <loc>http://localhost:1313/minis/ai-overthinking-more-than-me-with-insomnia-at-3-am/</loc>
     <lastmod>2025-03-04T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://fyx.me/articles/creating-a-havoc-module-to-run-commands-on-all-agents-at-once-and-map-out-an-environment-passively/</loc>
+    <loc>http://localhost:1313/articles/creating-a-havoc-module-to-run-commands-on-all-agents-at-once-and-map-out-an-environment-passively/</loc>
     <lastmod>2025-02-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://fyx.me/articles/replicating-cobalt-strikes-port-scanner-as-a-bof-for-open-source-c2-frameworks/</loc>
+    <loc>http://localhost:1313/articles/replicating-cobalt-strikes-port-scanner-as-a-bof-for-open-source-c2-frameworks/</loc>
     <lastmod>2025-01-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://fyx.me/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/</loc>
+    <loc>http://localhost:1313/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/</loc>
     <lastmod>2025-01-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://fyx.me/minis/create-infinite-email-aliases-using-cloudflare-email-routing/</loc>
+    <loc>http://localhost:1313/minis/create-infinite-email-aliases-using-cloudflare-email-routing/</loc>
     <lastmod>2025-01-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://fyx.me/minis/improving-functionality-of-open-source-bofs/</loc>
+    <loc>http://localhost:1313/minis/improving-functionality-of-open-source-bofs/</loc>
     <lastmod>2025-01-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://fyx.me/articles/osep-exam-review/</loc>
+    <loc>http://localhost:1313/articles/osep-exam-review/</loc>
     <lastmod>2024-12-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://fyx.me/bazaar/c2-and-red-team-tools/havoc/</loc>
+    <loc>http://localhost:1313/bazaar/c2-and-red-team-tools/havoc/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/c2-and-red-team-tools/malware-droppers/</loc>
+    <loc>http://localhost:1313/bazaar/c2-and-red-team-tools/malware-droppers/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/computer-science--programming/</loc>
+    <loc>http://localhost:1313/bazaar/computer-science--programming/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/computer-science--programming/ai-tools/</loc>
+    <loc>http://localhost:1313/bazaar/computer-science--programming/ai-tools/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/computer-science--programming/docker/</loc>
+    <loc>http://localhost:1313/bazaar/computer-science--programming/dependency-visualisation/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/computer-science--programming/file-synchronisation/</loc>
+    <loc>http://localhost:1313/bazaar/computer-science--programming/docker/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/computer-science--programming/git/</loc>
+    <loc>http://localhost:1313/bazaar/computer-science--programming/file-synchronisation/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/computer-science--programming/image-modifications/</loc>
+    <loc>http://localhost:1313/bazaar/computer-science--programming/git/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/computer-science--programming/latex/</loc>
+    <loc>http://localhost:1313/bazaar/computer-science--programming/image-modifications/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/computer-science--programming/orchestration-workflows/</loc>
+    <loc>http://localhost:1313/bazaar/computer-science--programming/latex/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/computer-science--programming/versioning/</loc>
+    <loc>http://localhost:1313/bazaar/computer-science--programming/orchestration-workflows/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/computer-science--programming/web-dev-cheatsheet/</loc>
+    <loc>http://localhost:1313/bazaar/computer-science--programming/versioning/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/computer-science--programming/web-proxies/</loc>
+    <loc>http://localhost:1313/bazaar/computer-science--programming/web-dev-cheatsheet/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/linux/other-commands/</loc>
+    <loc>http://localhost:1313/bazaar/computer-science--programming/web-proxies/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/linux/reverse-shells/</loc>
+    <loc>http://localhost:1313/bazaar/linux/other-commands/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/linux/system-hardening/</loc>
+    <loc>http://localhost:1313/bazaar/linux/reverse-shells/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/other/password-cracking/</loc>
+    <loc>http://localhost:1313/bazaar/linux/system-hardening/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/wifi/</loc>
+    <loc>http://localhost:1313/bazaar/other/networking/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/windows/active-directory/lateral-movement/</loc>
+    <loc>http://localhost:1313/bazaar/other/password-cracking/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/windows/forensics/</loc>
+    <loc>http://localhost:1313/bazaar/wifi/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/windows/outlook-exchange-server/</loc>
+    <loc>http://localhost:1313/bazaar/windows/active-directory/lateral-movement/</loc>
   </url><url>
-    <loc>https://fyx.me/about/</loc>
+    <loc>http://localhost:1313/bazaar/windows/forensics/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/windows/active-directory/ad-enumeration/</loc>
+    <loc>http://localhost:1313/bazaar/windows/outlook-exchange-server/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/</loc>
+    <loc>http://localhost:1313/untitled/</loc>
   </url><url>
-    <loc>https://fyx.me/categories/</loc>
+    <loc>http://localhost:1313/about/</loc>
   </url><url>
-    <loc>https://fyx.me/code/</loc>
+    <loc>http://localhost:1313/bazaar/windows/active-directory/ad-enumeration/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/windows/active-directory/mssql/</loc>
+    <loc>http://localhost:1313/bazaar/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/other/</loc>
+    <loc>http://localhost:1313/categories/</loc>
   </url><url>
-    <loc>https://fyx.me/bazaar/web-exploitation/php/</loc>
+    <loc>http://localhost:1313/code/</loc>
+  </url><url>
+    <loc>http://localhost:1313/bazaar/windows/active-directory/mssql/</loc>
+  </url><url>
+    <loc>http://localhost:1313/bazaar/other/</loc>
+  </url><url>
+    <loc>http://localhost:1313/bazaar/web-exploitation/php/</loc>
   </url>
 </urlset>
