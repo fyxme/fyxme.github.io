@@ -922,5 +922,124 @@ Task Name: Daily Reboot
       </description>
     </item>
     
+    <item>
+      <title>Hack The Box: Take It Easy Dare [Easy month] writeups and post-mortem</title>
+      <link>https://fyx.me/minis/hack-the-box-take-it-easy-month/</link>
+      <pubDate>Thu, 29 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/minis/hack-the-box-take-it-easy-month/</guid>
+      <description>
+        
+        
+        &lt;p&gt;This month was pretty eventful with Hacky Holidays having a 3 week long CTF and HackTheBox releasing their &amp;ldquo;Take It Easy Dare&amp;rdquo;. This made for a lot of opportunities to practice and some great challenges to learn new things.&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/htb-take-it-easy-dare-header.jpg&#34; alt=&#34;htb-take-it-easy-dare-header.jpg&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Ref: &lt;a href=&#34;https://www.hackthebox.eu/newsroom/htb-take-it-easy-july-2021&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.hackthebox.eu/newsroom/htb-take-it-easy-july-2021&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;HTB &amp;ldquo;Take It Easy Dare&amp;rdquo; was essentially a number of retired easy boxes that were made available for everyone during the month of July. There were a few Windows Active Directory boxes where you had to make use of AD attack tools such as Bloodhound which made this a good preparation for the OSEP.&lt;/p&gt;
+&lt;p&gt;The following machines were made available as part of the easy month:&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/easy-month-machines.jpg&#34; alt=&#34;easy-month-machines.jpg&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;I was only able to start on these boxes the last weekend of July since the other weekends were spent participating in the Hacky Holidays Space Race CTF. However, I managed to get all 8 boxes done during those 2 days:&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/htb-take-it-easy-solved-boxes.png&#34; alt=&#34;htb-take-it-easy-solved-boxes.png&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;I hadn&amp;rsquo;t done any of the boxes prior to easy month so it was a great challenge to try and achieve all of them in 2 days.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve done writeups for all of the boxes as a way to practice using Obsidian as a note taking app (writeups hosted externally on github):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/active/active.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;active&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/bastion/bastion.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;bastion&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/forest/forest.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;forest&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/heist/heist.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;heist&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/openadmin/openadmin.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;openadmin&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/shocker/shocker.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;shocker&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/traverxec/traverxec.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;traverxec&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/fyxme/writeups/blob/master/boot2root/hack-the-box/writeup/writeup.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;writeup&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Favorite box&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;favorite-box&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#favorite-box&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;My favorite box was by far &amp;ldquo;forest&amp;rdquo; which showcased an AD misconfiguration and allowed me to practice AD tools and attacks in preparation for the OSEP.&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;active&amp;rdquo; was another great box with required escalating privileges using AD attacks.&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;re intersted in doing those boxes, I&amp;rsquo;d recommend starting with &amp;ldquo;active&amp;rdquo; as I believe its easier to exploit than &amp;ldquo;forest&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;_Note: I don&amp;rsquo;t want to give too much away and spoil the boxes for those who are interested in doing them. If you&amp;rsquo;ve already done them or don&amp;rsquo;t intend to, you can read the writeups using the links above. _&lt;/p&gt;
+&lt;p&gt;Another box worth mentioning which is currently in the active pool is &amp;ldquo;intelligence&amp;rdquo;. Its another AD box and is very fun to exploit. (writeup not released since box is still active)&lt;/p&gt;
+&lt;h2&gt;Notetaking app&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;notetaking-app&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#notetaking-app&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;I&amp;rsquo;ve started using &lt;a href=&#34;https://obsidian.md/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Obisidian&lt;/a&gt; to take notes and I&amp;rsquo;ve started learning how to take note efficiently so that its easier to make writeups once you&amp;rsquo;ve finished a box. My favorite feature by far is the ability to use the &lt;a href=&#34;https://flameshot.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Flameshot&lt;/a&gt; (another tool) to take a screnshot of something and simply save the screenshot to the clipboard and paste it directly into Obsidian. It saves a lot of time removes the hassle of having to move the files around.&lt;/p&gt;
+&lt;p&gt;Its also great to be able to go back and view your writeups, tools you&amp;rsquo;ve used and how you&amp;rsquo;ve solved problems you encountered. Highly recommend you start taking even if you&amp;rsquo;re simply doing the boxes for fun and games.&lt;/p&gt;
+&lt;p&gt;This was a great way for me to test Obsidian as a note taking app and its been a blast to use from start to finish.&lt;/p&gt;
+&lt;h2&gt;Final remarks&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;final-remarks&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#final-remarks&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It was a great present from HTB to allow that many retired boxes to be made available for free users. The box choices were great and definitely got me interested in looking at purchasing a VIP subscription. (Good HTB, great marketing idea!)&lt;/p&gt;
+&lt;p&gt;Doing the boxes over 2 days was tough but really fun at the same time. I would have regretted not participating in the event.&lt;/p&gt;
+&lt;p&gt;I hope they release more events like these in the future.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Hacky Holidays Space Race CTF Competition post-mortem</title>
+      <link>https://fyx.me/minis/hacky-holidays-space-race-ctf-competition-post-mortem/</link>
+      <pubDate>Wed, 28 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/minis/hacky-holidays-space-race-ctf-competition-post-mortem/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Hacky Holidays Space Race was on during July 2021 and we decided to participate with a few friends. I had already participated in the previous Hacky holiday which was in december 2020 and so I knew the challenges were high quality and we were bound to learn new things.&lt;/p&gt;
+&lt;p&gt;The CTF was ongoing for 4 weeks which is considered quite long for a CTF but leaves a lot more time for people attempt the challenges. There were 3 challenge release phases with each new phase starting on Friday the following week and the last phase was 10 days long.&lt;/p&gt;
+&lt;p&gt;We played in all 3 phases and managed to do quite a few of the challenges. However, CTFs are quite draining and take a lot of time so its hard to sustain for extended period of times. Most of our hacking was done the weekends after the release and we didnt have the motivation to do any challenges in the last week.&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s all the challenges we ended up doing:&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/hacky_holidays-space_race.png&#34; alt=&#34;hacky_holidays-space_race.png&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2&gt;Awesome&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;awesome&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#awesome&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;The challenges were amazing and very diverse&lt;/li&gt;
+&lt;li&gt;We really enjoyed the non standard challenges they had such as:
+&lt;ul&gt;
+&lt;li&gt;quantum challenges
+&lt;ul&gt;
+&lt;li&gt;We used one of them to have an introduction to quantum computing at work during a work CTF session&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;redteam challenges
+&lt;ul&gt;
+&lt;li&gt;Both were interesting to showcase Active Directory attacks and allowed us to practice the new PrintNightmare exploit which was released not long before the CTF.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Great team mentality
+&lt;ul&gt;
+&lt;li&gt;People tried to push themselves and nurture their &amp;ldquo;I have no idea what to do but I&amp;rsquo;ll try it anyways mentality&amp;rdquo; which I think is something that CTFs teach you which boot2root really doesn&amp;rsquo;t&lt;/li&gt;
+&lt;li&gt;Awesome communication and collaboration trying to solve challenges together&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;We deployed internal tooling to collaborate on stuff&lt;/li&gt;
+&lt;li&gt;We wrote tools for some of the challenges which will be open-sourced when the CTF ends&lt;/li&gt;
+&lt;li&gt;Finding unintended solutions to break certain challenges
+&lt;ul&gt;
+&lt;li&gt;The first redteam challenge was supposed to be a kerberoasting challenge however we managed to exploit the DC with PrintNightmare. Good way to practice new exploits.&lt;/li&gt;
+&lt;li&gt;Using bruteforce to solve the quantum snacks challenge by abusing the check website (we also did it the intended way after to learn about quantum)&lt;/li&gt;
+&lt;li&gt;Abusing writeable file locations to help with the Power Snacks challenges&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;The intended way might not be the only way to solve a challenge.&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Always a fan of web challenges and these ones didn&amp;rsquo;t dissapoint! Lots of great challenges showcasing various concepts.&lt;/li&gt;
+&lt;li&gt;The design of the CTF Portal was amazing&amp;hellip; The best I&amp;rsquo;ve seen in a while&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Issues encountered&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;issues-encountered&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#issues-encountered&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;I wiped the collaboration server by mistake the day before phase 3 started. This deleted all writeups we had made up to that point. Very demotivating&amp;hellip; We didn&amp;rsquo;t end up rewriting many of them and therefore don&amp;rsquo;t have many writeups for this CTF.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Otherwise not much to complain about&amp;hellip; It was a really fun CTF!&lt;/p&gt;
+&lt;h3&gt;Remediations&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;remediations&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#remediations&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Setup automated daily backups of collaboration server so that we could recover data if it gets wiped again&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Final remarks&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;final-remarks&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#final-remarks&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Congratulations Deloitte, that was an awesome CTF.&lt;/strong&gt; The challenges were great, diverse and required thinking out of the box which is exactly what you expect from a CTF.&lt;/p&gt;
+&lt;p&gt;Would recommend any cyber security enthousiast to participate in the next Hacky Holidays CTF.&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/great-success.gif&#34; alt=&#34;great-success.gif&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
   </channel>
 </rss>

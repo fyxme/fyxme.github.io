@@ -16,6 +16,72 @@
     
     <item>
       <title></title>
+      <link>https://fyx.me/bazaar/ai/agents/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/ai/agents/</guid>
+      <description>
+        
+        
+        &lt;h2&gt;Agent types&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;agent-types&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#agent-types&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Plain LLM Agents&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;plain-llm-agents&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#plain-llm-agents&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Plain LLM agents&lt;/strong&gt; are simple agents that use a large language model (LLM) directly to choose next actions or generate task steps without extra layers like complex planners, learned policies, or specialized orchestration frameworks.&lt;/p&gt;
+&lt;p&gt;Key characteristics:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Single-step decisioning:&lt;/strong&gt; the LLM is prompted to decide the next action each turn (e.g., call a tool, ask a question, produce text).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Minimal state management:&lt;/strong&gt; little or no explicit memory, belief model, or long-term planning beyond what’s kept in the prompt/history.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;No learned controller:&lt;/strong&gt; decisions rely on prompt engineering and the LLM’s reasoning, not on a separate trained policy network.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tool-driven behavior:&lt;/strong&gt; often constrained to a fixed set of tools or API calls the LLM can invoke via structured outputs.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Reactive and iterative:&lt;/strong&gt; acts, observes results, and prompts the LLM again—adapting only through updated context.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;When to use:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Prototyping agents quickly.&lt;/li&gt;
+&lt;li&gt;Tasks where short-horizon, conversational reasoning suffices.&lt;/li&gt;
+&lt;li&gt;Systems prioritizing simplicity and interpretability.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Limitations:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Poor scalability for long, complex plans.&lt;/li&gt;
+&lt;li&gt;Fragile to prompt drift and verbose histories.&lt;/li&gt;
+&lt;li&gt;Limited ability to optimize across multiple steps or maintain consistent long-term strategies.&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://fyx.me/bazaar/ai/ai-code-review/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/ai/ai-code-review/</guid>
+      <description>
+        
+        
+        &lt;h2&gt;&lt;a href=&#34;https://codebase.md/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;codebase.md&lt;/a&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;codebasemdhttpscodebasemd&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#codebasemdhttpscodebasemd&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;blockquote&gt;
+  &lt;p&gt;I built myself an app to turn any GitHub repo into markdown for AI agents&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;returns markdown for agents, html for humans&lt;/li&gt;
+&lt;li&gt;pagination links agents can follow for large repos&lt;/li&gt;
+&lt;li&gt;simple filters for tokens, file extensions etc
+&lt;/br&gt;&lt;a href=&#34;https://x.com/iannuttall/status/1975495604823539765&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://x.com/iannuttall/status/1975495604823539765&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/blockquote&gt;
+&lt;h2&gt;&lt;a href=&#34;https://deepwiki.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;deekpwiki.com&lt;/a&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;deekpwikicomhttpsdeepwikicom&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#deekpwikicomhttpsdeepwikicom&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;blockquote&gt;
+  &lt;p&gt;DeepWiki provides up-to-date documentation you can talk to, for every repo in the world. Think Deep Research for GitHub.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;p&gt;Alternative open-source version: &lt;a href=&#34;https://github.com/AsyncFuncAI/deepwiki-open&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/AsyncFuncAI/deepwiki-open&lt;/a&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
       <link>https://fyx.me/bazaar/ai/inference-providers/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       

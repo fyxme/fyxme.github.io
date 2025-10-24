@@ -329,5 +329,39 @@ dotnet inline-execute &amp;#34;/tools/SharpCollection/NetFramework_4.7_Any/Sharp
       </description>
     </item>
     
+    <item>
+      <title></title>
+      <link>https://fyx.me/bazaar/c2-and-red-team-tools/vpn-routing-and-tunneling/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/c2-and-red-team-tools/vpn-routing-and-tunneling/</guid>
+      <description>
+        
+        
+        &lt;h2&gt;VPNs&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;vpns&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#vpns&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a href=&#34;https://getoutline.org/intl/en-GB/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Outline VPN&lt;/a&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;outline-vpnhttpsgetoutlineorgintlen-gb&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#outline-vpnhttpsgetoutlineorgintlen-gb&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;blockquote&gt;
+  &lt;p&gt;Outline VPN is a free and open-source tool that deploys Shadowsocks servers on multiple cloud service providers. The software suite also includes client software for multiple platforms. Outline was developed by Jigsaw, a technology incubator created by Google.
+&lt;/br&gt; &lt;a href=&#34;https://en.wikipedia.org/wiki/Outline_VPN&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://en.wikipedia.org/wiki/Outline_VPN&lt;/a&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;p&gt;Self-hostable: &lt;a href=&#34;https://github.com/Jigsaw-Code/outline-apps&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Jigsaw-Code/outline-apps&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;a href=&#34;https://mullvad.net/en&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Mullvad&lt;/a&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;mullvadhttpsmullvadneten&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#mullvadhttpsmullvadneten&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Good, secure and relative pricing. And they do research on having stateless servers (ie. all in ram), which is pretty cool.&lt;/p&gt;
+&lt;h3&gt;Self-hosted&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;self-hosted&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#self-hosted&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;VPN Network&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;vpn-network&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#vpn-network&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://tailscale.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;tailscale&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/juanfont/headscale&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;headscale&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;&lt;a href=&#34;https://www.wireguard.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Wireguard&lt;/a&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;wireguardhttpswwwwireguardcom&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#wireguardhttpswwwwireguardcom&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;blockquote&gt;
+  &lt;p&gt;WireGuard® is an extremely simple yet fast and modern VPN that utilizes state-of-the-art cryptography. It aims to be faster, simpler, leaner, and more useful than IPsec, while avoiding the massive headache. It intends to be considerably more performant than OpenVPN.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+
+      </description>
+    </item>
+    
   </channel>
 </rss>
