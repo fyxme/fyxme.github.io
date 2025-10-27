@@ -24,20 +24,23 @@
   </url><url>
     <loc>https://fyx.me/bazaar/windows/misc-snippets/</loc>
   </url><url>
+    <loc>https://fyx.me/</loc>
+    <lastmod>2025-10-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://fyx.me/minis/</loc>
+    <lastmod>2025-10-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://fyx.me/minis/reverse-engineering-free-vpn-applications/</loc>
+    <lastmod>2025-10-27T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://fyx.me/articles/</loc>
     <lastmod>2025-08-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://fyx.me/articles/exploring-autonomous-llm-agents-for-capture-the-flag-problem-solving-using-context-engineering-rag-and-open-source-models/</loc>
     <lastmod>2025-08-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://fyx.me/</loc>
-    <lastmod>2025-08-28T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://fyx.me/articles/isp-default-wifi-passwords-are-costlier-to-keep-than-to-crack-value-optimised-cloud-gpu-password-cracking/</loc>
     <lastmod>2025-08-16T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://fyx.me/minis/</loc>
-    <lastmod>2025-05-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://fyx.me/minis/reverse-engineering-onemillionchessboards.com-frontend-with-chrome-devtools-to-build-a-bot/</loc>
     <lastmod>2025-05-03T00:00:00+00:00</lastmod>

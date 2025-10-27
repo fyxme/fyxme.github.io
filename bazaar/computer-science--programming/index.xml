@@ -201,7 +201,8 @@ wheel==0.34.2&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-co
     &lt;img src=&#34;../img/dive%20command%20TUI%20output.webp&#34; title=&#34;dive command TUI output&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
     &lt;figcaption&gt;dive command TUI output&lt;/figcaption&gt;
   &lt;/figure&gt;&lt;/p&gt;
-&lt;h3&gt;Migrating docker volume from one server to another&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;migrating-docker-volume-from-one-server-to-another&#34;&gt;&lt;/span&gt;
+&lt;h3&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;heading&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#heading&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h3&gt;Migrating docker volume from one server to another&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;migrating-docker-volume-from-one-server-to-another&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#migrating-docker-volume-from-one-server-to-another&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Using &lt;code&gt;docker run&lt;/code&gt; + &lt;code&gt;tar&lt;/code&gt; (Manual Backup &amp;amp; Restore)**&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;using-docker-run--tar-manual-backup--restore&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#using-docker-run--tar-manual-backup--restore&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;Stop the container&lt;/strong&gt; (if running):&lt;/li&gt;
@@ -812,6 +813,9 @@ sudo apt install texlive-latex-base texlive-latex-extra texlive-fonts-recommende
 
   
 &lt;/div&gt;
+&lt;h3&gt;Databases&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;databases&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#databases&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h3&gt;Sqlite&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;sqlite&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#sqlite&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Viewer: &lt;a href=&#34;https://github.com/ZetloStudio/ZeQLplus&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/ZetloStudio/ZeQLplus&lt;/a&gt;&lt;/p&gt;
 &lt;h3&gt;CSS frameworks&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;css-frameworks&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#css-frameworks&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Utility-based:&lt;/p&gt;
 &lt;ul&gt;

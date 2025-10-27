@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>Reverse Engineering &#34;Free VPN&#34; Applications – fyx(me)</title>
+  <meta name="description" content="Step-by-step Android APK teardown proves BrightVPN is a HolaVPN wrapper that hijacks DNS, proxies traffic via Luminati, and resells your bandwidth—complete with mitmproxy logs, ban bypass, and Opera VPN chain trick." /><link rel="canonical" href="https://fyx.me/minis/reverse-engineering-free-vpn-applications/" itemprop="url" />
+
+<meta property="og:title" content="fyx(me) - Reverse Engineering &#34;Free VPN&#34; Applications" />
+<meta property="og:description" content="Step-by-step Android APK teardown proves BrightVPN is a HolaVPN wrapper that hijacks DNS, proxies traffic via Luminati, and resells your bandwidth—complete with mitmproxy logs, ban bypass, and Opera VPN chain trick." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fyx.me/minis/reverse-engineering-free-vpn-applications/" /><meta property="og:image" content="https://fyx.me/opengraph/content-minis-reverse-engineering-free-vpn-applications.webp" /><meta property="article:section" content="minis" />
+<meta property="article:published_time" content="2025-10-27T00:00:00+00:00" />
+<meta property="article:modified_time" content="2025-10-27T00:00:00+00:00" /><meta property="og:site_name" content="fyx(me)" />
+
+  <meta itemprop="name" content="Reverse Engineering &#34;Free VPN&#34; Applications">
+  <meta itemprop="description" content="Step-by-step Android APK teardown proves BrightVPN is a HolaVPN wrapper that hijacks DNS, proxies traffic via Luminati, and resells your bandwidth—complete with mitmproxy logs, ban bypass, and Opera VPN chain trick.">
+  <meta itemprop="datePublished" content="2025-10-27T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-10-27T00:00:00+00:00">
+  <meta itemprop="wordCount" content="4351">
+  <meta itemprop="image" content="https://fyx.me/opengraph/content-minis-reverse-engineering-free-vpn-applications.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://fyx.me/opengraph/content-minis-reverse-engineering-free-vpn-applications.webp">
+  <meta name="twitter:title" content="Reverse Engineering &#34;Free VPN&#34; Applications">
+  <meta name="twitter:description" content="Step-by-step Android APK teardown proves BrightVPN is a HolaVPN wrapper that hijacks DNS, proxies traffic via Luminati, and resells your bandwidth—complete with mitmproxy logs, ban bypass, and Opera VPN chain trick.">
+
+
+    <link rel="preload" href="/css/compiled/main.min.33b308ec8b8d5df72a614d7504ed2df3405a9b1d19cf059dc9c4d88f0b8a2551.css" as="style" />
+    <link href="/css/compiled/main.min.33b308ec8b8d5df72a614d7504ed2df3405a9b1d19cf059dc9c4d88f0b8a2551.css" rel="stylesheet" />
+
+
+
+
+  <link href="/css/custom.min.6189dd16334b8142c5bd7b6757ba67210d2f98d8cb82f91d80d0d32e844ef2e8.css" rel="stylesheet" />
+
+
+  <script>
+     
+    const defaultTheme = 'dark';
+
+    const setDarkTheme = () => {
+      document.documentElement.classList.add("dark");
+      document.documentElement.style.colorScheme = "dark";
+    }
+    const setLightTheme = () => {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.style.colorScheme = "light";
+    }
+
+    if ("color-theme" in localStorage) {
+      localStorage.getItem("color-theme") === "dark" ? setDarkTheme() : setLightTheme();
+    } else {
+      defaultTheme === "dark" ? setDarkTheme() : setLightTheme();
+      if (defaultTheme === "system") {
+        window.matchMedia("(prefers-color-scheme: dark)").matches ? setDarkTheme() : setLightTheme();
+      }
+    }
+  </script>
+
+  <script defer src="https://a.blinking.dog/script.js" data-website-id="ec9f3909-7c35-4c7e-a1cd-5c9248950e26" data-domains="fyx.me,www.fyx.me"></script>
+
+</head>
+<body dir="ltr"><div class="nav-container hx-sticky hx-top-0 hx-z-20 hx-w-full hx-bg-transparent print:hx-hidden">
+  <div class="nav-container-blur hx-pointer-events-none hx-absolute hx-z-[-1] hx-h-full hx-w-full hx-bg-white dark:hx-bg-dark hx-shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] contrast-more:hx-shadow-[0_0_0_1px_#000] dark:hx-shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] contrast-more:dark:hx-shadow-[0_0_0_1px_#fff]"></div>
+
+  <nav class="hx-mx-auto hx-flex hx-items-center hx-justify-end hx-gap-2 hx-h-16 hx-px-6 hx-max-w-[90rem]">
+    <a class="hx-flex hx-items-center hover:hx-opacity-75 ltr:hx-mr-auto rtl:hx-ml-auto" href="/">
+        <img class="hx-block dark:hx-hidden" src="/images/fyxme.svg" alt="fyx(me)" height="20" width="30" />
+        <img class="hx-hidden dark:hx-block" src="/images/fyxme.svg" alt="fyx(me)" height="20" width="30" />
+        <span class="hx-mx-2 hx-font-extrabold hx-inline hx-select-none" title="fyx(me)">fyx(me)</span>
+    </a><a
+            title="about"
+            href="/about"
+            
+            class="hx-text-sm contrast-more:hx-text-gray-700 contrast-more:dark:hx-text-gray-100 hx-relative -hx-ml-2 hx-hidden hx-whitespace-nowrap hx-p-2 md:hx-inline-block hx-text-gray-600 hover:hx-text-gray-800 dark:hx-text-gray-400 dark:hover:hx-text-gray-200"
+          >
+            <span class="hx-text-center">about</span>
+          </a><a
+            title="articles"
+            href="/articles"
+            
+            class="hx-text-sm contrast-more:hx-text-gray-700 contrast-more:dark:hx-text-gray-100 hx-relative -hx-ml-2 hx-hidden hx-whitespace-nowrap hx-p-2 md:hx-inline-block hx-text-gray-600 hover:hx-text-gray-800 dark:hx-text-gray-400 dark:hover:hx-text-gray-200"
+          >
+            <span class="hx-text-center">articles</span>
+          </a><a
+            title="minis"
+            href="/minis"
+            
+            class="hx-text-sm contrast-more:hx-text-gray-700 contrast-more:dark:hx-text-gray-100 hx-relative -hx-ml-2 hx-hidden hx-whitespace-nowrap hx-p-2 md:hx-inline-block hx-font-medium"
+          >
+            <span class="hx-text-center">minis</span>
+          </a><a
+            title="code"
+            href="/code"
+            
+            class="hx-text-sm contrast-more:hx-text-gray-700 contrast-more:dark:hx-text-gray-100 hx-relative -hx-ml-2 hx-hidden hx-whitespace-nowrap hx-p-2 md:hx-inline-block hx-text-gray-600 hover:hx-text-gray-800 dark:hx-text-gray-400 dark:hover:hx-text-gray-200"
+          >
+            <span class="hx-text-center">code</span>
+          </a><a
+            title="bazaar"
+            href="/bazaar"
+            
+            class="hx-text-sm contrast-more:hx-text-gray-700 contrast-more:dark:hx-text-gray-100 hx-relative -hx-ml-2 hx-hidden hx-whitespace-nowrap hx-p-2 md:hx-inline-block hx-text-gray-600 hover:hx-text-gray-800 dark:hx-text-gray-400 dark:hover:hx-text-gray-200"
+          >
+            <span class="hx-text-center">bazaar</span>
+          </a><div class="search-wrapper hx-relative md:hx-w-64">
+  <div class="hx-relative hx-flex hx-items-center hx-text-gray-900 contrast-more:hx-text-gray-800 dark:hx-text-gray-300 contrast-more:dark:hx-text-gray-300">
+    <input
+      placeholder="Search..."
+      class="search-input hx-block hx-w-full hx-appearance-none hx-rounded-lg hx-px-3 hx-py-2 hx-transition-colors hx-text-base hx-leading-tight md:hx-text-sm hx-bg-black/[.05] dark:hx-bg-gray-50/10 focus:hx-bg-white dark:focus:hx-bg-dark placeholder:hx-text-gray-500 dark:placeholder:hx-text-gray-400 contrast-more:hx-border contrast-more:hx-border-current"
+      type="search"
+      value=""
+      spellcheck="false"
+    />
+    <kbd
+      class="hx-absolute hx-my-1.5 hx-select-none ltr:hx-right-1.5 rtl:hx-left-1.5 hx-h-5 hx-rounded hx-bg-white hx-px-1.5 hx-font-mono hx-text-[10px] hx-font-medium hx-text-gray-500 hx-border dark:hx-border-gray-100/20 dark:hx-bg-dark/50 contrast-more:hx-border-current contrast-more:hx-text-current contrast-more:dark:hx-border-current hx-items-center hx-gap-1 hx-transition-opacity hx-pointer-events-none hx-hidden sm:hx-flex"
+    >
+      CTRL K
+    </kbd>
+  </div>
+
+  <div>
+    <ul
+      class="search-results hextra-scrollbar hx-hidden hx-border hx-border-gray-200 hx-bg-white hx-text-gray-100 dark:hx-border-neutral-800 dark:hx-bg-neutral-900 hx-absolute hx-top-full hx-z-20 hx-mt-2 hx-overflow-auto hx-overscroll-contain hx-rounded-xl hx-py-2.5 hx-shadow-xl hx-max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] md:hx-max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx-inset-x-0 ltr:md:hx-left-auto rtl:md:hx-right-auto contrast-more:hx-border contrast-more:hx-border-gray-900 contrast-more:dark:hx-border-gray-50 hx-w-screen hx-min-h-[100px] hx-max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
+      style="transition: max-height 0.2s ease 0s;"
+    ></ul>
+  </div>
+</div>
+
+          <a class="hx-p-2 hx-text-current" target="_blank" rel="noreferrer" href="https://github.com/fyxme/" title="github"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx-sr-only">github</span>
+          </a>
+          <a class="hx-p-2 hx-text-current" target="_blank" rel="noreferrer" href="https://x.com/_fyxme" title="twitter"><svg height=24 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg><span class="hx-sr-only">twitter</span>
+          </a><button type="button" aria-label="Menu" class="hamburger-menu -hx-mr-2 hx-rounded hx-p-2 active:hx-bg-gray-400/20 md:hx-hidden"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class="hx-mx-auto hx-flex hx-max-w-screen-xl">
+    <div class="mobile-menu-overlay [transition:background-color_1.5s_ease] hx-fixed hx-inset-0 hx-z-10 hx-bg-black/80 dark:hx-bg-black/60 hx-hidden"></div>
+<aside class="sidebar-container hx-flex hx-flex-col print:hx-hidden md:hx-top-16 md:hx-shrink-0 md:hx-w-64 md:hx-self-start max-md:[transform:translate3d(0,-100%,0)] md:hx-hidden">
+  
+  <div class="hx-px-4 hx-pt-4 md:hx-hidden">
+    <div class="search-wrapper hx-relative md:hx-w-64">
+  <div class="hx-relative hx-flex hx-items-center hx-text-gray-900 contrast-more:hx-text-gray-800 dark:hx-text-gray-300 contrast-more:dark:hx-text-gray-300">
+    <input
+      placeholder="Search..."
+      class="search-input hx-block hx-w-full hx-appearance-none hx-rounded-lg hx-px-3 hx-py-2 hx-transition-colors hx-text-base hx-leading-tight md:hx-text-sm hx-bg-black/[.05] dark:hx-bg-gray-50/10 focus:hx-bg-white dark:focus:hx-bg-dark placeholder:hx-text-gray-500 dark:placeholder:hx-text-gray-400 contrast-more:hx-border contrast-more:hx-border-current"
+      type="search"
+      value=""
+      spellcheck="false"
+    />
+    <kbd
+      class="hx-absolute hx-my-1.5 hx-select-none ltr:hx-right-1.5 rtl:hx-left-1.5 hx-h-5 hx-rounded hx-bg-white hx-px-1.5 hx-font-mono hx-text-[10px] hx-font-medium hx-text-gray-500 hx-border dark:hx-border-gray-100/20 dark:hx-bg-dark/50 contrast-more:hx-border-current contrast-more:hx-text-current contrast-more:dark:hx-border-current hx-items-center hx-gap-1 hx-transition-opacity hx-pointer-events-none hx-hidden sm:hx-flex"
+    >
+      CTRL K
+    </kbd>
+  </div>
+
+  <div>
+    <ul
+      class="search-results hextra-scrollbar hx-hidden hx-border hx-border-gray-200 hx-bg-white hx-text-gray-100 dark:hx-border-neutral-800 dark:hx-bg-neutral-900 hx-absolute hx-top-full hx-z-20 hx-mt-2 hx-overflow-auto hx-overscroll-contain hx-rounded-xl hx-py-2.5 hx-shadow-xl hx-max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] md:hx-max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx-inset-x-0 ltr:md:hx-left-auto rtl:md:hx-right-auto contrast-more:hx-border contrast-more:hx-border-gray-900 contrast-more:dark:hx-border-gray-50 hx-w-screen hx-min-h-[100px] hx-max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
+      style="transition: max-height 0.2s ease 0s;"
+    ></ul>
+  </div>
+</div>
+
+  </div>
+  <div class="hextra-scrollbar hx-overflow-y-auto hx-overflow-x-hidden hx-p-4 hx-grow md:hx-h-[calc(100vh-var(--navbar-height)-var(--menu-height))]">
+    <ul class="hx-flex hx-flex-col hx-gap-1 md:hx-hidden">
+      
+      
+          <li class="open"><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/"
+    
+  >minis
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a><div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col open"><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      sidebar-active-item hx-bg-primary-100 hx-font-semibold hx-text-primary-800 contrast-more:hx-border contrast-more:hx-border-primary-500 dark:hx-bg-primary-400/10 dark:hx-text-primary-600 contrast-more:dark:hx-border-primary-500"
+    href="/minis/reverse-engineering-free-vpn-applications/"
+    
+  >Reverse Engineering &#34;Free VPN&#34; Applications
+    </a>
+  
+    <ul class='hx-flex hx-flex-col hx-gap-1 hx-relative before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] dark:before:hx-bg-neutral-800 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-pr-3 rtl:before:hx-right-0 ltr:hx-ml-3 rtl:hx-mr-3'><li>
+              <a
+                href="#reversing-brightvpn"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >Reversing BrightVPN</a>
+            </li>
+          <li>
+              <a
+                href="#moving-on-to-reviewing-hola-vpn"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >Moving on to reviewing Hola VPN</a>
+            </li>
+          <li>
+              <a
+                href="#receiving-the-ban-hammer-from-hola-vpn"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >Receiving the Ban Hammer from Hola VPN</a>
+            </li>
+          <li>
+              <a
+                href="#wrapping-up"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >Wrapping up</a>
+            </li>
+          <li>
+              <a
+                href="#appendix"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >Appendix</a>
+            </li>
+          <li>
+              <a
+                href="#references"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >References</a>
+            </li>
+          </ul>
+  
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/reverse-engineering-onemillionchessboards.com-frontend-with-chrome-devtools-to-build-a-bot/"
+    
+  >Reverse Engineering onemillionchessboards.com Frontend with DevTools to Build a Bot
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/"
+    
+  >Building a Flask Blog in 3 prompts with AI Coding Tools: Using Cline &amp; MCP Servers in VSCode
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/leveraging-ai-to-automate-seo-metadata-generation-for-web-content/"
+    
+  >Leveraging AI to Automate SEO Metadata Generation for Web Content
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/ai-overthinking-more-than-me-with-insomnia-at-3-am/"
+    
+  >AI overthinking more than me with insomnia at 3 am
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/"
+    
+  >Creating Lightweight Windows Virtual Machines for your Personal Lab Environment
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/create-infinite-email-aliases-using-cloudflare-email-routing/"
+    
+  >Create Infinite Email aliases using Cloudflare Email Routing
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/improving-functionality-of-open-source-bofs/"
+    
+  >Improving functionality of Open Source BOFs
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/hack-the-box-take-it-easy-month/"
+    
+  >Hack The Box: Take It Easy Dare [Easy month] writeups and post-mortem
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/hacky-holidays-space-race-ctf-competition-post-mortem/"
+    
+  >Hacky Holidays Space Race CTF Competition post-mortem
+    </a>
+              
+            </li></ul>
+      </div></li>
+          <li class=""><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/"
+    
+  >articles
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a><div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/exploring-autonomous-llm-agents-for-capture-the-flag-problem-solving-using-context-engineering-rag-and-open-source-models/"
+    
+  >Exploring Autonomous LLM Agents for Capture The Flag problem solving using Prompt Engineering, RAG and Open Source LLMs
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/isp-default-wifi-passwords-are-costlier-to-keep-than-to-crack-value-optimised-cloud-gpu-password-cracking/"
+    
+  >ISP Default WiFi Passwords Are Costlier to Keep Than to Crack (Value optimised Cloud GPU password cracking)
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/creating-a-havoc-module-to-run-commands-on-all-agents-at-once-and-map-out-an-environment-passively/"
+    
+  >Creating a Havoc Module to run commands on all agents at once and map out an environment passively
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/replicating-cobalt-strikes-port-scanner-as-a-bof-for-open-source-c2-frameworks/"
+    
+  >Replicating Cobalt Strike&#39;s Port Scanner BOF for Open-Source C2 | Fast OPSEC-Aware Ping &amp; TCP Connect Scanning in C
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/osep-exam-review/"
+    
+  >OffSec Experienced Penetration Tester (OSEP) Exam Review
+    </a>
+              
+            </li></ul>
+      </div></li>
+          <li class=""><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/"
+    
+  >bazaar
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a><div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col open"><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/"
+    
+  >Windows
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col open"><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/active-directory/"
+    
+  >Active Directory
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/active-directory/lateral-movement/"
+    
+  >Lateral Movement
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/active-directory/ad-enumeration/"
+    
+  >AD Enumeration
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/active-directory/mssql/"
+    
+  >MSSQL
+    </a>
+              
+            </li></ul>
+      </div>
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/privilege-escalation/"
+    
+  >Privilege Escalation
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/post-exploitation--looting/"
+    
+  >Post Exploitation &amp; Looting
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/defence-evasion/"
+    
+  >Defence Evasion
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/misc-snippets/"
+    
+  >Misc Snippets
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/forensics/"
+    
+  >Forensics
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/outlook-exchange-server/"
+    
+  >Outlook Exchange Server
+    </a>
+              
+            </li></ul>
+      </div>
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/linux/"
+    
+  >Linux
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/linux/other-commands/"
+    
+  >Other Commands
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/linux/reverse-shells/"
+    
+  >Reverse Shells
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/linux/system-hardening/"
+    
+  >System Hardening
+    </a>
+              
+            </li></ul>
+      </div>
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/phishing/"
+    
+  >Phishing
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/web-exploitation/"
+    
+  >Web Exploitation
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/web-exploitation/php/"
+    
+  >PHP
+    </a>
+              
+            </li></ul>
+      </div>
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/c2-and-red-team-tools/"
+    
+  >C2 and Red Team Tools
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/c2-and-red-team-tools/havoc/"
+    
+  >Havoc
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/c2-and-red-team-tools/malware-droppers/"
+    
+  >Malware Droppers
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/c2-and-red-team-tools/vpn-routing-and-tunneling/"
+    
+  >Vpn, Routing and Tunneling
+    </a>
+              
+            </li></ul>
+      </div>
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/other-cheatsheets/"
+    
+  >&#43;&#43; cyber cheatsheets
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/ai/"
+    
+  >Ai
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/ai/agents/"
+    
+  >Agents
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/ai/ai-code-review/"
+    
+  >Ai Code Review
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/ai/inference-providers/"
+    
+  >Inference Providers
+    </a>
+              
+            </li></ul>
+      </div>
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/"
+    
+  >Computer Science &amp; Programming
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/ai-tools/"
+    
+  >Ai Tools
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/dependency-visualisation/"
+    
+  >Dependency Visualisation
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/docker/"
+    
+  >Docker
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/file-synchronisation/"
+    
+  >File Synchronisation
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/git/"
+    
+  >Git
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/image-modifications/"
+    
+  >Image Modifications
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/latex/"
+    
+  >Latex
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/orchestration-workflows/"
+    
+  >Orchestration (Workflows)
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/versioning/"
+    
+  >Versioning
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/web-dev-cheatsheet/"
+    
+  >Web Dev Cheatsheet
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/web-proxies/"
+    
+  >Web Proxies
+    </a>
+              
+            </li></ul>
+      </div>
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/wifi/"
+    
+  >Wifi
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/other/"
+    
+  >Other
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/other/networking/"
+    
+  >Networking
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/other/password-cracking/"
+    
+  >Password Cracking
+    </a>
+              
+            </li></ul>
+      </div>
+            </li></ul>
+      </div></li>
+      <li class="[word-break:break-word] hx-mt-5 hx-mb-2 hx-px-2 hx-py-1.5 hx-text-sm hx-font-semibold hx-text-gray-900 first:hx-mt-0 dark:hx-text-gray-100">
+        <span class="hx-cursor-default">Bottom text</span>
+      </li>
+    
+      <li><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="http://blinking.dog"
+    target="_blank" rel="noreferrer"
+  >🦧</a></li>
+    
+    </ul>
+
+    </div>
+  
+  
+    <div class="md:hx-hidden  hx-sticky hx-bottom-0 hx-bg-white dark:hx-bg-dark hx-mx-4 hx-py-4 hx-shadow-[0_-12px_16px_#fff] hx-flex hx-items-center hx-gap-2 dark:hx-border-neutral-800 dark:hx-shadow-[0_-12px_16px_#111] contrast-more:hx-border-neutral-400 contrast-more:hx-shadow-none contrast-more:dark:hx-shadow-none hx-border-t" data-toggle-animation="show"><div class="hx-flex hx-grow hx-flex-col"><button
+  title="Change theme"
+  data-theme="light"
+  class="theme-toggle hx-group hx-h-7 hx-rounded-md hx-px-2 hx-text-left hx-text-xs hx-font-medium hx-text-gray-600 hx-transition-colors dark:hx-text-gray-400 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50"
+  type="button"
+  aria-label="Change theme"
+>
+  <div class="hx-flex hx-items-center hx-gap-2 hx-capitalize"><svg height=12 class="group-data-[theme=light]:hx-hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="group-data-[theme=light]:hx-hidden">Light</span><svg height=12 class="group-data-[theme=dark]:hx-hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="group-data-[theme=dark]:hx-hidden">Dark</span></div>
+</button>
+</div></div></aside>
+    
+<nav class="hextra-toc hx-order-last hx-hidden hx-w-64 hx-shrink-0 xl:hx-block print:hx-hidden hx-px-4" aria-label="table of contents">
+    <div class="hextra-scrollbar hx-sticky hx-top-16 hx-overflow-y-auto hx-pr-4 hx-pt-6 hx-text-sm [hyphens:auto] hx-max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] ltr:hx--mr-4 rtl:hx--ml-4"><p class="hx-mb-4 hx-font-semibold hx-tracking-tight">On this page</p><ul>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#reversing-brightvpn">Reversing BrightVPN
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#static-analysis-of-the-brightvpn-android-application">Static analysis of the BrightVPN Android Application
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#dynamic-analysis-of-the-brightvpn-android-application">Dynamic analysis of the BrightVPN Android Application
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#whos-hiding-behind-brightvpn">Who’s hiding behind BrightVPN?
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#moving-on-to-reviewing-hola-vpn">Moving on to reviewing Hola VPN
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#a-quick-look-into-the-hola-vpn-android-application">A quick look into the Hola VPN Android Application
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#a-quick-look-at-the-hola-vpn-google-chrome-extension">A quick look at the Hola VPN Google Chrome Extension
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#receiving-the-ban-hammer-from-hola-vpn">Receiving the Ban Hammer from Hola VPN
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#wrapping-up">Wrapping up
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#appendix">Appendix
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-8 rtl:hx-pr-8 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#brightvpn-myfirstandroidapplication">BrightVPN: MyFirstAndroidApplication
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-8 rtl:hx-pr-8 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#setting-up-mitm-proxies-for-dynamic-application-reversing-using-adb">Setting up mitm proxies for dynamic application reversing using adb
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-8 rtl:hx-pr-8 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#loading-alwaystrustusercerts-module-using-kernelsu">Loading AlwaysTrustUserCerts Module using KernelSU
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-8 rtl:hx-pr-8 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#wireshark-capture-of-proxy-tunnel-request">Wireshark capture of proxy tunnel request
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#references">References
+        </a>
+      </li></ul>
+      <div class="hx-mt-8 hx-border-t hx-bg-white hx-pt-8 hx-shadow-[0_-12px_16px_white] dark:hx-bg-dark dark:hx-shadow-[0_-12px_16px_#111] hx-sticky hx-bottom-0 hx-flex hx-flex-col hx-items-start hx-gap-2 hx-pb-8 dark:hx-border-neutral-800 contrast-more:hx-border-t contrast-more:hx-border-neutral-400 contrast-more:hx-shadow-none contrast-more:dark:hx-border-neutral-400">
+        <button aria-hidden="true" id="backToTop" onClick="scrollUp();" class="hx-transition-all hx-duration-75 hx-opacity-0 hx-text-xs hx-font-medium hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-100 contrast-more:hx-text-gray-800 contrast-more:dark:hx-text-gray-50">
+          <span>Scroll to top</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hx-inline ltr:hx-ml-1 rtl:hx-mr-1 hx-h-3.5 hx-w-3.5 hx-border hx-rounded-full hx-border-gray-500 hover:hx-border-gray-900 dark:hx-border-gray-400 dark:hover:hx-border-gray-100 contrast-more:hx-border-gray-800 contrast-more:dark:hx-border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx-w-full hx-break-words hx-flex hx-min-h-[calc(100vh-var(--navbar-height))] hx-min-w-0 hx-justify-center hx-pb-8 hx-pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+        
+      <main class="hx-w-full hx-min-w-0 hx-max-w-6xl hx-pt-4">
+        
+  <div class="hx-mt-1.5 hx-flex hx-items-center hx-gap-1 hx-overflow-hidden hx-text-sm hx-text-gray-500 dark:hx-text-gray-400 contrast-more:hx-text-current">
+        <div class="hx-whitespace-nowrap hx-transition-colors hx-min-w-[24px] hx-overflow-hidden hx-text-ellipsis hover:hx-text-gray-900 dark:hover:hx-text-gray-100">
+          <a href="/minis/">minis</a>
+        </div><svg class="hx-w-3.5 hx-shrink-0 rtl:-hx-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx-whitespace-nowrap hx-transition-colors hx-font-medium hx-text-gray-700 contrast-more:hx-font-bold contrast-more:hx-text-current dark:hx-text-gray-100 contrast-more:dark:hx-text-current">Reverse Engineering &#34;Free VPN&#34; Applications</div>
+  </div>
+
+        <h1 class="hx-mt-2 hx-text-4xl hx-font-bold hx-tracking-tight hx-text-slate-900 dark:hx-text-slate-100">Reverse Engineering &#34;Free VPN&#34; Applications</h1>
+            
+        <div class="hx-mt-4 hx-mb-4 hx-text-gray-500 hx-text-sm hx-flex hx-items-center hx-flex-wrap hx-gap-y-2"><span class="hx-mr-1">October 27, 2025</span><span class="hx-mx-1">·</span><a
+                  href="https://fyx.me/articles" target="_blank"
+                  class="hx-group hx-inline-flex hx-items-center hx-text-current hx-gap-x-1.5 hx-mx-1"
+                  title="fyx(me)"
+                ><img src="https://fyx.me/favicon.ico" alt="fyx(me)" class="hx-inline-block hx-h-4 hx-w-4 hx-rounded-full" loading="lazy" />
+                  <div class="group-hover:hx-underline">fyx(me)</div>
+                </a></div>
+        <div class="content">
+          <p>While cleaning up old notes, I came across this tweeter post I had saved about &ldquo;Free VPN&rdquo; and how they are malicious:</p>
+<p>
+    <figure>
+    <img src="../img/Twitter%20Free%20VPN%20UK_Daniel_Card%20post.webp" title="https://x.com/UK_Daniel_Card/status/1869808826180133222" alt="" loading="lazy" />
+    <figcaption>https://x.com/UK_Daniel_Card/status/1869808826180133222</figcaption>
+  </figure></p>
+<p>Free VPNs have again made rounds on Twitter and Reddit, its been know for more than 10 years that these VPNs basically sell your data, use your traffic and/or show you ads to pay for the free service. If you&rsquo;re not paying, you&rsquo;re the product.</p>
+<p>
+    <figure>
+    <img src="../img/Reddit%20technology%20post%20Hola%20VPN%20botnet.webp" title="Reddit technology post Hola VPN botnet" alt="" loading="lazy" />
+    <figcaption>Reddit technology post Hola VPN botnet</figcaption>
+  </figure></p>
+<p>The article also mentions that the internet traffic harvested from its users was resold via a website called <strong>Luminati</strong> (yes for real&hellip; and they still use this domain as we&rsquo;ll see later).</p>
+<p>I thought it would be funny to look under the hood of one of these VPN services and see how they work. What better one to pick then the first one showcased in the twitter post above: <strong>BrightVPN</strong></p>
+<h2>Reversing BrightVPN<span class="hx-absolute -hx-mt-20" id="reversing-brightvpn"></span>
+    <a href="#reversing-brightvpn" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Since the post was released, BrightVPN seems to have done a redesign of their website and to their credit, made it look very professional (but no less malicious):</p>
+<p>
+    <figure>
+    <img src="../img/BrightVPN%20website.webp" title="BrightVPN Website" alt="" loading="lazy" />
+    <figcaption>BrightVPN Website</figcaption>
+  </figure></p>
+<p>At least they tell you they are going to use your internet connection.</p>
+<h3>Static analysis of the BrightVPN Android Application<span class="hx-absolute -hx-mt-20" id="static-analysis-of-the-brightvpn-android-application"></span>
+    <a href="#static-analysis-of-the-brightvpn-android-application" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>They offer a number of applications to use their VPN service, we&rsquo;ll start looking at the Android Application to begin as it&rsquo;s easy to extract source code and look for quick wins.</p>
+<p>To download their Android Application, you need to scan a QR code to a 3rd party Android App Store. They&rsquo;re not even available on the Google Play Store which already says a lot&hellip;</p>
+<p>
+    <figure>
+    <img src="../img/BrightVPN%20Android%20QR%20Code.webp" title="QR Code url: hxxps[://]qr2[.]mobi/BVPN_APK" alt="" loading="lazy" />
+    <figcaption>QR Code url: hxxps[://]qr2[.]mobi/BVPN_APK</figcaption>
+  </figure></p>
+<p>This App store has to specify that its application come &ldquo;with no viruses&rdquo;. The fact that they have to specify this is hilarious in itself:</p>
+<p>
+    <figure>
+    <img src="../img/uptodown%20Marketplace%20logo%20and%20tagline.webp" title="FREE WITH NO VIRUSES" alt="" loading="lazy" />
+    <figcaption>FREE WITH NO VIRUSES</figcaption>
+  </figure></p>
+<p>From this marketplace, we can download Bright VPN directly onto our machine:</p>
+<p>
+    <img src="../img/Pasted%20image%2020251027141616.webp" alt="" loading="lazy" /></p>
+<p>We now have an apk and can start doing some quick static analysis. We use apktool to unpack the apk (ie. the glorified zip archive) and retrieve its content:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ apktool d --no-src bright-vpn-1-1.apk 
+</span></span><span class="line"><span class="cl">I: Using Apktool 2.7.0-dirty on bright-vpn-1-1.apk
+</span></span><span class="line"><span class="cl">I: Loading resource table...
+</span></span><span class="line"><span class="cl">I: Decoding AndroidManifest.xml with resources...
+</span></span><span class="line"><span class="cl">I: Loading resource table from file: /home/lo/.local/share/apktool/framework/1.apk
+</span></span><span class="line"><span class="cl">I: Regular manifest package...
+</span></span><span class="line"><span class="cl">I: Decoding file-resources...
+</span></span><span class="line"><span class="cl">I: Decoding values */* XMLs...
+</span></span><span class="line"><span class="cl">I: Copying raw classes.dex file...
+</span></span><span class="line"><span class="cl">I: Copying assets and libs...
+</span></span><span class="line"><span class="cl">I: Copying unknown files...
+</span></span><span class="line"><span class="cl">I: Copying original files...
+</span></span><span class="line"><span class="cl">I: Copying META-INF/services directory
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ ls -al
+</span></span><span class="line"><span class="cl">total <span class="m">10728</span>
+</span></span><span class="line"><span class="cl">drwxrwxr-x   <span class="m">9</span> lo lo      <span class="m">240</span> Oct <span class="m">27</span> 14:20 .
+</span></span><span class="line"><span class="cl">drwxrwxr-x   <span class="m">3</span> lo lo       <span class="m">80</span> Oct <span class="m">27</span> 14:20 ..
+</span></span><span class="line"><span class="cl">-rw-rw-r--   <span class="m">1</span> lo lo     <span class="m">6050</span> Oct <span class="m">27</span> 14:20 AndroidManifest.xml
+</span></span><span class="line"><span class="cl">-rw-rw-r--   <span class="m">1</span> lo lo      <span class="m">565</span> Oct <span class="m">27</span> 14:20 apktool.yml
+</span></span><span class="line"><span class="cl">drwxrwxr-x   <span class="m">2</span> lo lo       <span class="m">60</span> Oct <span class="m">27</span> 14:20 assets
+</span></span><span class="line"><span class="cl">-rw-rw-r--   <span class="m">1</span> lo lo <span class="m">10972348</span> Oct <span class="m">27</span> 14:20 classes.dex
+</span></span><span class="line"><span class="cl">drwxrwxr-x   <span class="m">8</span> lo lo      <span class="m">180</span> Oct <span class="m">27</span> 14:20 kotlin
+</span></span><span class="line"><span class="cl">drwxrwxr-x   <span class="m">6</span> lo lo      <span class="m">120</span> Oct <span class="m">27</span> 14:20 lib
+</span></span><span class="line"><span class="cl">drwxrwxr-x   <span class="m">3</span> lo lo       <span class="m">60</span> Oct <span class="m">27</span> 14:20 META-INF
+</span></span><span class="line"><span class="cl">drwxrwxr-x   <span class="m">3</span> lo lo       <span class="m">80</span> Oct <span class="m">27</span> 14:20 original
+</span></span><span class="line"><span class="cl">drwxrwxr-x <span class="m">174</span> lo lo     <span class="m">3480</span> Oct <span class="m">27</span> 14:20 res
+</span></span><span class="line"><span class="cl">drwxrwxr-x   <span class="m">3</span> lo lo       <span class="m">80</span> Oct <span class="m">27</span> 14:20 unknown</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>The first thing that peaked my interest was this <code>assets/dns_proxy_servers.json</code> which appeared to contain a number of DNS entries:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ cat assets/dns_proxy_servers.json <span class="p">|</span> jq
+</span></span><span class="line"><span class="cl"><span class="o">[</span>
+</span></span><span class="line"><span class="cl">  <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;ip&#34;</span>: <span class="s2">&#34;168.205.94.32&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;country&#34;</span>: <span class="s2">&#34;AR&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;priority&#34;</span>: 1,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;location&#34;</span>: <span class="s2">&#34;Argentina&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">  <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;ip&#34;</span>: <span class="s2">&#34;139.84.196.176&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;country&#34;</span>: <span class="s2">&#34;AU&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;priority&#34;</span>: 2,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;location&#34;</span>: <span class="s2">&#34;Australia&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>...<span class="o">]</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;ip&#34;</span>: <span class="s2">&#34;164.90.148.10&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;country&#34;</span>: <span class="s2">&#34;US&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;priority&#34;</span>: 4,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;location&#34;</span>: <span class="s2">&#34;United States&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">]</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>If we pick the first DNS server entry (<code>168.205.94.32</code>) and try to request DNS records for <code>google.com</code>, something interesting happens:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ dig +short @168.205.94.32 google.com
+</span></span><span class="line"><span class="cl">168.205.94.32</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>The DNS proxy appears to be returning its own IP for <code>google.com</code> which is already weird.  In contrast, this is what my local DNS server returns and what Google&rsquo;s own DNS server (<code>8.8.8.8</code>) returns, which is nowhere close to the above:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ dig +short google.com 
+</span></span><span class="line"><span class="cl">142.250.69.78
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ dig +short @8.8.8.8 google.com
+</span></span><span class="line"><span class="cl">142.250.69.78</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>Proxying DNS requests is not uncommon in VPNs as to prevent <a href="https://www.dnsleaktest.com/" target="_blank" rel="noopener">DNS leakage</a>, however in this case they appear to be hijacking the records completely and always return the same IP address (ie. the IP of the proxy itself). This forces all traffic through the Proxies they have setup, probably to intercept and man-in-the-middle outgoing traffic.</p>
+<p>Looking at some of the other files, we come across the  <code>res/values/strings.xml</code> which contains a number of useless strings but also hints at something more interesting:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ cat res/values/strings.xml <span class="p">|</span> grep http
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&lt;string <span class="nv">name</span><span class="o">=</span><span class="s2">&#34;dns_list_url&#34;</span>&gt;https://hola.org/dns_proxy_servers&lt;/string&gt;
+</span></span><span class="line"><span class="cl">&lt;string <span class="nv">name</span><span class="o">=</span><span class="s2">&#34;dns_servers_url&#34;</span>&gt;https://hola.org/dns_proxy_servers&lt;/string&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>...<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&lt;string <span class="nv">name</span><span class="o">=</span><span class="s2">&#34;my_ip_url&#34;</span>&gt;https://client.brightvpn.com/api/myip&lt;/string&gt;</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>The file contains URLs for <code>hola.org</code>, which is also a very well know Free VPN which sells your data and traffic to the highest bidder. But this is probably just a coincidence.</p>
+<p>If we try to query the URLs, the response appears very similar to the <code>assets/dns_proxy_servers.json</code> file we saw earlier:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl https://hola.org/dns_proxy_servers <span class="p">|</span> jq
+</span></span><span class="line"><span class="cl"><span class="o">[</span>
+</span></span><span class="line"><span class="cl">  <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;ip&#34;</span>: <span class="s2">&#34;168.205.94.32&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;country&#34;</span>: <span class="s2">&#34;AR&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;priority&#34;</span>: 1,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;location&#34;</span>: <span class="s2">&#34;Argentina&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">  <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;ip&#34;</span>: <span class="s2">&#34;139.84.196.176&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;country&#34;</span>: <span class="s2">&#34;AU&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;priority&#34;</span>: 2,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;location&#34;</span>: <span class="s2">&#34;Australia&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>,
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="o">[</span>...<span class="o">]</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>When we compare them, we can see they&rsquo;re basically the same except for two (2) additional proxies in France and Japan:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ cat ./assets/dns_proxy_servers.json <span class="p">|</span> jq -r <span class="s1">&#39;.[].ip&#39;</span> <span class="p">|</span> sort -u &gt; a.out
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ curl https://hola.org/dns_proxy_servers <span class="p">|</span> jq -r <span class="s1">&#39;.[].ip&#39;</span> <span class="p">|</span> sort -u &gt; b.out
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ diff a.out b.out
+</span></span><span class="line"><span class="cl">11d10
+</span></span><span class="line"><span class="cl">&lt; 167.179.97.151
+</span></span><span class="line"><span class="cl">28d26
+</span></span><span class="line"><span class="cl">&lt; 95.179.216.213
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ curl https://hola.org/dns_proxy_servers <span class="p">|</span> jq <span class="s1">&#39;.[] | select(.ip == &#34;167.179.97.151&#34; or .ip == &#34;95.179.216.213&#34;)&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;ip&#34;</span>: <span class="s2">&#34;95.179.216.213&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;country&#34;</span>: <span class="s2">&#34;FR&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;priority&#34;</span>: 3,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;location&#34;</span>: <span class="s2">&#34;France&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;ip&#34;</span>: <span class="s2">&#34;167.179.97.151&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;country&#34;</span>: <span class="s2">&#34;JP&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;priority&#34;</span>: 0,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;location&#34;</span>: <span class="s2">&#34;Japan&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>Once again, this is probably just a coincidence&hellip; There&rsquo;s no way BrigthVPN would be a wrapper for Hola VPN right?</p>
+<p><em>Note: I looked at the decompiled dex files and the Java code gives off &ldquo;My first Android project&rdquo; kinda vibes. You can see the main service (<code>MyVpnService</code>) in appendix. // TODO</em></p>
+<h3>Dynamic analysis of the BrightVPN Android Application<span class="hx-absolute -hx-mt-20" id="dynamic-analysis-of-the-brightvpn-android-application"></span>
+    <a href="#dynamic-analysis-of-the-brightvpn-android-application" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Instead of speculating on what it might do, how about we run the application and observe.</p>
+<details class="last-of-type:hx-mb-0 hx-rounded-lg hx-bg-neutral-50 dark:hx-bg-neutral-800 hx-p-2 hx-mt-4 hx-group" >
+  <summary class="hx-flex hx-items-center hx-cursor-pointer hx-select-none hx-list-none hx-p-1 hx-rounded hx-transition-colors hover:hx-bg-gray-100 dark:hover:hx-bg-neutral-800 before:hx-mr-1 before:hx-inline-block before:hx-transition-transform before:hx-content-[''] dark:before:hx-invert rtl:before:hx-rotate-180 group-open:before:hx-rotate-90">
+    <strong class="hx-text-lg">A quick note on the testing setup I used</strong>
+  </summary>
+  <div class="hx-p-2 hx-overflow-hidden">
+    <p>I decided to deploy a new Android Emulator (VM), I used <a href="https://archive.org/details/bliss-15.8.5" target="_blank" rel="noopener">BlissOS</a>(an android VM) as it comes pre-installed with <a href="https://github.com/tiann/KernelSU" target="_blank" rel="noopener">KernelSU</a> (kernel root) which basically means we can load arbitrary modules (similar to <a href="https://github.com/topjohnwu/Magisk" target="_blank" rel="noopener">Magisk</a>) which would otherwise require us to root the machine. I used KernelSU to load <a href="https://github.com/NVISOsecurity/AlwaysTrustUserCerts/tree/master?tab=readme-ov-file" target="_blank" rel="noopener">AlwaysTrustUserCerts</a> as this makes it much easier to install trusted certificates which is harder to do manually in newer android versions. You can use this nice script if you want to deploy a new BlissOS VM quickly and launch it with Qemu: <a href="https://github.com/maximilionus/android-qemu-launcher" target="_blank" rel="noopener">https://github.com/maximilionus/android-qemu-launcher</a>.</p>
+<p>Alternatively, you can launch it with the following <code>qemu</code> command to launch your VM:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">qemu-system-x86_64 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -enable-kvm <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -M q35 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -m <span class="m">4096</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -smp <span class="m">9</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -cpu host <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -drive <span class="nv">file</span><span class="o">=</span>./drives/android-image.qcow2.img,if<span class="o">=</span>virtio <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -usb <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -device virtio-tablet <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -device virtio-keyboard <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -device qemu-xhci,id<span class="o">=</span>xhci <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -device virtio-vga-gl <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -display sdl,gl<span class="o">=</span>on <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -machine <span class="nv">vmport</span><span class="o">=</span>off <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -net nic,model<span class="o">=</span>virtio-net-pci <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -net user,hostfwd<span class="o">=</span>tcp::4444-:5555 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -name <span class="s2">&#34;Android VM&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -audio pa,model<span class="o">=</span>ac97</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+  </div>
+</details>
+<p>We start our VM and install the BrightVPN apk we downloaded previously:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<pre><code># installing brightVPN
+&gt; adb install bright-vpn-1-1.apk
+Performing Streamed Install
+Success</code></pre><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>We&rsquo;re smarter than Google Play Protect obviously so we just dis-reguard their popup telling us the app is harmful and install it anyways:</p>
+<p>
+    <img src="../img/Pasted%20image%2020251026143623%201.webp" alt="" loading="lazy" /></p>
+<p>We also setup our mitm proxy proxy to catch the HTTP requests from the app. I&rsquo;m using <a href="http://mitmproxy.org/" target="_blank" rel="noopener">mitmproxy</a> instead of Burpsuite since I don&rsquo;t plan on modifying requests, and I also love their TUI but that&rsquo;s another story.</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&gt; adb reverse tcp:8080 tcp:8080
+</span></span><span class="line"><span class="cl"><span class="m">8080</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&gt; adb shell settings put global http_proxy 127.0.0.1:8080    </span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>We start the app and try to connect to an arbitrary server they have listed:</p>
+<p>
+    <img src="../img/Pasted%20image%2020251026165412.webp" alt="" loading="lazy" /></p>
+<p>We can see it make requests to the <code>hola.org</code> endpoint we say earlier as well as their own <code>client.brightvpn.com/api/myip</code> which basically returns your current IP (ie. testing if you&rsquo;re routed or not):</p>
+<p>
+    <img src="../img/Pasted%20image%2020251027153345.webp" alt="" loading="lazy" /></p>
+<p>And unfortunately this is pretty much where it stops for this application&hellip; Pressing the VPN button did nothing except send error reports to some website (which we&rsquo;ll see again later):</p>
+<p>
+    <img src="../img/Pasted%20image%2020251027161407.webp" alt="" loading="lazy" /></p>
+<p>I also couldn&rsquo;t start the VPN itself, regardless of whether I was forcing the proxy through mitmproxy or not. The application was simply not working&hellip; I thought maybe it checks tries to fingerprint the device and see if its running in an emulator but saw no reference to that in the decompiled java code. While writing this post, I had another quick look and it turns out the IP checking endpoint no longer works? So maybe they just killed the application entirely&hellip; Who knows&hellip;</p>
+<p>
+    <img src="../img/Pasted%20image%2020251027161230.webp" alt="" loading="lazy" /></p>
+<h3>Who&rsquo;s hiding behind BrightVPN?<span class="hx-absolute -hx-mt-20" id="whos-hiding-behind-brightvpn"></span>
+    <a href="#whos-hiding-behind-brightvpn" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>A little disappointed that it didn&rsquo;t work properly but such is life. I can only hypothesis how amazing it was and how unrelated to Hola VPN it is&hellip; Except if we can maybe find more proof linking the two together?</p>
+<p>Funnily enough, <a href="https://chromewebstore.google.com/detail/bright-vpn-secure-private/fbffombkfihfokifmkihbddiafipndnb/reviews" target="_blank" rel="noopener">BrightVPN&rsquo;s Chrome Extension</a> has amazing reviews and they keep on boasting about their App Certification:</p>
+<p>
+    <img src="../img/Pasted%20image%2020251027140706.webp" alt="" loading="lazy" /></p>
+<p>If we have a look at their beautiful <a href="https://customer.appesteem.com/certified?vendor=BDATA" target="_blank" rel="noopener">certification</a> (which is definitely not a marketing gimmick), we can view all the applications certified by the same vendor&hellip; Oh, and what do we have here? Hola VPN is also certified by that same vendor <strong>and</strong> the Company is the same as the Bright VPN company, namely <strong>Bright Data</strong>&hellip;</p>
+<p>
+    <img src="../img/Pasted%20image%2020251027162404.webp" alt="" loading="lazy" /></p>
+<p>I&rsquo;m not one to point fingers but all in all, this is the best conclusion I can come up with:</p>
+<p>
+    <figure>
+    <img src="../img/scooby-doo-hola-brightvpn.webp" title="It was Hola VPN all along!" alt="" loading="lazy" />
+    <figcaption>It was Hola VPN all along!</figcaption>
+  </figure></p>
+<h2>Moving on to reviewing Hola VPN<span class="hx-absolute -hx-mt-20" id="moving-on-to-reviewing-hola-vpn"></span>
+    <a href="#moving-on-to-reviewing-hola-vpn" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>A quick look into the Hola VPN Android Application<span class="hx-absolute -hx-mt-20" id="a-quick-look-into-the-hola-vpn-android-application"></span>
+    <a href="#a-quick-look-into-the-hola-vpn-android-application" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Now that we know what to look for, I&rsquo;ll spare you the details and speedrun the reversing part and go straight to dynamic analysis.</p>
+<p>We install Hola VPN and start our proxy setup again to catch the traffic:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&gt; adb install Hola_VPN_vARM7A_1.184.486.apk
+</span></span><span class="line"><span class="cl">Performing Streamed Install
+</span></span><span class="line"><span class="cl">Success</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>Identifying the full VPN setup workflow proved to be a little harder than expected since the application sets up a new interface which restarts the adb server and requires us to reset our proxy setup, however we can see:</p>
+<ul>
+<li>Random IPs its trying to reach directly</li>
+<li>Some IP tests its doing using a website of its own (<code>brdtest.com</code> and <code>brdtnet.com</code>) as well as a public IP check <code>api64.ipify.org</code> API</li>
+<li>An error reporting host (<code>perr.hola.org</code>) with the exact same endpoint format and paremeters as the one found in the BrightVPN application (Another coincidence?)</li>
+</ul>
+<p>
+    <img src="../img/Pasted%20image%2020251026205732.webp" alt="" loading="lazy" /></p>
+<p>We can also perform a quick <code>tcpdump</code> when the VPN is running and we see it connect to another seemingly random AWS IP address:</p>
+<p>
+    <img src="../img/Pasted%20image%2020251026193911.webp" alt="" loading="lazy" /></p>
+<p>We can try to connect to the EC2 IP in a browser and get a certificate error issue, which reveals the certificate was issued for <code>*.luminatinet.com</code>:</p>
+<p>
+    <img src="../img/Pasted%20image%2020251026205716.webp" alt="" loading="lazy" /></p>
+<p><code>luminatinet</code> sounds very familiar! Oh yeah&hellip; We just did a full circle to the article released 11 years ago where they mention Hola VPN is selling traffic via a company named <strong>Luminati</strong>.</p>
+<p>Nothing fishy, its just good business.</p>
+<p>I was able to catch a few more endpoints while testing but why even bother reversing an Android Application and fighting with re-routing and what not when you can simply install their browser extension and route the traffic directly to Burp.</p>
+<h3>A quick look at the Hola VPN Google Chrome Extension<span class="hx-absolute -hx-mt-20" id="a-quick-look-at-the-hola-vpn-google-chrome-extension"></span>
+    <a href="#a-quick-look-at-the-hola-vpn-google-chrome-extension" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>It is well known that every good VPN also provides a chrome extension alongside it:</p>
+<p>
+    <img src="../img/Pasted%20image%2020251026211019.webp" alt="" loading="lazy" /></p>
+<p>So installed the extension, started the proxy, and looked at what we caught. We find the usual bunch, and endpoints related to what appears to be the proxies used by the application:</p>
+<p>
+    <img src="../img/Pasted%20image%2020251026211931.webp" alt="" loading="lazy" /></p>
+<p>
+    <img src="../img/Pasted%20image%2020251026212300.webp" alt="" loading="lazy" /></p>
+<p>At this point I wanted to try and reverse the full connection flow and attempt to see if I could connect to a proxy directly with custom code (the proxies are non-standard so you won&rsquo;t be able to send a simple HTTP CONNECT to it). And then I remembered, there&rsquo;s probably someone who&rsquo;s already tried to this&hellip;</p>
+<p>A quick search revealed there was a Github repository which basically used Hola VPN proxies to route traffic: <a href="https://github.com/Snawoot/hola-proxy" target="_blank" rel="noopener">https://github.com/Snawoot/hola-proxy</a> without relying on the application (and without having to give your traffic away). So I rushed to download and execute this random person&rsquo;s code without checking if it was malicious or not because who does that anyways and it worked.</p>
+<p>The tool sets up a local HTTP proxy which routes traffic through the Hola VPN proxy. We can start the local proxy as such:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&gt; ./bin/hola-proxy -country AU -bind-address <span class="s2">&#34;127.0.0.1:8888&#34;</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 21:39:06 main.go:247: INFO     hola-proxy client version  is starting...
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 21:39:06 main.go:347: INFO     Attempting action <span class="s2">&#34;get latest version of Chrome browser&#34;</span>, attempt <span class="c1">#1...</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 21:39:07 main.go:258: INFO     latest Chrome version is <span class="s2">&#34;142.0.7444.52&#34;</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 21:39:07 main.go:263: INFO     discovered latest Chrome User-Agent: <span class="s2">&#34;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36&#34;</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 21:39:07 main.go:350: INFO     Action <span class="s2">&#34;get latest version of Chrome browser&#34;</span> succeeded on attempt <span class="c1">#1</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 21:39:07 main.go:347: INFO     Attempting action <span class="s2">&#34;get latest version of browser extension&#34;</span>, attempt <span class="c1">#1...</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 21:39:07 main.go:283: INFO     discovered latest browser extension version: 1.247.39
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 21:39:07 main.go:350: INFO     Action <span class="s2">&#34;get latest version of browser extension&#34;</span> succeeded on attempt <span class="c1">#1</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 21:39:07 main.go:292: WARNING  Detected latest extension version: <span class="s2">&#34;1.247.39&#34;</span>. Pass -ext-ver parameter to skip resolve and speedup startup
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 21:39:07 main.go:299: INFO     Constructing fallback DNS upstream...
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 21:39:07 main.go:347: INFO     Attempting action <span class="s2">&#34;run credentials service&#34;</span>, attempt <span class="c1">#1...</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 21:39:07 main.go:350: INFO     Action <span class="s2">&#34;run credentials service&#34;</span> succeeded on attempt <span class="c1">#1</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 21:39:07 main.go:325: INFO     Endpoint: https://zagent2715.hola.org:22225
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 21:39:07 main.go:326: INFO     Starting proxy server...
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 21:39:07 main.go:328: INFO     Init complete.
+</span></span><span class="line"><span class="cl">PROXY   : 2025/10/26 21:39:33 handler.go:104: INFO     Request: 127.0.0.1:35536 HTTP/1.1 GET http://ip-api.com/
+</span></span><span class="line"><span class="cl">PROXY   : 2025/10/26 21:39:34 handler.go:95: INFO     127.0.0.1:35536 GET http://ip-api.com/ <span class="m">200</span> OK</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>From there we can check that the routing work properly by checking our IP which shows we&rsquo;re routing properly through a DigitalOcean server in New Jersey:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">~ &gt; curl -x http://localhost:8888 ip-api.com
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;status&#34;</span>       : <span class="s2">&#34;success&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;continent&#34;</span>    : <span class="s2">&#34;North America&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;continentCode&#34;</span>: <span class="s2">&#34;NA&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;country&#34;</span>      : <span class="s2">&#34;United States&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;countryCode&#34;</span>  : <span class="s2">&#34;US&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;region&#34;</span>       : <span class="s2">&#34;NJ&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;regionName&#34;</span>   : <span class="s2">&#34;New Jersey&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;city&#34;</span>         : <span class="s2">&#34;North Bergen&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;district&#34;</span>     : <span class="s2">&#34;&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;zip&#34;</span>          : <span class="s2">&#34;07047&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;lat&#34;</span>          : 40.7964,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;lon&#34;</span>          : -74.0203,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;timezone&#34;</span>     : <span class="s2">&#34;America/New_York&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;offset&#34;</span>       : -14400,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;currency&#34;</span>     : <span class="s2">&#34;USD&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;isp&#34;</span>          : <span class="s2">&#34;DigitalOcean, LLC&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;org&#34;</span>          : <span class="s2">&#34;DigitalOcean, LLC&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;as&#34;</span>           : <span class="s2">&#34;AS14061 DigitalOcean, LLC&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;asname&#34;</span>       : <span class="s2">&#34;DIGITALOCEAN-ASN&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;mobile&#34;</span>       : false,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;proxy&#34;</span>        : true,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;hosting&#34;</span>      : true,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;query&#34;</span>        : <span class="s2">&#34;137.184.194.230&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>I&rsquo;ll leave it as an exercise for the reader to see how it connects to the network and authenticates.</p>
+<h2>Receiving the Ban Hammer from Hola VPN<span class="hx-absolute -hx-mt-20" id="receiving-the-ban-hammer-from-hola-vpn"></span>
+    <a href="#receiving-the-ban-hammer-from-hola-vpn" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>The <code>hola-proxy</code> tool introduced above boasts the ability to forward traffic directly via residential peers (basically demonstrating what the Article said):</p>
+<p>
+    <img src="../img/Pasted%20image%2020251027172221.webp" alt="" loading="lazy" /></p>
+<p>However, while testing it my traffic still appeared to be routed via VPS servers hosted on Digital Ocean and Vultr. From what I saw in the app itself, there might be some per domain routing applied too for example routing via peers when requesting <code>netflix.com</code>, etc. Or it may be that you need to have a premium account to be able to route through the network of peers. I&rsquo;m not going to investigate further now but may look into it in the future.</p>
+<p>Anyways, while I was playing around trying to route via the peer-to-peer network, I hit their rate limits and got IP banned:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<pre><code>&gt; ./bin/hola-proxy -country FR -bind-address &#34;127.0.0.1:8888&#34;
+MAIN    : 2025/10/26 22:10:40 main.go:247: INFO     hola-proxy client version  is starting...
+MAIN    : 2025/10/26 22:10:40 main.go:347: INFO     Attempting action &#34;get latest version of Chrome browser&#34;, attempt #1...
+MAIN    : 2025/10/26 22:10:41 main.go:258: INFO     latest Chrome version is &#34;142.0.7444.52&#34;
+MAIN    : 2025/10/26 22:10:41 main.go:263: INFO     discovered latest Chrome User-Agent: &#34;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36&#34;
+MAIN    : 2025/10/26 22:10:41 main.go:350: INFO     Action &#34;get latest version of Chrome browser&#34; succeeded on attempt #1
+MAIN    : 2025/10/26 22:10:41 main.go:347: INFO     Attempting action &#34;get latest version of browser extension&#34;, attempt #1...
+MAIN    : 2025/10/26 22:10:41 main.go:283: INFO     discovered latest browser extension version: 1.247.39
+MAIN    : 2025/10/26 22:10:41 main.go:350: INFO     Action &#34;get latest version of browser extension&#34; succeeded on attempt #1
+MAIN    : 2025/10/26 22:10:41 main.go:292: WARNING  Detected latest extension version: &#34;1.247.39&#34;. Pass -ext-ver parameter to skip resolve and speedup startup
+MAIN    : 2025/10/26 22:10:41 main.go:299: INFO     Constructing fallback DNS upstream...
+MAIN    : 2025/10/26 22:10:41 main.go:347: INFO     Attempting action &#34;run credentials service&#34;, attempt #1...
+CRED    : 2025/10/26 22:10:41 credservice.go:32: ERROR    Configuration bootstrap error: temporary ban detected. Retrying with the fallback mechanism...
+CRED    : 2025/10/26 22:10:43 credservice.go:32: ERROR    Configuration bootstrap error: temporary ban detected. Retrying with the fallback mechanism...
+CRED    : 2025/10/26 22:10:43 credservice.go:32: ERROR    Configuration bootstrap error: temporary ban detected. Retrying with the fallback mechanism...
+CRED    : 2025/10/26 22:10:43 credservice.go:32: ERROR    Configuration bootstrap error: temporary ban detected. Retrying with the fallback mechanism...
+CRED    : 2025/10/26 22:10:43 credservice.go:32: ERROR    Configuration bootstrap error: temporary ban detected. Retrying with the fallback mechanism...
+CRED    : 2025/10/26 22:10:43 credservice.go:32: ERROR    Configuration bootstrap error: Post &#34;https://client.hola.org/client_cgi/background_init?uuid=386655b1cf604f778cd5ebd04ff81042&#34;: can&#39;t prepare underlying connection for TLS session: dial tcp 159.223.106.80:22224: connect: connection refused. Retrying with the fallback mechanism...
+CRED    : 2025/10/26 22:10:44 credservice.go:32: ERROR    Configuration bootstrap error: temporary ban detected. Retrying with the fallback mechanism...
+CRED    : 2025/10/26 22:10:45 credservice.go:32: ERROR    Configuration bootstrap error: temporary ban detected. Retrying with the fallback mechanism...
+CRED    : 2025/10/26 22:10:45 credservice.go:32: ERROR    Configuration bootstrap error: temporary ban detected. Retrying with the fallback mechanism...
+CRED    : 2025/10/26 22:10:45 credservice.go:32: ERROR    Configuration bootstrap error: temporary ban detected. Retrying with the fallback mechanism...</code></pre><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>I love Hola VPN so much and this is how they repay me&hellip;</p>
+<p>
+    <img src="../img/Pasted%20image%2020251027174436.webp" alt="" loading="lazy" /></p>
+<p>My love for Hola is greater than the hammer! I will not let it defeat me!</p>
+<p>Time to fight Fire with Fire! <a href="https://github.com/Snawoot" target="_blank" rel="noopener">Snawoot</a>, the developer that released hola-proxy also released a proxy for another Free VPN service. He reverse engineered the Opera Browser&rsquo;s free VPN service and created a tool to proxy through it similarly to <code>hola-proxy</code>.</p>
+<p>Using this tool (<a href="https://github.com/Snawoot/opera-proxy" target="_blank" rel="noopener">opera-proxy</a>), we can setup a local proxy that uses Opera VPN&rsquo;s proxy network:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&gt; ./bin/opera-proxy
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:13:57 main.go:225: INFO     opera-proxy client version v1.12.0 is starting...
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:13:57 main.go:525: INFO     Attempting action <span class="s2">&#34;anonymous registration&#34;</span>, attempt <span class="c1">#1...</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:13:57 main.go:528: INFO     Action <span class="s2">&#34;anonymous registration&#34;</span> succeeded on attempt <span class="c1">#1</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:13:57 main.go:525: INFO     Attempting action <span class="s2">&#34;device registration&#34;</span>, attempt <span class="c1">#1...</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:13:57 main.go:528: INFO     Action <span class="s2">&#34;device registration&#34;</span> succeeded on attempt <span class="c1">#1</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:13:57 main.go:525: INFO     Attempting action <span class="s2">&#34;discover&#34;</span>, attempt <span class="c1">#1...</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:13:57 main.go:373: INFO     Discovered endpoints: <span class="o">[</span>77.111.247.6:443 77.111.247.44:443 77.111.247.77:443 77.111.244.209:443<span class="o">]</span>. Starting server selection routine <span class="s2">&#34;fastest&#34;</span>.
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:13:58 main.go:403: INFO     Selected endpoint address: 77.111.247.77:443
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:13:58 main.go:528: INFO     Action <span class="s2">&#34;discover&#34;</span> succeeded on attempt <span class="c1">#1</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:13:58 main.go:444: INFO     Starting proxy server...
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:13:58 main.go:455: INFO     Init complete.</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<details class="last-of-type:hx-mb-0 hx-rounded-lg hx-bg-neutral-50 dark:hx-bg-neutral-800 hx-p-2 hx-mt-4 hx-group" >
+  <summary class="hx-flex hx-items-center hx-cursor-pointer hx-select-none hx-list-none hx-p-1 hx-rounded hx-transition-colors hover:hx-bg-gray-100 dark:hover:hx-bg-neutral-800 before:hx-mr-1 before:hx-inline-block before:hx-transition-transform before:hx-content-[''] dark:before:hx-invert rtl:before:hx-rotate-180 group-open:before:hx-rotate-90">
+    <strong class="hx-text-lg">Routing traffic through the Opera VPN network</strong>
+  </summary>
+  <div class="hx-p-2 hx-overflow-hidden">
+    <div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&gt; curl -x http://127.0.0.1:18080 ip-api.com
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;status&#34;</span>       : <span class="s2">&#34;success&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;continent&#34;</span>    : <span class="s2">&#34;Europe&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;continentCode&#34;</span>: <span class="s2">&#34;EU&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;country&#34;</span>      : <span class="s2">&#34;Sweden&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;countryCode&#34;</span>  : <span class="s2">&#34;SE&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;region&#34;</span>       : <span class="s2">&#34;E&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;regionName&#34;</span>   : <span class="s2">&#34;Östergötland&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;city&#34;</span>         : <span class="s2">&#34;Linköping&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;district&#34;</span>     : <span class="s2">&#34;&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;zip&#34;</span>          : <span class="s2">&#34;582 22&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;lat&#34;</span>          : 58.4122,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;lon&#34;</span>          : 15.6258,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;timezone&#34;</span>     : <span class="s2">&#34;Europe/Stockholm&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;offset&#34;</span>       : 3600,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;currency&#34;</span>     : <span class="s2">&#34;SEK&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;isp&#34;</span>          : <span class="s2">&#34;Opera Browser VPN&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;org&#34;</span>          : <span class="s2">&#34;Opera Software LLC&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;as&#34;</span>           : <span class="s2">&#34;AS205016 HERN Labs AB&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;asname&#34;</span>       : <span class="s2">&#34;HERNLABS&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;mobile&#34;</span>       : false,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;proxy&#34;</span>        : true,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;hosting&#34;</span>      : false,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;query&#34;</span>        : <span class="s2">&#34;77.111.247.77&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">PROXY   : 2025/10/26 22:14:22 handler.go:102: INFO     Request: 127.0.0.1:48188 HTTP/1.1 GET http://ip-api.com/
+</span></span><span class="line"><span class="cl">PROXY   : 2025/10/26 22:14:23 handler.go:93: INFO     127.0.0.1:48188 GET http://ip-api.com/ <span class="m">200</span> OK</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+  </div>
+</details>
+<p>From here, we can use <code>hola-proxy</code> to request access to the hola VPN network while proxying these access requests through the opera proxy network which means you will have a different IP when requesting access to the hola network and might not be banned.</p>
+<p>
+    <img src="../img/Pasted%20image%2020251027181229.webp" alt="" loading="lazy" /></p>
+<p>If this sounds like gibberish don&rsquo;t worry its about to make a lot more sense&hellip;</p>
+<p>Basically we&rsquo;re using the Opera VPN to authenticate to the Hola VPN and use Hola VPN as an exit node. Here is a diagram explaining how the traffic is routed:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">                                       
+</span></span><span class="line"><span class="cl">                          Our machine  
+</span></span><span class="line"><span class="cl"> ┌────────────────────────────────────┐
+</span></span><span class="line"><span class="cl"> │        ┌───────────────┐           │
+</span></span><span class="line"><span class="cl"> │        │curl ip-api.com│           │
+</span></span><span class="line"><span class="cl"> │        └───────┬───────┘           │
+</span></span><span class="line"><span class="cl"> │                │                   │
+</span></span><span class="line"><span class="cl"> │                │  localhost:8888   │
+</span></span><span class="line"><span class="cl"> │                │                   │
+</span></span><span class="line"><span class="cl"> │   ┌────────────┴──────────────┐    │
+</span></span><span class="line"><span class="cl"> │   │                           │    │
+</span></span><span class="line"><span class="cl"> │   │     Hola Local Proxy      │    │
+</span></span><span class="line"><span class="cl"> │   │                           │    │
+</span></span><span class="line"><span class="cl"> │   └────────────┬──────────────┘    │
+</span></span><span class="line"><span class="cl"> │                │                   │
+</span></span><span class="line"><span class="cl"> │                │                   │
+</span></span><span class="line"><span class="cl"> │                │ localhost:18080   │
+</span></span><span class="line"><span class="cl"> │                │                   │
+</span></span><span class="line"><span class="cl"> │                │                   │
+</span></span><span class="line"><span class="cl"> │   ┌────────────┴──────────────┐    │
+</span></span><span class="line"><span class="cl"> │   │                           │    │
+</span></span><span class="line"><span class="cl"> │   │     Opera Local Proxy     │    │
+</span></span><span class="line"><span class="cl"> │   │                           │    │
+</span></span><span class="line"><span class="cl"> │   └────────────┬──────────────┘    │
+</span></span><span class="line"><span class="cl"> └────────────────┼───────────────────┘
+</span></span><span class="line"><span class="cl">                  .                    
+</span></span><span class="line"><span class="cl">                 www                   
+</span></span><span class="line"><span class="cl">                  .                    
+</span></span><span class="line"><span class="cl">     ┌────────────┴──────────────┐     
+</span></span><span class="line"><span class="cl">     │                           │     
+</span></span><span class="line"><span class="cl">     │       Opera Server        │     
+</span></span><span class="line"><span class="cl">     │                           │     
+</span></span><span class="line"><span class="cl">     └────────────┬──────────────┘     
+</span></span><span class="line"><span class="cl">                  .                    
+</span></span><span class="line"><span class="cl">                 www                   
+</span></span><span class="line"><span class="cl">                  .                    
+</span></span><span class="line"><span class="cl">     ┌────────────┴──────────────┐     
+</span></span><span class="line"><span class="cl">     │                           │     
+</span></span><span class="line"><span class="cl">     │        Hola Server        │     
+</span></span><span class="line"><span class="cl">     │                           │     
+</span></span><span class="line"><span class="cl">     └────────────┬──────────────┘     
+</span></span><span class="line"><span class="cl">                  .                    
+</span></span><span class="line"><span class="cl">                 www                   
+</span></span><span class="line"><span class="cl">                  .                    
+</span></span><span class="line"><span class="cl">          ┌───────┴────────┐           
+</span></span><span class="line"><span class="cl">          │   ip-api.com   │           
+</span></span><span class="line"><span class="cl">          └────────────────┘           
+</span></span><span class="line"><span class="cl">                                   </span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>By doing so we can bypass the IP ban we received earlier and access the Hola VPN network again:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&gt; ./bin/hola-proxy -country FR -bind-address <span class="s2">&#34;127.0.0.1:8888&#34;</span> -proxy http://127.0.0.1:18080
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:15:26 main.go:247: INFO     hola-proxy client version  is starting...
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:15:26 main.go:347: INFO     Attempting action <span class="s2">&#34;get latest version of Chrome browser&#34;</span>, attempt <span class="c1">#1...</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:15:27 main.go:258: INFO     latest Chrome version is <span class="s2">&#34;142.0.7444.52&#34;</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:15:27 main.go:263: INFO     discovered latest Chrome User-Agent: <span class="s2">&#34;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36&#34;</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:15:27 main.go:350: INFO     Action <span class="s2">&#34;get latest version of Chrome browser&#34;</span> succeeded on attempt <span class="c1">#1</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:15:27 main.go:347: INFO     Attempting action <span class="s2">&#34;get latest version of browser extension&#34;</span>, attempt <span class="c1">#1...</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:15:27 main.go:283: INFO     discovered latest browser extension version: 1.247.39
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:15:27 main.go:350: INFO     Action <span class="s2">&#34;get latest version of browser extension&#34;</span> succeeded on attempt <span class="c1">#1</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:15:27 main.go:292: WARNING  Detected latest extension version: <span class="s2">&#34;1.247.39&#34;</span>. Pass -ext-ver parameter to skip resolve and speedup startup
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:15:27 main.go:299: INFO     Constructing fallback DNS upstream...
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:15:27 main.go:347: INFO     Attempting action <span class="s2">&#34;run credentials service&#34;</span>, attempt <span class="c1">#1...</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:15:29 main.go:350: INFO     Action <span class="s2">&#34;run credentials service&#34;</span> succeeded on attempt <span class="c1">#1</span>
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:15:29 main.go:325: INFO     Endpoint: https://zagent2713.hola.org:22225
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:15:29 main.go:326: INFO     Starting proxy server...
+</span></span><span class="line"><span class="cl">MAIN    : 2025/10/26 22:15:29 main.go:328: INFO     Init complete.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&gt; curl -x http://127.0.0.1:8888 ip-api.com
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;status&#34;</span>       : <span class="s2">&#34;success&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;continent&#34;</span>    : <span class="s2">&#34;North America&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;continentCode&#34;</span>: <span class="s2">&#34;NA&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;country&#34;</span>      : <span class="s2">&#34;United States&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;countryCode&#34;</span>  : <span class="s2">&#34;US&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;region&#34;</span>       : <span class="s2">&#34;NJ&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;regionName&#34;</span>   : <span class="s2">&#34;New Jersey&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;city&#34;</span>         : <span class="s2">&#34;North Bergen&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;district&#34;</span>     : <span class="s2">&#34;&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;zip&#34;</span>          : <span class="s2">&#34;07047&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;lat&#34;</span>          : 40.7964,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;lon&#34;</span>          : -74.0203,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;timezone&#34;</span>     : <span class="s2">&#34;America/New_York&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;offset&#34;</span>       : -14400,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;currency&#34;</span>     : <span class="s2">&#34;USD&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;isp&#34;</span>          : <span class="s2">&#34;DigitalOcean, LLC&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;org&#34;</span>          : <span class="s2">&#34;DigitalOcean, LLC&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;as&#34;</span>           : <span class="s2">&#34;AS14061 DigitalOcean, LLC&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;asname&#34;</span>       : <span class="s2">&#34;DIGITALOCEAN-ASN&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;mobile&#34;</span>       : false,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;proxy&#34;</span>        : true,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;hosting&#34;</span>      : true,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;query&#34;</span>        : <span class="s2">&#34;159.89.52.126&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>If you&rsquo;re still lost, this is the TLDR:</p>
+<p>
+    <img src="../img/HolaVPN%20Ban%20fyxme%20meme.webp" alt="" loading="lazy" /></p>
+<h2>Wrapping up<span class="hx-absolute -hx-mt-20" id="wrapping-up"></span>
+    <a href="#wrapping-up" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Its just business in the end, these Free VPNs are not going to fund themselves. Instead they use your data and your resources in exchange of providing their service. Very dodgy and can be easily abused by malicious actors and land you in big trouble if you&rsquo;re not cautious. I would stay really far away from these unless you know what you&rsquo;re getting yourself into.</p>
+<p>One thing I hope is that they become more transparent and stop hiding the fact that they&rsquo;re just wrappers on wrappers around other dodgy providers.</p>
+<p>I&rsquo;m happy that people have started catching on and that these Free VPN providers have had to transition from hiding the fact that they resell your traffic to basically telling people they&rsquo;re a &ldquo;community-powered free VPN&rdquo;, which sounds so much better than &ldquo;we&rsquo;re selling your data through a company called Luminati&rdquo;:</p>
+<p>
+    <img src="../img/Pasted%20image%2020251027191138.webp" alt="" loading="lazy" /></p>
+<p>I picked on BrightVPN and HolaVPN at random but I&rsquo;m sure that most of the Free VPNs on the play store will do the exact same thing&hellip; Stay safe out there!</p>
+<h2>Appendix<span class="hx-absolute -hx-mt-20" id="appendix"></span>
+    <a href="#appendix" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h4>BrightVPN: MyFirstAndroidApplication<span class="hx-absolute -hx-mt-20" id="brightvpn-myfirstandroidapplication"></span>
+    <a href="#brightvpn-myfirstandroidapplication" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>
+    <img src="../img/Pasted%20image%2020251027150426.webp" alt="" loading="lazy" /></p>
+<h4>Setting up mitm proxies for dynamic application reversing using adb<span class="hx-absolute -hx-mt-20" id="setting-up-mitm-proxies-for-dynamic-application-reversing-using-adb"></span>
+    <a href="#setting-up-mitm-proxies-for-dynamic-application-reversing-using-adb" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-amber-200 hx-bg-amber-100 hx-text-amber-900 dark:hx-border-amber-200/30 dark:hx-bg-amber-900/30 dark:hx-text-amber-200">
+  <p class="hx-flex hx-items-center hx-font-medium"><svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>Warning</p>
+
+  <div class="hx-w-full hx-min-w-0 hx-leading-7">
+    <div class="hx-mt-6 hx-leading-7 first:hx-mt-0"><p>This setup might not work for all applications. For example, Xamarin applications are not proxy aware and you need to force traffic re-routing using <code>iptables</code>. (see the <a href="https://gist.github.com/Techbrunch/9298a16d9dd328935f3a2373326fd08a" target="_blank" rel="noopener">writeup here</a> for example).</p>
+</div>
+  </div>
+</div>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb connect 192.168.122.1:4444   
+</span></span><span class="line"><span class="cl">adb devices -l
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># if Burp/mitmproxy listens on host tcp/8080</span>
+</span></span><span class="line"><span class="cl">adb reverse tcp:8080 tcp:8080
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># set the global proxy</span>
+</span></span><span class="line"><span class="cl">adb shell settings put global http_proxy 127.0.0.1:8080
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># verify:</span>
+</span></span><span class="line"><span class="cl">adb shell settings get global http_proxy
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># clear later:</span>
+</span></span><span class="line"><span class="cl">adb shell settings put global http_proxy :0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># for non-proxy aware applications, for re-route traffic (may require invisible proxy passthrough enabled in Burpsuite)</span>
+</span></span><span class="line"><span class="cl">iptables -t nat -A OUTPUT -p tcp --dport <span class="m">80</span> -j DNAT --to-destination 127.0.0.1:8080
+</span></span><span class="line"><span class="cl">iptables -t nat -A OUTPUT -p tcp --dport <span class="m">443</span> -j DNAT --to-destination 127.0.0.1:8080
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># you can also use tcpdump on the device itself to look at traffic or take a packet capture</span>
+</span></span><span class="line"><span class="cl">tcdump</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<h4>Loading AlwaysTrustUserCerts Module using KernelSU<span class="hx-absolute -hx-mt-20" id="loading-alwaystrustusercerts-module-using-kernelsu"></span>
+    <a href="#loading-alwaystrustusercerts-module-using-kernelsu" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>You may need to install the application first (the kernel is patched but the application is not installed). The apk is available on KernelSU&rsquo;s <a href="https://github.com/tiann/KernelSU/releases" target="_blank" rel="noopener">github releases repository</a>.</p>
+<p>Once KernelSU is installed, we can load modules exactly the same way we would load them with Magisk.</p>
+<p>Push the module zip with adb and select from the KernelSU application:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ adb push AlwaysTrustUserCerts_v1.3.zip /sdcard/Download/
+</span></span><span class="line"><span class="cl">AlwaysTrustUserCerts_v1.3.zip: <span class="m">1</span> file pushed, <span class="m">0</span> skipped. 0.5 MB/s <span class="o">(</span><span class="m">6808</span> bytes in 0.014s<span class="o">)</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>
+    <img src="../img/Pasted%20image%2020251027153544.webp" alt="" loading="lazy" /></p>
+<p>We then reboot and can see the module is installed successfully:</p>
+<p>
+    <img src="../img/Pasted%20image%2020251027154442.webp" alt="" loading="lazy" /></p>
+<p><strong>Note:</strong> Magisk and KernelSU are modules are very similar but not fully compatible. As such, you may need to modify or adjust them slightly depending on what you are using.</p>
+<p>Once loaded, you can install your cert as a user trusted certificate in Android Settings:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<pre><code>&gt; adb push ~/.mitmproxy/mitmproxy-ca-cert.cer /sdcard/Download/
+/home/kingjulien/.mitmproxy/mitmproxy-ca-cert.cer: 1 file pushed, 0 skipped. 0.1 MB/s (1172 bytes in 0.016s)</code></pre><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>And once you setup your proxy and configure it on the device, you can start seeing and intercepting traffic:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<pre><code>&gt; adb reverse tcp:8080 tcp:8080
+8080
+
+&gt; adb shell settings put global http_proxy 127.0.0.1:8080    </code></pre><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p>
+    <img src="../img/Pasted%20image%2020251027154730.webp" alt="" loading="lazy" /></p>
+<h4>Wireshark capture of proxy tunnel request<span class="hx-absolute -hx-mt-20" id="wireshark-capture-of-proxy-tunnel-request"></span>
+    <a href="#wireshark-capture-of-proxy-tunnel-request" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>Annotations:</p>
+<ul>
+<li><code>149.28.37.150</code> is the Hola VPN Proxy IP</li>
+<li><code>77.111.242.72</code> is the Opera VPN Proxy IP</li>
+<li>Hola Local listener on <code>localhost:8888</code></li>
+<li>Opera Local listener on <code>localhost:18080</code></li>
+</ul>
+<p>As you can see, no direct connection is made to the Hola VPN Proxy IP but instead it routes via the Opera VPN IP first (note the proxy <code>CONNECT</code> request from the Hola local Proxy to the Opera local Proxy):</p>
+<p>
+    <img src="../img/Pasted%20image%2020251027181715.webp" alt="" loading="lazy" /></p>
+<h2>References<span class="hx-absolute -hx-mt-20" id="references"></span>
+    <a href="#references" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>BlissOS, KernelSU and installed Trusted certs:</p>
+<ul>
+<li><a href="https://docs.mitmproxy.org/stable/howto/install-system-trusted-ca-android/" target="_blank" rel="noopener">https://docs.mitmproxy.org/stable/howto/install-system-trusted-ca-android/</a></li>
+<li><a href="https://docs.blissos.org/installation/install-from-bootable-usb/" target="_blank" rel="noopener">https://docs.blissos.org/installation/install-from-bootable-usb/</a></li>
+</ul>
+<p>Android Emulator, QEMU, adb routing:</p>
+<ul>
+<li><a href="https://github.com/maximilionus/android-qemu-launcher" target="_blank" rel="noopener">https://github.com/maximilionus/android-qemu-launcher</a></li>
+<li><a href="https://github.com/NVISOsecurity/AlwaysTrustUserCerts/tree/master?tab=readme-ov-file" target="_blank" rel="noopener">https://github.com/NVISOsecurity/AlwaysTrustUserCerts/tree/master?tab=readme-ov-file</a></li>
+<li><a href="https://gist.github.com/Techbrunch/9298a16d9dd328935f3a2373326fd08a" target="_blank" rel="noopener">https://gist.github.com/Techbrunch/9298a16d9dd328935f3a2373326fd08a</a></li>
+<li><a href="https://github.com/tiann/KernelSU/issues/1783" target="_blank" rel="noopener">https://github.com/tiann/KernelSU/issues/1783</a></li>
+<li><a href="https://github.com/maximilionus/android-qemu-launcher/tree/master" target="_blank" rel="noopener">https://github.com/maximilionus/android-qemu-launcher/tree/master</a></li>
+<li><a href="https://sl1nki.page/blog/2023/02/20/adb-reverse-burp-proxy" target="_blank" rel="noopener">https://sl1nki.page/blog/2023/02/20/adb-reverse-burp-proxy</a></li>
+</ul>
+<p>hola-proxy and opera-proxy:</p>
+<ul>
+<li><a href="https://github.com/Snawoot" target="_blank" rel="noopener">https://github.com/Snawoot</a></li>
+<li><a href="https://snawoot.github.io/" target="_blank" rel="noopener">https://snawoot.github.io/</a></li>
+<li><a href="https://github.com/Snawoot/hola-proxy/issues/156" target="_blank" rel="noopener">https://github.com/Snawoot/hola-proxy/issues/156</a></li>
+</ul>
+<p>Ascii graph editors:</p>
+<ul>
+<li><a href="https://asciiflow.com/" target="_blank" rel="noopener">https://asciiflow.com/</a></li>
+<li><a href="https://www.gridsagegames.com/rexpaint/" target="_blank" rel="noopener">https://www.gridsagegames.com/rexpaint/</a></li>
+<li><a href="https://monodraw.helftone.com/" target="_blank" rel="noopener">https://monodraw.helftone.com/</a></li>
+<li><a href="https://snawoot.github.io/poor_mans_gtm.html" target="_blank" rel="noopener">https://snawoot.github.io/poor_mans_gtm.html</a></li>
+<li><a href="https://github.com/ironcamel/Graph-Easy" target="_blank" rel="noopener">https://github.com/ironcamel/Graph-Easy</a></li>
+<li><a href="https://github.com/ggerganov/dot-to-ascii?tab=readme-ov-file" target="_blank" rel="noopener">https://github.com/ggerganov/dot-to-ascii?tab=readme-ov-file</a></li>
+<li><a href="https://sketchviz.com/new" target="_blank" rel="noopener">https://sketchviz.com/new</a></li>
+<li><a href="https://news.ycombinator.com/item?id=2651745" target="_blank" rel="noopener">https://news.ycombinator.com/item?id=2651745</a></li>
+</ul>
+
+        </div>
+        <div class="hx-mt-16"></div>
+        
+        <div class="hx-mb-8 hx-flex hx-items-center hx-border-t hx-pt-8 dark:hx-border-neutral-800 contrast-more:hx-border-neutral-400 dark:contrast-more:hx-border-neutral-400 print:hx-hidden"><a
+        href="/minis/reverse-engineering-onemillionchessboards.com-frontend-with-chrome-devtools-to-build-a-bot/"
+        title="Reverse Engineering onemillionchessboards.com Frontend with DevTools to Build a Bot"
+        class="hx-flex hx-max-w-[50%] hx-items-center hx-gap-1 hx-py-4 hx-text-base hx-font-medium hx-text-gray-600 hx-transition-colors [word-break:break-word] hover:hx-text-primary-600 dark:hx-text-gray-300 md:hx-text-lg ltr:hx-pr-4 rtl:hx-pl-4"
+      ><svg class="hx-inline hx-h-5 hx-shrink-0 ltr:hx-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>Reverse Engineering onemillionchessboards.com Frontend with DevTools to Build a Bot</a></div>
+        
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx-bg-gray-100 hx-pb-[env(safe-area-inset-bottom)] dark:hx-bg-neutral-900 print:hx-bg-transparent"><div class="hx-mx-auto hx-flex hx-gap-2 hx-py-2 hx-px-4 hx-max-w-screen-xl"><button
+  title="Change theme"
+  data-theme="light"
+  class="theme-toggle hx-group hx-h-7 hx-rounded-md hx-px-2 hx-text-left hx-text-xs hx-font-medium hx-text-gray-600 hx-transition-colors dark:hx-text-gray-400 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50"
+  type="button"
+  aria-label="Change theme"
+>
+  <div class="hx-flex hx-items-center hx-gap-2 hx-capitalize"><svg height=12 class="group-data-[theme=light]:hx-hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="group-data-[theme=light]:hx-hidden">Light</span><svg height=12 class="group-data-[theme=dark]:hx-hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="group-data-[theme=dark]:hx-hidden">Dark</span></div>
+</button>
+</div><hr class="dark:hx-border-neutral-800" /></footer>
+
+
+    
+    <script defer src="/js/main.min.a6eb101c76cd824b14b5bb9fa54e34e4b6414edb5e56347f59c358ba151e0432.js" integrity="sha256-pusQHHbNgksUtbufpU405LZBTtteVjR/WcNYuhUeBDI="></script>
+
+
+<script defer src="/lib/flexsearch/flexsearch.bundle.min.0425860527cc9968f9f049421c7a56b39327d475e2e3a8f550416be3a9134327.js" integrity="sha256-BCWGBSfMmWj58ElCHHpWs5Mn1HXi46j1UEFr46kTQyc="></script>
+    <script defer src="/en.search.min.4a72af14c5044971882cecddc91b1d5027c5a1ce9145e85eae7ee5145e971777.js" integrity="sha256-SnKvFMUESXGILOzdyRsdUCfFoc6RRehern7lFF6XF3c="></script>
+
+
+  </body>
+</html>
