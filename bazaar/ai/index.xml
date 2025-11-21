@@ -99,5 +99,28 @@
       </description>
     </item>
     
+    <item>
+      <title></title>
+      <link>https://fyx.me/bazaar/ai/inspecting-mcp-servers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/ai/inspecting-mcp-servers/</guid>
+      <description>
+        
+        
+        &lt;p&gt;If you&amp;rsquo;re interacting with MCP servers, you might want to test them without having to use an AI agent/client to connect and interact with it (looking at you HTB mcp_only CTF events&amp;hellip;). Thankfully there&amp;rsquo;s tools available.&lt;/p&gt;
+&lt;h2&gt;&lt;a href=&#34;https://github.com/modelcontextprotocol/inspector&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;modelcontextprotocol/inspector&lt;/a&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;modelcontextprotocolinspectorhttpsgithubcommodelcontextprotocolinspector&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#modelcontextprotocolinspectorhttpsgithubcommodelcontextprotocolinspector&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The MCP inspector is a developer tool for testing and debugging MCP servers. Hackthebox has competitions which are only available via MCP which means you need an AI agent/client or a way to inspect the MCP server.&lt;/p&gt;
+&lt;p&gt;With inspector, you can query the tools and providing arguments as necessary.&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s an example using MCP inspector with &lt;a href=&#34;https://www.hackthebox.ai/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Hackthebox MCP&lt;/a&gt; to retrieve events, challenges, etc:&lt;/p&gt;
+&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/MCP%20Inspector%20with%20Hackthebox%20MCP.webp&#34; title=&#34;Using MCP inspector to explore Hackthebox MCP&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Using MCP inspector to explore Hackthebox MCP&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
   </channel>
 </rss>

@@ -24,7 +24,7 @@
   <meta itemprop="description" content="Step-by-step Android APK teardown proves BrightVPN is a HolaVPN wrapper that hijacks DNS, proxies traffic via Luminati, and resells your bandwidth—complete with mitmproxy logs, ban bypass, and Opera VPN chain trick.">
   <meta itemprop="datePublished" content="2025-10-27T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-10-27T00:00:00+00:00">
-  <meta itemprop="wordCount" content="4351">
+  <meta itemprop="wordCount" content="4359">
   <meta itemprop="image" content="https://fyx.me/opengraph/content-minis-reverse-engineering-free-vpn-applications.webp">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://fyx.me/opengraph/content-minis-reverse-engineering-free-vpn-applications.webp">
@@ -597,6 +597,14 @@
   >Inference Providers
     </a>
               
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/ai/inspecting-mcp-servers/"
+    
+  >Inspecting MC P Servers
+    </a>
+              
             </li></ul>
       </div>
             </li><li class="hx-flex hx-flex-col "><a
@@ -1109,7 +1117,7 @@
   
 </div>
 <p>Once again, this is probably just a coincidence&hellip; There&rsquo;s no way BrigthVPN would be a wrapper for Hola VPN right?</p>
-<p><em>Note: I looked at the decompiled dex files and the Java code gives off &ldquo;My first Android project&rdquo; kinda vibes. You can see the main service (<code>MyVpnService</code>) in appendix. // TODO</em></p>
+<p><em>Note: I looked at the decompiled dex files and the Java code gives off &ldquo;My first Android project&rdquo; kinda vibes. You can see the main service Java code (<code>MyVpnService</code>) in appendix.</em></p>
 <h3>Dynamic analysis of the BrightVPN Android Application<span class="hx-absolute -hx-mt-20" id="dynamic-analysis-of-the-brightvpn-android-application"></span>
     <a href="#dynamic-analysis-of-the-brightvpn-android-application" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Instead of speculating on what it might do, how about we run the application and observe.</p>
 <details class="last-of-type:hx-mb-0 hx-rounded-lg hx-bg-neutral-50 dark:hx-bg-neutral-800 hx-p-2 hx-mt-4 hx-group" >
@@ -1759,6 +1767,11 @@ CRED    : 2025/10/26 22:10:45 credservice.go:32: ERROR    Configuration bootstra
 <li><a href="https://github.com/ggerganov/dot-to-ascii?tab=readme-ov-file" target="_blank" rel="noopener">https://github.com/ggerganov/dot-to-ascii?tab=readme-ov-file</a></li>
 <li><a href="https://sketchviz.com/new" target="_blank" rel="noopener">https://sketchviz.com/new</a></li>
 <li><a href="https://news.ycombinator.com/item?id=2651745" target="_blank" rel="noopener">https://news.ycombinator.com/item?id=2651745</a></li>
+</ul>
+<p>Other blogs about Reversing Hola VPN:</p>
+<ul>
+<li><a href="https://milankragujevic.com/the-truth-behind-hola-unblocker" target="_blank" rel="noopener">https://milankragujevic.com/the-truth-behind-hola-unblocker</a></li>
+<li><a href="https://gist.github.com/Lomanic/33411dcf98efdf8ddbf1e5748fb9ab67#file-blogpost-md" target="_blank" rel="noopener">https://gist.github.com/Lomanic/33411dcf98efdf8ddbf1e5748fb9ab67#file-blogpost-md</a></li>
 </ul>
 
         </div>
