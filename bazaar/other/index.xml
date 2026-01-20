@@ -16,6 +16,34 @@
     
     <item>
       <title></title>
+      <link>https://fyx.me/bazaar/other/android/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/other/android/</guid>
+      <description>
+        
+        
+        &lt;h2&gt;&lt;a href=&#34;https://play.google.com/store/apps/details?id=moe.shizuku.privileged.api&amp;amp;hl=fr&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Shuzuku&lt;/a&gt;: Running root application without a rooted android device&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;shuzukuhttpsplaygooglecomstoreappsdetailsidmoeshizukuprivilegedapihlfr-running-root-application-without-a-rooted-android-device&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#shuzukuhttpsplaygooglecomstoreappsdetailsidmoeshizukuprivilegedapihlfr-running-root-application-without-a-rooted-android-device&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;blockquote&gt;
+  &lt;p&gt;Using system APIs directly with adb/root privileges from normal apps through a Java process started with app_process.
+ref: &lt;a href=&#34;https://github.com/RikkaApps/Shizuku&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/RikkaApps/Shizuku&lt;/a&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&#34;https://github.com/timschneeb/awesome-shizuku&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/timschneeb/awesome-shizuku&lt;/a&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;h3&gt;Dumping wifi passwords without a rooted android device&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;dumping-wifi-passwords-without-a-rooted-android-device&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#dumping-wifi-passwords-without-a-rooted-android-device&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;blockquote&gt;
+  &lt;p&gt;WiFiList_v1.3.1 + Shuzuku&lt;/p&gt;
+
+&lt;/blockquote&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
       <link>https://fyx.me/bazaar/other/networking/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       

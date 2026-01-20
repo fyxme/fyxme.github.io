@@ -24,11 +24,14 @@
   </url><url>
     <loc>https://fyx.me/bazaar/windows/misc-snippets/</loc>
   </url><url>
+    <loc>https://fyx.me/minis/benchmark-python-pcap-parsers---dpkt-vs-scapy-vs-pyshark-and-finding-100x-speed-improvements/</loc>
+    <lastmod>2026-01-19T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://fyx.me/</loc>
-    <lastmod>2025-10-27T00:00:00+00:00</lastmod>
+    <lastmod>2026-01-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://fyx.me/minis/</loc>
-    <lastmod>2025-10-27T00:00:00+00:00</lastmod>
+    <lastmod>2026-01-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://fyx.me/minis/reverse-engineering-free-vpn-applications/</loc>
     <lastmod>2025-10-27T00:00:00+00:00</lastmod>
@@ -84,6 +87,8 @@
   </url><url>
     <loc>https://fyx.me/bazaar/ai/ai-code-review/</loc>
   </url><url>
+    <loc>https://fyx.me/bazaar/ai/ai-open-source-clients/</loc>
+  </url><url>
     <loc>https://fyx.me/bazaar/ai/inference-providers/</loc>
   </url><url>
     <loc>https://fyx.me/bazaar/ai/inspecting-mcp-servers/</loc>
@@ -114,15 +119,21 @@
   </url><url>
     <loc>https://fyx.me/bazaar/computer-science--programming/versioning/</loc>
   </url><url>
+    <loc>https://fyx.me/bazaar/computer-science--programming/vpn/</loc>
+  </url><url>
     <loc>https://fyx.me/bazaar/computer-science--programming/web-dev-cheatsheet/</loc>
   </url><url>
     <loc>https://fyx.me/bazaar/computer-science--programming/web-proxies/</loc>
+  </url><url>
+    <loc>https://fyx.me/bazaar/computer-science--programming/website-design/</loc>
   </url><url>
     <loc>https://fyx.me/bazaar/linux/other-commands/</loc>
   </url><url>
     <loc>https://fyx.me/bazaar/linux/reverse-shells/</loc>
   </url><url>
     <loc>https://fyx.me/bazaar/linux/system-hardening/</loc>
+  </url><url>
+    <loc>https://fyx.me/bazaar/other/android/</loc>
   </url><url>
     <loc>https://fyx.me/bazaar/other/networking/</loc>
   </url><url>

@@ -201,8 +201,7 @@ wheel==0.34.2&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-co
     &lt;img src=&#34;../img/dive%20command%20TUI%20output.webp&#34; title=&#34;dive command TUI output&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
     &lt;figcaption&gt;dive command TUI output&lt;/figcaption&gt;
   &lt;/figure&gt;&lt;/p&gt;
-&lt;h3&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;heading&#34;&gt;&lt;/span&gt;
-    &lt;a href=&#34;#heading&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h3&gt;Migrating docker volume from one server to another&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;migrating-docker-volume-from-one-server-to-another&#34;&gt;&lt;/span&gt;
+&lt;h3&gt;Migrating docker volume from one server to another&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;migrating-docker-volume-from-one-server-to-another&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#migrating-docker-volume-from-one-server-to-another&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Using &lt;code&gt;docker run&lt;/code&gt; + &lt;code&gt;tar&lt;/code&gt; (Manual Backup &amp;amp; Restore)**&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;using-docker-run--tar-manual-backup--restore&#34;&gt;&lt;/span&gt;
     &lt;a href=&#34;#using-docker-run--tar-manual-backup--restore&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;Stop the container&lt;/strong&gt; (if running):&lt;/li&gt;
@@ -286,6 +285,25 @@ wheel==0.34.2&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-co
   
 
 &lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker run -v &amp;lt;new_volume_name&amp;gt;:/path/in/container ...&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;h3&gt;Updating a docker container&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;updating-a-docker-container&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#updating-a-docker-container&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Simplest way to update if proper development practices are followed by the images:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker compose pull
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker compose down
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker compose up -d&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
   &lt;button
     class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
     title=&#34;Copy code&#34;
@@ -764,6 +782,131 @@ sudo apt install texlive-latex-base texlive-latex-extra texlive-fonts-recommende
     
     <item>
       <title></title>
+      <link>https://fyx.me/bazaar/computer-science--programming/vpn/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/computer-science--programming/vpn/</guid>
+      <description>
+        
+        
+        &lt;h2&gt;Headscale&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;headscale&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#headscale&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Headscale setup&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;headscale-setup&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#headscale-setup&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Decent guides and docs for setting up headscale:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://earvingad.github.io/posts/headscale/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://earvingad.github.io/posts/headscale/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.techdox.nz/headscale/#sample-configyaml&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://docs.techdox.nz/headscale/#sample-configyaml&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://headscale.net/setup/install/container/#configure-and-run-headscale&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://headscale.net/setup/install/container/#configure-and-run-headscale&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Ansible Documentation: &lt;a href=&#34;https://codeberg.org/ansible/headscale/src/branch/main/README.md&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://codeberg.org/ansible/headscale/src/branch/main/README.md&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you&amp;rsquo;re interesting in having DNS names instead of IPs, you can setup a &lt;a href=&#34;https://www.duckdns.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;duckdns&lt;/a&gt; subdomain using a random uuid as the subdomain name. Alternatively, buy a cheap domain name on &lt;a href=&#34;https://cloudflare.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Cloudflare&lt;/a&gt; (or equivalent) and setup DNS records for your VPN.&lt;/p&gt;
+&lt;h3&gt;User creation&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;user-creation&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#user-creation&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&#34;https://docs.techdox.nz/headscale/#post-deployment-configuration&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://docs.techdox.nz/headscale/#post-deployment-configuration&lt;/a&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;p&gt;The following commands work if you&amp;rsquo;ve setup headscale using the docker deployment method:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;# [on your main node] create a new user and registration key
+
+# create new user or use the infra user if its for infra
+docker exec headscale headscale users create infra
+
+# create a registration key for the user
+docker exec -it headscale headscale preauthkeys create --user infra --reusable --expiration 24h
+
+# ----
+
+# [on your new node/device] install tailscale client and register your device
+
+# installing tailscale client on the device (physical, server, etc)
+# simplest way but less secure
+curl -fsSL https://tailscale.com/install.sh  | sh
+
+# use the key to register from the new node 
+tailscale up --login-server https://&amp;lt;your-sub-name&amp;gt;.duckdns.org:&amp;lt;port&amp;gt;/ --authkey &amp;lt;the previously generated auth key&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;h3&gt;Commands&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;commands&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#commands&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;# list tailscale peers
+tailscale status --peers
+
+# list tailscale nodes from control server
+docker exec -it headscale headscale nodes list
+
+# rename / change hostname of node from headscale server
+docker exec -it headscale headscale nodes rename cutenode -i 5
+
+# changing the hostname of a node directly (should work but didn&amp;#39;t work from the node for me - might need special config)
+tailscale up --hostname=anonaddy --login-server=https://&amp;lt;your-sub-name&amp;gt;.duckdns.org:&amp;lt;port&amp;gt;/
+
+
+### removing a node from the network
+
+# find the node you want to delete
+docker exec headscale headscale node list
+
+# expire (logout) the node
+docker exec headscale headscale node expire -i 5
+
+# remove the node from the network (--force to remove prompting)
+docker exec headscale headscale node delete -i 5 --force
+
+# check that the node has been removed
+docker exec headscale headscale node list&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;h3&gt;Common caveats&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;common-caveats&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#common-caveats&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;TLS Cert issues&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;tls-cert-issues&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#tls-cert-issues&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;If TLS cert expires or isn&amp;rsquo;t registered yet, you may need to &lt;strong&gt;open port 80&lt;/strong&gt; during TLS configuration/renewal. Alternatively, use a self-signed certificate.&lt;/p&gt;
+&lt;h4&gt;Magic DNS Issues&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;magic-dns-issues&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#magic-dns-issues&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Magic DNS can cause issues with local DNS resolvers and what not. I&amp;rsquo;ve seen it reply for things it shouldn&amp;rsquo;t have including live public domains. (Try it when doing even light DNS bruteforcing and you&amp;rsquo;ll soon release something&amp;rsquo;s not right). Highly recommend disabling if you have workers doing lots of DNS requests:&lt;/p&gt;
+&lt;p&gt;You can use the following to disable it from a client:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+  
+
+&lt;pre&gt;&lt;code&gt;# disable on a client
+sudo tailscale up --accept-dns=false --login-server=https://&amp;lt;your-sub-name&amp;gt;.duckdns.org:&amp;lt;port&amp;gt;/&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+  
+&lt;/div&gt;
+&lt;p&gt;It can also be disabled on the headscale server directly via configuration changes.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
       <link>https://fyx.me/bazaar/computer-science--programming/web-dev-cheatsheet/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
@@ -979,6 +1122,35 @@ Code:9109 Message:Cannot use the access token from location: &amp;lt;ip&amp;gt; 
 
   
 &lt;/div&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://fyx.me/bazaar/computer-science--programming/website-design/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/computer-science--programming/website-design/</guid>
+      <description>
+        
+        
+        &lt;h2&gt;Tools&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;tools&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#tools&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Below is a list of random tools that I&amp;rsquo;ve come across of used and can spice up your website:&lt;/p&gt;
+&lt;h3&gt;&lt;a href=&#34;https://corner-inverter.douiri.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Corner inverter&lt;/a&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;corner-inverterhttpscorner-inverterdouiriorg&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#corner-inverterhttpscorner-inverterdouiriorg&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&#34;https://github.com/AstroDriss/inverted-corners-generator&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/AstroDriss/inverted-corners-generator&lt;/a&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;p&gt;Generate inverted corners using CSS and HTML:&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/Pasted%20image%2020251226173447.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;a href=&#34;https://github.com/catdad/canvas-confetti&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Canvas confetti&lt;/a&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;canvas-confettihttpsgithubcomcatdadcanvas-confetti&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#canvas-confettihttpsgithubcomcatdadcanvas-confetti&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;
+    &lt;figure&gt;
+    &lt;img src=&#34;../img/Pasted%20image%2020251226173726.webp&#34; title=&#34;https://www.kirilv.com/canvas-confetti/&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;https://www.kirilv.com/canvas-confetti/&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
 
       </description>
     </item>

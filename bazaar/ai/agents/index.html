@@ -11,40 +11,23 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 <link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
 <title>fyx(me)</title>
-  <meta name="description" content="Agent types Plain LLM Agents Plain LLM agents are simple agents that use a large language model (LLM) directly to choose next actions or generate task steps without extra layers like complex planners, learned policies, or specialized orchestration frameworks.
-Key characteristics:
-Single-step decisioning: the LLM is prompted to decide the next action each turn (e.g., call a tool, ask a question, produce text). Minimal state management: little or no explicit memory, belief model, or long-term planning beyond what’s kept in the prompt/history. No learned controller: decisions rely on prompt engineering and the LLM’s reasoning, not on a separate trained policy network. Tool-driven behavior: often constrained to a fixed set of tools or API calls the LLM can invoke via structured outputs. Reactive and iterative: acts, observes results, and prompts the LLM again—adapting only through updated context. When to use:" /><link rel="canonical" href="https://fyx.me/bazaar/ai/agents/" itemprop="url" />
+  <meta name="description" content="Learn about Plain LLM Agents - simple AI agents that use large language models for direct decision-making without complex planning. Discover key characteristics, use cases, and limitations of plain LLM agents for prototyping and conversational reasoning tasks." /><link rel="canonical" href="https://fyx.me/bazaar/ai/agents/" itemprop="url" />
 
 <meta property="og:title" content="fyx(me) - " />
-<meta property="og:description" content="Agent types
-    Plain LLM Agents
-    Plain LLM agents are simple agents that use a large language model (LLM) directly to choose next actions or generate task steps without extra layers like complex planners, learned policies, or specialized orchestration frameworks.
-Key characteristics:
-
-Single-step decisioning: the LLM is prompted to decide the next action each turn (e.g., call a tool, ask a question, produce text).
-Minimal state management: little or no explicit memory, belief model, or long-term planning beyond what’s kept in the prompt/history.
-No learned controller: decisions rely on prompt engineering and the LLM’s reasoning, not on a separate trained policy network.
-Tool-driven behavior: often constrained to a fixed set of tools or API calls the LLM can invoke via structured outputs.
-Reactive and iterative: acts, observes results, and prompts the LLM again—adapting only through updated context.
-
-When to use:" />
+<meta property="og:description" content="Learn about Plain LLM Agents - simple AI agents that use large language models for direct decision-making without complex planning. Discover key characteristics, use cases, and limitations of plain LLM agents for prototyping and conversational reasoning tasks." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://fyx.me/bazaar/ai/agents/" /><meta property="og:image" content="https://fyx.me/fyx-me-og.webp"/><meta property="article:section" content="bazaar" />
 
 <meta property="og:site_name" content="fyx(me)" />
 
   <meta itemprop="name" content="fyx(me)">
-  <meta itemprop="description" content="Agent types Plain LLM Agents Plain LLM agents are simple agents that use a large language model (LLM) directly to choose next actions or generate task steps without extra layers like complex planners, learned policies, or specialized orchestration frameworks.
-Key characteristics:
-Single-step decisioning: the LLM is prompted to decide the next action each turn (e.g., call a tool, ask a question, produce text). Minimal state management: little or no explicit memory, belief model, or long-term planning beyond what’s kept in the prompt/history. No learned controller: decisions rely on prompt engineering and the LLM’s reasoning, not on a separate trained policy network. Tool-driven behavior: often constrained to a fixed set of tools or API calls the LLM can invoke via structured outputs. Reactive and iterative: acts, observes results, and prompts the LLM again—adapting only through updated context. When to use:">
+  <meta itemprop="description" content="Learn about Plain LLM Agents - simple AI agents that use large language models for direct decision-making without complex planning. Discover key characteristics, use cases, and limitations of plain LLM agents for prototyping and conversational reasoning tasks.">
   <meta itemprop="wordCount" content="179">
   <meta itemprop="image" content="https://fyx.me/fyx-me-og.webp">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://fyx.me/fyx-me-og.webp">
   <meta name="twitter:title" content="fyx(me)">
-  <meta name="twitter:description" content="Agent types Plain LLM Agents Plain LLM agents are simple agents that use a large language model (LLM) directly to choose next actions or generate task steps without extra layers like complex planners, learned policies, or specialized orchestration frameworks.
-Key characteristics:
-Single-step decisioning: the LLM is prompted to decide the next action each turn (e.g., call a tool, ask a question, produce text). Minimal state management: little or no explicit memory, belief model, or long-term planning beyond what’s kept in the prompt/history. No learned controller: decisions rely on prompt engineering and the LLM’s reasoning, not on a separate trained policy network. Tool-driven behavior: often constrained to a fixed set of tools or API calls the LLM can invoke via structured outputs. Reactive and iterative: acts, observes results, and prompts the LLM again—adapting only through updated context. When to use:">
+  <meta name="twitter:description" content="Learn about Plain LLM Agents - simple AI agents that use large language models for direct decision-making without complex planning. Discover key characteristics, use cases, and limitations of plain LLM agents for prototyping and conversational reasoning tasks.">
 
 
     <link rel="preload" href="/css/compiled/main.min.33b308ec8b8d5df72a614d7504ed2df3405a9b1d19cf059dc9c4d88f0b8a2551.css" as="style" />
@@ -202,6 +185,14 @@ Single-step decisioning: the LLM is prompted to decide the next action each turn
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
     </a><div class="ltr:hx-pr-0 hx-overflow-hidden">
         <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/benchmark-python-pcap-parsers---dpkt-vs-scapy-vs-pyshark-and-finding-100x-speed-improvements/"
+    
+  >Benchmark Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
     class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
     href="/minis/reverse-engineering-free-vpn-applications/"
@@ -577,6 +568,14 @@ Single-step decisioning: the LLM is prompted to decide the next action each turn
             </li><li class="hx-flex hx-flex-col "><a
     class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/ai/ai-open-source-clients/"
+    
+  >Ai Open Source Clients
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
     href="/bazaar/ai/inference-providers/"
     
   >Inference Providers
@@ -676,6 +675,14 @@ Single-step decisioning: the LLM is prompted to decide the next action each turn
             </li><li class="hx-flex hx-flex-col "><a
     class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/vpn/"
+    
+  >VPN
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
     href="/bazaar/computer-science--programming/web-dev-cheatsheet/"
     
   >Web Dev Cheatsheet
@@ -687,6 +694,14 @@ Single-step decisioning: the LLM is prompted to decide the next action each turn
     href="/bazaar/computer-science--programming/web-proxies/"
     
   >Web Proxies
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/website-design/"
+    
+  >Website Design
     </a>
               
             </li></ul>
@@ -709,6 +724,14 @@ Single-step decisioning: the LLM is prompted to decide the next action each turn
     </a>
               <div class="ltr:hx-pr-0 hx-overflow-hidden">
         <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/other/android/"
+    
+  >Android
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
     class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
     href="/bazaar/other/networking/"
@@ -963,6 +986,14 @@ Single-step decisioning: the LLM is prompted to decide the next action each turn
             </li><li class="hx-flex hx-flex-col "><a
     class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/ai/ai-open-source-clients/"
+    
+  >Ai Open Source Clients
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
     href="/bazaar/ai/inference-providers/"
     
   >Inference Providers
@@ -1061,6 +1092,14 @@ Single-step decisioning: the LLM is prompted to decide the next action each turn
             </li><li class="hx-flex hx-flex-col "><a
     class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/vpn/"
+    
+  >VPN
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
     href="/bazaar/computer-science--programming/web-dev-cheatsheet/"
     
   >Web Dev Cheatsheet
@@ -1072,6 +1111,14 @@ Single-step decisioning: the LLM is prompted to decide the next action each turn
     href="/bazaar/computer-science--programming/web-proxies/"
     
   >Web Proxies
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/website-design/"
+    
+  >Website Design
     </a>
               
             </li></ul>
@@ -1092,6 +1139,14 @@ Single-step decisioning: the LLM is prompted to decide the next action each turn
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
     </a><div class="ltr:hx-pr-0 hx-overflow-hidden">
         <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/other/android/"
+    
+  >Android
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
     class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
     href="/bazaar/other/networking/"

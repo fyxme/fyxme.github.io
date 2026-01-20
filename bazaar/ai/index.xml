@@ -82,6 +82,41 @@
     
     <item>
       <title></title>
+      <link>https://fyx.me/bazaar/ai/ai-open-source-clients/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fyx.me/bazaar/ai/ai-open-source-clients/</guid>
+      <description>
+        
+        
+        &lt;h1&gt;AI open-source Chat Clients&lt;/h1&gt;&lt;h2&gt;&lt;a href=&#34;https://www.jan.ai/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Jan.ai&lt;/a&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;janaihttpswwwjanai&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#janaihttpswwwjanai&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Jan is insteresting because it supports&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../img/Pasted%20image%2020251228090731.webp&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2&gt;Others&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;others&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#others&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Mintplex-Labs/anything-llm&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;anything-llm&lt;/a&gt;: good to test out models quickly in a single binary (ie. quick install/cleanup)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/CherryHQ/cherry-studio&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;cherry studio&lt;/a&gt;: apparently very &lt;a href=&#34;https://www.reddit.com/r/LocalLLaMA/comments/1lzikqt/annoyed_with_librechat/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;capable and clean&lt;/a&gt; but I&amp;rsquo;ve not tested it&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.librechat.ai/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.librechat.ai/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/open-webui/open-webui&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/open-webui/open-webui&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://sillytavern.app/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Silly Tavern&lt;/a&gt;: Extremely customisable but initial setup is longer due to customisation.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;AI open-source code clients&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/openai/codex&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;codex&lt;/a&gt;: open-ai&amp;rsquo;s own CLI (Chatgpt)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/anthropics/claude-code&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;claude code&lt;/a&gt;: anthropic&amp;rsquo;s own CLI (Claude)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://opencode.ai/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;opencode&lt;/a&gt;: cool sharing feature, I wish they open-sourced the server for it&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/just-every/code&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/just-every/code&lt;/a&gt;: An improved codex version with missing features, agent subtasks, browser support and more. Only got meh results from it so far&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Comparaisons&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;comparaisons&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#comparaisons&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://news.ycombinator.com/item?id=46391391&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;codex vs claude code&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title></title>
       <link>https://fyx.me/bazaar/ai/inference-providers/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
@@ -118,6 +153,7 @@
     &lt;img src=&#34;../img/MCP%20Inspector%20with%20Hackthebox%20MCP.webp&#34; title=&#34;Using MCP inspector to explore Hackthebox MCP&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;
     &lt;figcaption&gt;Using MCP inspector to explore Hackthebox MCP&lt;/figcaption&gt;
   &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Alternative, you can use something like &lt;a href=&#34;https://github.com/MCPJam/inspector&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;MCPJam/Inspector&lt;/a&gt;.&lt;/p&gt;
 
       </description>
     </item>
