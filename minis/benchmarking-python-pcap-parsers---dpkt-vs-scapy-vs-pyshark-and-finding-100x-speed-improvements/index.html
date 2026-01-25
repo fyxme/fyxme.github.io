@@ -10,17 +10,17 @@
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 <link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
-<title>Benchmark Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements – fyx(me)</title>
-  <meta name="description" content="Comprehensive benchmark comparing Python PCAP parsing libraries (scapy, pyshark, dpkt) for war-driving packet capture analysis. dpkt proves 100x faster with lower memory usage on files up to 1 million packets. Includes performance metrics, memory profiling, and code examples." /><link rel="canonical" href="https://fyx.me/minis/benchmark-python-pcap-parsers---dpkt-vs-scapy-vs-pyshark-and-finding-100x-speed-improvements/" itemprop="url" />
+<title>Benchmarking Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements – fyx(me)</title>
+  <meta name="description" content="Comprehensive benchmark comparing Python PCAP parsing libraries (scapy, pyshark, dpkt) for war-driving packet capture analysis. dpkt proves 100x faster with lower memory usage on files up to 1 million packets. Includes performance metrics, memory profiling, and code examples." /><link rel="canonical" href="https://fyx.me/minis/benchmarking-python-pcap-parsers---dpkt-vs-scapy-vs-pyshark-and-finding-100x-speed-improvements/" itemprop="url" />
 
-<meta property="og:title" content="fyx(me) - Benchmark Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements" />
+<meta property="og:title" content="fyx(me) - Benchmarking Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements" />
 <meta property="og:description" content="Comprehensive benchmark comparing Python PCAP parsing libraries (scapy, pyshark, dpkt) for war-driving packet capture analysis. dpkt proves 100x faster with lower memory usage on files up to 1 million packets. Includes performance metrics, memory profiling, and code examples." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://fyx.me/minis/benchmark-python-pcap-parsers---dpkt-vs-scapy-vs-pyshark-and-finding-100x-speed-improvements/" /><meta property="og:image" content="https://fyx.me/opengraph/content-minis-benchmarking-data-parsing-speed-of-python-pcap-parsing-libraries-scapy-pyshark-dpkt.webp" /><meta property="article:section" content="minis" />
+<meta property="og:url" content="https://fyx.me/minis/benchmarking-python-pcap-parsers---dpkt-vs-scapy-vs-pyshark-and-finding-100x-speed-improvements/" /><meta property="og:image" content="https://fyx.me/opengraph/content-minis-benchmarking-data-parsing-speed-of-python-pcap-parsing-libraries-scapy-pyshark-dpkt.webp" /><meta property="article:section" content="minis" />
 <meta property="article:published_time" content="2026-01-19T00:00:00+00:00" />
 <meta property="article:modified_time" content="2026-01-19T00:00:00+00:00" /><meta property="og:site_name" content="fyx(me)" />
 
-  <meta itemprop="name" content="Benchmark Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements">
+  <meta itemprop="name" content="Benchmarking Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements">
   <meta itemprop="description" content="Comprehensive benchmark comparing Python PCAP parsing libraries (scapy, pyshark, dpkt) for war-driving packet capture analysis. dpkt proves 100x faster with lower memory usage on files up to 1 million packets. Includes performance metrics, memory profiling, and code examples.">
   <meta itemprop="datePublished" content="2026-01-19T00:00:00+00:00">
   <meta itemprop="dateModified" content="2026-01-19T00:00:00+00:00">
@@ -28,7 +28,7 @@
   <meta itemprop="image" content="https://fyx.me/opengraph/content-minis-benchmarking-data-parsing-speed-of-python-pcap-parsing-libraries-scapy-pyshark-dpkt.webp">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://fyx.me/opengraph/content-minis-benchmarking-data-parsing-speed-of-python-pcap-parsing-libraries-scapy-pyshark-dpkt.webp">
-  <meta name="twitter:title" content="Benchmark Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements">
+  <meta name="twitter:title" content="Benchmarking Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements">
   <meta name="twitter:description" content="Comprehensive benchmark comparing Python PCAP parsing libraries (scapy, pyshark, dpkt) for war-driving packet capture analysis. dpkt proves 100x faster with lower memory usage on files up to 1 million packets. Includes performance metrics, memory profiling, and code examples.">
 
 
@@ -178,6 +178,64 @@
     <ul class="hx-flex hx-flex-col hx-gap-1 md:hx-hidden">
       
       
+          <li class=""><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/"
+    
+  >articles
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a><div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/nvidia-exploring-adversarial-machine-learning-course-review/"
+    
+  >NVIDIA Exploring Adversarial Machine Learning (Course Review)
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/exploring-autonomous-llm-agents-for-capture-the-flag-problem-solving-using-context-engineering-rag-and-open-source-models/"
+    
+  >Exploring Autonomous LLM Agents for Capture The Flag problem solving using Prompt Engineering, RAG and Open Source LLMs
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/isp-default-wifi-passwords-are-costlier-to-keep-than-to-crack-value-optimised-cloud-gpu-password-cracking/"
+    
+  >ISP Default WiFi Passwords Are Costlier to Keep Than to Crack (Value optimised Cloud GPU password cracking)
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/creating-a-havoc-module-to-run-commands-on-all-agents-at-once-and-map-out-an-environment-passively/"
+    
+  >Creating a Havoc Module to run commands on all agents at once and map out an environment passively
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/replicating-cobalt-strikes-port-scanner-as-a-bof-for-open-source-c2-frameworks/"
+    
+  >Replicating Cobalt Strike&#39;s Port Scanner BOF for Open-Source C2 | Fast OPSEC-Aware Ping &amp; TCP Connect Scanning in C
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/osep-exam-review/"
+    
+  >OffSec Experienced Penetration Tester (OSEP) Exam Review
+    </a>
+              
+            </li></ul>
+      </div></li>
           <li class="open"><a
     class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
@@ -189,9 +247,9 @@
         <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col open"><a
     class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       sidebar-active-item hx-bg-primary-100 hx-font-semibold hx-text-primary-800 contrast-more:hx-border contrast-more:hx-border-primary-500 dark:hx-bg-primary-400/10 dark:hx-text-primary-600 contrast-more:dark:hx-border-primary-500"
-    href="/minis/benchmark-python-pcap-parsers---dpkt-vs-scapy-vs-pyshark-and-finding-100x-speed-improvements/"
+    href="/minis/benchmarking-python-pcap-parsers---dpkt-vs-scapy-vs-pyshark-and-finding-100x-speed-improvements/"
     
-  >Benchmark Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements
+  >Benchmarking Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements
     </a>
   
     <ul class='hx-flex hx-flex-col hx-gap-1 hx-relative before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] dark:before:hx-bg-neutral-800 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-pr-3 rtl:before:hx-right-0 ltr:hx-ml-3 rtl:hx-mr-3'><li>
@@ -311,56 +369,6 @@
     href="/minis/hacky-holidays-space-race-ctf-competition-post-mortem/"
     
   >Hacky Holidays Space Race CTF Competition post-mortem
-    </a>
-              
-            </li></ul>
-      </div></li>
-          <li class=""><a
-    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
-    href="/articles/"
-    
-  >articles
-        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
-    </a><div class="ltr:hx-pr-0 hx-overflow-hidden">
-        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
-    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
-    href="/articles/exploring-autonomous-llm-agents-for-capture-the-flag-problem-solving-using-context-engineering-rag-and-open-source-models/"
-    
-  >Exploring Autonomous LLM Agents for Capture The Flag problem solving using Prompt Engineering, RAG and Open Source LLMs
-    </a>
-              
-            </li><li class="hx-flex hx-flex-col "><a
-    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
-    href="/articles/isp-default-wifi-passwords-are-costlier-to-keep-than-to-crack-value-optimised-cloud-gpu-password-cracking/"
-    
-  >ISP Default WiFi Passwords Are Costlier to Keep Than to Crack (Value optimised Cloud GPU password cracking)
-    </a>
-              
-            </li><li class="hx-flex hx-flex-col "><a
-    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
-    href="/articles/creating-a-havoc-module-to-run-commands-on-all-agents-at-once-and-map-out-an-environment-passively/"
-    
-  >Creating a Havoc Module to run commands on all agents at once and map out an environment passively
-    </a>
-              
-            </li><li class="hx-flex hx-flex-col "><a
-    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
-    href="/articles/replicating-cobalt-strikes-port-scanner-as-a-bof-for-open-source-c2-frameworks/"
-    
-  >Replicating Cobalt Strike&#39;s Port Scanner BOF for Open-Source C2 | Fast OPSEC-Aware Ping &amp; TCP Connect Scanning in C
-    </a>
-              
-            </li><li class="hx-flex hx-flex-col "><a
-    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
-    href="/articles/osep-exam-review/"
-    
-  >OffSec Experienced Penetration Tester (OSEP) Exam Review
     </a>
               
             </li></ul>
@@ -867,10 +875,10 @@
   <div class="hx-mt-1.5 hx-flex hx-items-center hx-gap-1 hx-overflow-hidden hx-text-sm hx-text-gray-500 dark:hx-text-gray-400 contrast-more:hx-text-current">
         <div class="hx-whitespace-nowrap hx-transition-colors hx-min-w-[24px] hx-overflow-hidden hx-text-ellipsis hover:hx-text-gray-900 dark:hover:hx-text-gray-100">
           <a href="/minis/">minis</a>
-        </div><svg class="hx-w-3.5 hx-shrink-0 rtl:-hx-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx-whitespace-nowrap hx-transition-colors hx-font-medium hx-text-gray-700 contrast-more:hx-font-bold contrast-more:hx-text-current dark:hx-text-gray-100 contrast-more:dark:hx-text-current">Benchmark Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements</div>
+        </div><svg class="hx-w-3.5 hx-shrink-0 rtl:-hx-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx-whitespace-nowrap hx-transition-colors hx-font-medium hx-text-gray-700 contrast-more:hx-font-bold contrast-more:hx-text-current dark:hx-text-gray-100 contrast-more:dark:hx-text-current">Benchmarking Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements</div>
   </div>
 
-        <h1 class="hx-mt-2 hx-text-4xl hx-font-bold hx-tracking-tight hx-text-slate-900 dark:hx-text-slate-100">Benchmark Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements</h1>
+        <h1 class="hx-mt-2 hx-text-4xl hx-font-bold hx-tracking-tight hx-text-slate-900 dark:hx-text-slate-100">Benchmarking Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements</h1>
             
         <div class="hx-mt-4 hx-mb-4 hx-text-gray-500 hx-text-sm hx-flex hx-items-center hx-flex-wrap hx-gap-y-2"><span class="hx-mr-1">January 19, 2026</span><span class="hx-mx-1">·</span><a
                   href="https://fyx.me/articles" target="_blank"

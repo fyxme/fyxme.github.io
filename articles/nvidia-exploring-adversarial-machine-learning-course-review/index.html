@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>NVIDIA Exploring Adversarial Machine Learning (Course Review) – fyx(me)</title>
+  <meta name="description" content=" For the past year, I’ve been playing around with prompt injection, system prompt leak (“extraction” as the cool ML peeps call it), and data poisoning. However, this has always been ad-hoc through personal research and via capture the flags (CTFs). I’ve come to realise that there is a lot more to adversarial machine learning (ML) then just prompt injection and I wanted to explore other ways that these ML systems can be exploited and understand the underlying math/ML principles a little better." /><link rel="canonical" href="https://fyx.me/articles/nvidia-exploring-adversarial-machine-learning-course-review/" itemprop="url" />
+
+<meta property="og:title" content="fyx(me) - NVIDIA Exploring Adversarial Machine Learning (Course Review)" />
+<meta property="og:description" content="
+    
+For the past year, I&rsquo;ve been playing around with prompt injection, system prompt leak (&ldquo;extraction&rdquo; as the cool ML peeps call it), and data poisoning. However, this has always been ad-hoc through personal research and via capture the flags (CTFs). I&rsquo;ve come to realise that there is a lot more to adversarial machine learning (ML) then just prompt injection and I wanted to explore other ways that these ML systems can be exploited and understand the underlying math/ML principles a little better." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fyx.me/articles/nvidia-exploring-adversarial-machine-learning-course-review/" /><meta property="og:image" content="https://fyx.me/fyx-me-og.webp"/><meta property="article:section" content="articles" />
+<meta property="article:published_time" content="2026-01-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2026-01-24T00:00:00+00:00" /><meta property="og:site_name" content="fyx(me)" />
+
+  <meta itemprop="name" content="NVIDIA Exploring Adversarial Machine Learning (Course Review)">
+  <meta itemprop="description" content="For the past year, I’ve been playing around with prompt injection, system prompt leak (“extraction” as the cool ML peeps call it), and data poisoning. However, this has always been ad-hoc through personal research and via capture the flags (CTFs). I’ve come to realise that there is a lot more to adversarial machine learning (ML) then just prompt injection and I wanted to explore other ways that these ML systems can be exploited and understand the underlying math/ML principles a little better.">
+  <meta itemprop="datePublished" content="2026-01-24T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-01-24T00:00:00+00:00">
+  <meta itemprop="wordCount" content="4027">
+  <meta itemprop="image" content="https://fyx.me/fyx-me-og.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://fyx.me/fyx-me-og.webp">
+  <meta name="twitter:title" content="NVIDIA Exploring Adversarial Machine Learning (Course Review)">
+  <meta name="twitter:description" content="For the past year, I’ve been playing around with prompt injection, system prompt leak (“extraction” as the cool ML peeps call it), and data poisoning. However, this has always been ad-hoc through personal research and via capture the flags (CTFs). I’ve come to realise that there is a lot more to adversarial machine learning (ML) then just prompt injection and I wanted to explore other ways that these ML systems can be exploited and understand the underlying math/ML principles a little better.">
+
+
+    <link rel="preload" href="/css/compiled/main.min.33b308ec8b8d5df72a614d7504ed2df3405a9b1d19cf059dc9c4d88f0b8a2551.css" as="style" />
+    <link href="/css/compiled/main.min.33b308ec8b8d5df72a614d7504ed2df3405a9b1d19cf059dc9c4d88f0b8a2551.css" rel="stylesheet" />
+
+
+
+
+  <link href="/css/custom.min.6189dd16334b8142c5bd7b6757ba67210d2f98d8cb82f91d80d0d32e844ef2e8.css" rel="stylesheet" />
+
+
+  <script>
+     
+    const defaultTheme = 'dark';
+
+    const setDarkTheme = () => {
+      document.documentElement.classList.add("dark");
+      document.documentElement.style.colorScheme = "dark";
+    }
+    const setLightTheme = () => {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.style.colorScheme = "light";
+    }
+
+    if ("color-theme" in localStorage) {
+      localStorage.getItem("color-theme") === "dark" ? setDarkTheme() : setLightTheme();
+    } else {
+      defaultTheme === "dark" ? setDarkTheme() : setLightTheme();
+      if (defaultTheme === "system") {
+        window.matchMedia("(prefers-color-scheme: dark)").matches ? setDarkTheme() : setLightTheme();
+      }
+    }
+  </script>
+
+  <script defer src="https://a.blinking.dog/script.js" data-website-id="ec9f3909-7c35-4c7e-a1cd-5c9248950e26" data-domains="fyx.me,www.fyx.me"></script>
+
+</head>
+<body dir="ltr"><div class="nav-container hx-sticky hx-top-0 hx-z-20 hx-w-full hx-bg-transparent print:hx-hidden">
+  <div class="nav-container-blur hx-pointer-events-none hx-absolute hx-z-[-1] hx-h-full hx-w-full hx-bg-white dark:hx-bg-dark hx-shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] contrast-more:hx-shadow-[0_0_0_1px_#000] dark:hx-shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] contrast-more:dark:hx-shadow-[0_0_0_1px_#fff]"></div>
+
+  <nav class="hx-mx-auto hx-flex hx-items-center hx-justify-end hx-gap-2 hx-h-16 hx-px-6 hx-max-w-[90rem]">
+    <a class="hx-flex hx-items-center hover:hx-opacity-75 ltr:hx-mr-auto rtl:hx-ml-auto" href="/">
+        <img class="hx-block dark:hx-hidden" src="/images/fyxme.svg" alt="fyx(me)" height="20" width="30" />
+        <img class="hx-hidden dark:hx-block" src="/images/fyxme.svg" alt="fyx(me)" height="20" width="30" />
+        <span class="hx-mx-2 hx-font-extrabold hx-inline hx-select-none" title="fyx(me)">fyx(me)</span>
+    </a><a
+            title="about"
+            href="/about"
+            
+            class="hx-text-sm contrast-more:hx-text-gray-700 contrast-more:dark:hx-text-gray-100 hx-relative -hx-ml-2 hx-hidden hx-whitespace-nowrap hx-p-2 md:hx-inline-block hx-text-gray-600 hover:hx-text-gray-800 dark:hx-text-gray-400 dark:hover:hx-text-gray-200"
+          >
+            <span class="hx-text-center">about</span>
+          </a><a
+            title="articles"
+            href="/articles"
+            
+            class="hx-text-sm contrast-more:hx-text-gray-700 contrast-more:dark:hx-text-gray-100 hx-relative -hx-ml-2 hx-hidden hx-whitespace-nowrap hx-p-2 md:hx-inline-block hx-font-medium"
+          >
+            <span class="hx-text-center">articles</span>
+          </a><a
+            title="minis"
+            href="/minis"
+            
+            class="hx-text-sm contrast-more:hx-text-gray-700 contrast-more:dark:hx-text-gray-100 hx-relative -hx-ml-2 hx-hidden hx-whitespace-nowrap hx-p-2 md:hx-inline-block hx-text-gray-600 hover:hx-text-gray-800 dark:hx-text-gray-400 dark:hover:hx-text-gray-200"
+          >
+            <span class="hx-text-center">minis</span>
+          </a><a
+            title="code"
+            href="/code"
+            
+            class="hx-text-sm contrast-more:hx-text-gray-700 contrast-more:dark:hx-text-gray-100 hx-relative -hx-ml-2 hx-hidden hx-whitespace-nowrap hx-p-2 md:hx-inline-block hx-text-gray-600 hover:hx-text-gray-800 dark:hx-text-gray-400 dark:hover:hx-text-gray-200"
+          >
+            <span class="hx-text-center">code</span>
+          </a><a
+            title="bazaar"
+            href="/bazaar"
+            
+            class="hx-text-sm contrast-more:hx-text-gray-700 contrast-more:dark:hx-text-gray-100 hx-relative -hx-ml-2 hx-hidden hx-whitespace-nowrap hx-p-2 md:hx-inline-block hx-text-gray-600 hover:hx-text-gray-800 dark:hx-text-gray-400 dark:hover:hx-text-gray-200"
+          >
+            <span class="hx-text-center">bazaar</span>
+          </a><div class="search-wrapper hx-relative md:hx-w-64">
+  <div class="hx-relative hx-flex hx-items-center hx-text-gray-900 contrast-more:hx-text-gray-800 dark:hx-text-gray-300 contrast-more:dark:hx-text-gray-300">
+    <input
+      placeholder="Search..."
+      class="search-input hx-block hx-w-full hx-appearance-none hx-rounded-lg hx-px-3 hx-py-2 hx-transition-colors hx-text-base hx-leading-tight md:hx-text-sm hx-bg-black/[.05] dark:hx-bg-gray-50/10 focus:hx-bg-white dark:focus:hx-bg-dark placeholder:hx-text-gray-500 dark:placeholder:hx-text-gray-400 contrast-more:hx-border contrast-more:hx-border-current"
+      type="search"
+      value=""
+      spellcheck="false"
+    />
+    <kbd
+      class="hx-absolute hx-my-1.5 hx-select-none ltr:hx-right-1.5 rtl:hx-left-1.5 hx-h-5 hx-rounded hx-bg-white hx-px-1.5 hx-font-mono hx-text-[10px] hx-font-medium hx-text-gray-500 hx-border dark:hx-border-gray-100/20 dark:hx-bg-dark/50 contrast-more:hx-border-current contrast-more:hx-text-current contrast-more:dark:hx-border-current hx-items-center hx-gap-1 hx-transition-opacity hx-pointer-events-none hx-hidden sm:hx-flex"
+    >
+      CTRL K
+    </kbd>
+  </div>
+
+  <div>
+    <ul
+      class="search-results hextra-scrollbar hx-hidden hx-border hx-border-gray-200 hx-bg-white hx-text-gray-100 dark:hx-border-neutral-800 dark:hx-bg-neutral-900 hx-absolute hx-top-full hx-z-20 hx-mt-2 hx-overflow-auto hx-overscroll-contain hx-rounded-xl hx-py-2.5 hx-shadow-xl hx-max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] md:hx-max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx-inset-x-0 ltr:md:hx-left-auto rtl:md:hx-right-auto contrast-more:hx-border contrast-more:hx-border-gray-900 contrast-more:dark:hx-border-gray-50 hx-w-screen hx-min-h-[100px] hx-max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
+      style="transition: max-height 0.2s ease 0s;"
+    ></ul>
+  </div>
+</div>
+
+          <a class="hx-p-2 hx-text-current" target="_blank" rel="noreferrer" href="https://github.com/fyxme/" title="github"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx-sr-only">github</span>
+          </a>
+          <a class="hx-p-2 hx-text-current" target="_blank" rel="noreferrer" href="https://x.com/_fyxme" title="twitter"><svg height=24 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg><span class="hx-sr-only">twitter</span>
+          </a><button type="button" aria-label="Menu" class="hamburger-menu -hx-mr-2 hx-rounded hx-p-2 active:hx-bg-gray-400/20 md:hx-hidden"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class="hx-mx-auto hx-flex hx-max-w-screen-xl">
+    <div class="mobile-menu-overlay [transition:background-color_1.5s_ease] hx-fixed hx-inset-0 hx-z-10 hx-bg-black/80 dark:hx-bg-black/60 hx-hidden"></div>
+<aside class="sidebar-container hx-flex hx-flex-col print:hx-hidden md:hx-top-16 md:hx-shrink-0 md:hx-w-64 md:hx-self-start max-md:[transform:translate3d(0,-100%,0)] md:hx-hidden">
+  
+  <div class="hx-px-4 hx-pt-4 md:hx-hidden">
+    <div class="search-wrapper hx-relative md:hx-w-64">
+  <div class="hx-relative hx-flex hx-items-center hx-text-gray-900 contrast-more:hx-text-gray-800 dark:hx-text-gray-300 contrast-more:dark:hx-text-gray-300">
+    <input
+      placeholder="Search..."
+      class="search-input hx-block hx-w-full hx-appearance-none hx-rounded-lg hx-px-3 hx-py-2 hx-transition-colors hx-text-base hx-leading-tight md:hx-text-sm hx-bg-black/[.05] dark:hx-bg-gray-50/10 focus:hx-bg-white dark:focus:hx-bg-dark placeholder:hx-text-gray-500 dark:placeholder:hx-text-gray-400 contrast-more:hx-border contrast-more:hx-border-current"
+      type="search"
+      value=""
+      spellcheck="false"
+    />
+    <kbd
+      class="hx-absolute hx-my-1.5 hx-select-none ltr:hx-right-1.5 rtl:hx-left-1.5 hx-h-5 hx-rounded hx-bg-white hx-px-1.5 hx-font-mono hx-text-[10px] hx-font-medium hx-text-gray-500 hx-border dark:hx-border-gray-100/20 dark:hx-bg-dark/50 contrast-more:hx-border-current contrast-more:hx-text-current contrast-more:dark:hx-border-current hx-items-center hx-gap-1 hx-transition-opacity hx-pointer-events-none hx-hidden sm:hx-flex"
+    >
+      CTRL K
+    </kbd>
+  </div>
+
+  <div>
+    <ul
+      class="search-results hextra-scrollbar hx-hidden hx-border hx-border-gray-200 hx-bg-white hx-text-gray-100 dark:hx-border-neutral-800 dark:hx-bg-neutral-900 hx-absolute hx-top-full hx-z-20 hx-mt-2 hx-overflow-auto hx-overscroll-contain hx-rounded-xl hx-py-2.5 hx-shadow-xl hx-max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] md:hx-max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx-inset-x-0 ltr:md:hx-left-auto rtl:md:hx-right-auto contrast-more:hx-border contrast-more:hx-border-gray-900 contrast-more:dark:hx-border-gray-50 hx-w-screen hx-min-h-[100px] hx-max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
+      style="transition: max-height 0.2s ease 0s;"
+    ></ul>
+  </div>
+</div>
+
+  </div>
+  <div class="hextra-scrollbar hx-overflow-y-auto hx-overflow-x-hidden hx-p-4 hx-grow md:hx-h-[calc(100vh-var(--navbar-height)-var(--menu-height))]">
+    <ul class="hx-flex hx-flex-col hx-gap-1 md:hx-hidden">
+      
+      
+          <li class="open"><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/"
+    
+  >articles
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a><div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col open"><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      sidebar-active-item hx-bg-primary-100 hx-font-semibold hx-text-primary-800 contrast-more:hx-border contrast-more:hx-border-primary-500 dark:hx-bg-primary-400/10 dark:hx-text-primary-600 contrast-more:dark:hx-border-primary-500"
+    href="/articles/nvidia-exploring-adversarial-machine-learning-course-review/"
+    
+  >NVIDIA Exploring Adversarial Machine Learning (Course Review)
+    </a>
+  
+    <ul class='hx-flex hx-flex-col hx-gap-1 hx-relative before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] dark:before:hx-bg-neutral-800 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-pr-3 rtl:before:hx-right-0 ltr:hx-ml-3 rtl:hx-mr-3'><li>
+              <a
+                href="#the-lab-environment"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >The Lab Environment</a>
+            </li>
+          <li>
+              <a
+                href="#the-content"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >The content</a>
+            </li>
+          <li>
+              <a
+                href="#the-exam"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >The Exam</a>
+            </li>
+          <li>
+              <a
+                href="#final-remarks"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >Final Remarks</a>
+            </li>
+          <li>
+              <a
+                href="#references"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >References</a>
+            </li>
+          <li>
+              <a
+                href="#appendix"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >Appendix:</a>
+            </li>
+          </ul>
+  
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/exploring-autonomous-llm-agents-for-capture-the-flag-problem-solving-using-context-engineering-rag-and-open-source-models/"
+    
+  >Exploring Autonomous LLM Agents for Capture The Flag problem solving using Prompt Engineering, RAG and Open Source LLMs
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/isp-default-wifi-passwords-are-costlier-to-keep-than-to-crack-value-optimised-cloud-gpu-password-cracking/"
+    
+  >ISP Default WiFi Passwords Are Costlier to Keep Than to Crack (Value optimised Cloud GPU password cracking)
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/creating-a-havoc-module-to-run-commands-on-all-agents-at-once-and-map-out-an-environment-passively/"
+    
+  >Creating a Havoc Module to run commands on all agents at once and map out an environment passively
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/replicating-cobalt-strikes-port-scanner-as-a-bof-for-open-source-c2-frameworks/"
+    
+  >Replicating Cobalt Strike&#39;s Port Scanner BOF for Open-Source C2 | Fast OPSEC-Aware Ping &amp; TCP Connect Scanning in C
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/articles/osep-exam-review/"
+    
+  >OffSec Experienced Penetration Tester (OSEP) Exam Review
+    </a>
+              
+            </li></ul>
+      </div></li>
+          <li class=""><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/"
+    
+  >minis
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a><div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/benchmarking-python-pcap-parsers---dpkt-vs-scapy-vs-pyshark-and-finding-100x-speed-improvements/"
+    
+  >Benchmarking Python PCAP Parsers: dpkt vs scapy vs pyshark and finding 100x Speed Improvements
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/reverse-engineering-free-vpn-applications/"
+    
+  >Reverse Engineering &#34;Free VPN&#34; Applications
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/reverse-engineering-onemillionchessboards.com-frontend-with-chrome-devtools-to-build-a-bot/"
+    
+  >Reverse Engineering onemillionchessboards.com Frontend with DevTools to Build a Bot
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/building-a-flask-blog-with-ai-coding-tools-using-cline-mcp-servers-in-vscode/"
+    
+  >Building a Flask Blog in 3 prompts with AI Coding Tools: Using Cline &amp; MCP Servers in VSCode
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/leveraging-ai-to-automate-seo-metadata-generation-for-web-content/"
+    
+  >Leveraging AI to Automate SEO Metadata Generation for Web Content
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/ai-overthinking-more-than-me-with-insomnia-at-3-am/"
+    
+  >AI overthinking more than me with insomnia at 3 am
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/creating-lightweight-windows-virtual-machines-for-your-personal-lab-environment/"
+    
+  >Creating Lightweight Windows Virtual Machines for your Personal Lab Environment
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/create-infinite-email-aliases-using-cloudflare-email-routing/"
+    
+  >Create Infinite Email aliases using Cloudflare Email Routing
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/improving-functionality-of-open-source-bofs/"
+    
+  >Improving functionality of Open Source BOFs
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/hack-the-box-take-it-easy-month/"
+    
+  >Hack The Box: Take It Easy Dare [Easy month] writeups and post-mortem
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/minis/hacky-holidays-space-race-ctf-competition-post-mortem/"
+    
+  >Hacky Holidays Space Race CTF Competition post-mortem
+    </a>
+              
+            </li></ul>
+      </div></li>
+          <li class=""><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/"
+    
+  >bazaar
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a><div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col open"><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/"
+    
+  >Windows
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col open"><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/active-directory/"
+    
+  >Active Directory
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/active-directory/lateral-movement/"
+    
+  >Lateral Movement
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/active-directory/ad-enumeration/"
+    
+  >AD Enumeration
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/active-directory/mssql/"
+    
+  >MSSQL
+    </a>
+              
+            </li></ul>
+      </div>
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/privilege-escalation/"
+    
+  >Privilege Escalation
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/post-exploitation--looting/"
+    
+  >Post Exploitation &amp; Looting
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/defence-evasion/"
+    
+  >Defence Evasion
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/misc-snippets/"
+    
+  >Misc Snippets
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/forensics/"
+    
+  >Forensics
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/windows/outlook-exchange-server/"
+    
+  >Outlook Exchange Server
+    </a>
+              
+            </li></ul>
+      </div>
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/linux/"
+    
+  >Linux
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/linux/other-commands/"
+    
+  >Other Commands
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/linux/reverse-shells/"
+    
+  >Reverse Shells
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/linux/system-hardening/"
+    
+  >System Hardening
+    </a>
+              
+            </li></ul>
+      </div>
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/phishing/"
+    
+  >Phishing
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/web-exploitation/"
+    
+  >Web Exploitation
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/web-exploitation/php/"
+    
+  >PHP
+    </a>
+              
+            </li></ul>
+      </div>
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/c2-and-red-team-tools/"
+    
+  >C2 and Red Team Tools
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/c2-and-red-team-tools/havoc/"
+    
+  >Havoc
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/c2-and-red-team-tools/malware-droppers/"
+    
+  >Malware Droppers
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/c2-and-red-team-tools/vpn-routing-and-tunneling/"
+    
+  >Vpn, Routing and Tunneling
+    </a>
+              
+            </li></ul>
+      </div>
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/other-cheatsheets/"
+    
+  >&#43;&#43; cyber cheatsheets
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/ai/"
+    
+  >Ai
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/ai/agents/"
+    
+  >Agents
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/ai/ai-code-review/"
+    
+  >Ai Code Review
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/ai/ai-open-source-clients/"
+    
+  >Ai Open Source Clients
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/ai/inference-providers/"
+    
+  >Inference Providers
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/ai/inspecting-mcp-servers/"
+    
+  >Inspecting MC P Servers
+    </a>
+              
+            </li></ul>
+      </div>
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/"
+    
+  >Computer Science &amp; Programming
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/ai-tools/"
+    
+  >Ai Tools
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/dependency-visualisation/"
+    
+  >Dependency Visualisation
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/docker/"
+    
+  >Docker
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/file-synchronisation/"
+    
+  >File Synchronisation
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/git/"
+    
+  >Git
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/image-modifications/"
+    
+  >Image Modifications
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/latex/"
+    
+  >Latex
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/orchestration-workflows/"
+    
+  >Orchestration (Workflows)
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/versioning/"
+    
+  >Versioning
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/vpn/"
+    
+  >VPN
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/web-dev-cheatsheet/"
+    
+  >Web Dev Cheatsheet
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/web-proxies/"
+    
+  >Web Proxies
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/website-design/"
+    
+  >Website Design
+    </a>
+              
+            </li></ul>
+      </div>
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/wifi/"
+    
+  >Wifi
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/other/"
+    
+  >Other
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/other/android/"
+    
+  >Android
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/other/networking/"
+    
+  >Networking
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/other/password-cracking/"
+    
+  >Password Cracking
+    </a>
+              
+            </li></ul>
+      </div>
+            </li></ul>
+      </div></li>
+      <li class="[word-break:break-word] hx-mt-5 hx-mb-2 hx-px-2 hx-py-1.5 hx-text-sm hx-font-semibold hx-text-gray-900 first:hx-mt-0 dark:hx-text-gray-100">
+        <span class="hx-cursor-default">Bottom text</span>
+      </li>
+    
+      <li><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="http://blinking.dog"
+    target="_blank" rel="noreferrer"
+  >🦧</a></li>
+    
+    </ul>
+
+    </div>
+  
+  
+    <div class="md:hx-hidden  hx-sticky hx-bottom-0 hx-bg-white dark:hx-bg-dark hx-mx-4 hx-py-4 hx-shadow-[0_-12px_16px_#fff] hx-flex hx-items-center hx-gap-2 dark:hx-border-neutral-800 dark:hx-shadow-[0_-12px_16px_#111] contrast-more:hx-border-neutral-400 contrast-more:hx-shadow-none contrast-more:dark:hx-shadow-none hx-border-t" data-toggle-animation="show"><div class="hx-flex hx-grow hx-flex-col"><button
+  title="Change theme"
+  data-theme="light"
+  class="theme-toggle hx-group hx-h-7 hx-rounded-md hx-px-2 hx-text-left hx-text-xs hx-font-medium hx-text-gray-600 hx-transition-colors dark:hx-text-gray-400 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50"
+  type="button"
+  aria-label="Change theme"
+>
+  <div class="hx-flex hx-items-center hx-gap-2 hx-capitalize"><svg height=12 class="group-data-[theme=light]:hx-hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="group-data-[theme=light]:hx-hidden">Light</span><svg height=12 class="group-data-[theme=dark]:hx-hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="group-data-[theme=dark]:hx-hidden">Dark</span></div>
+</button>
+</div></div></aside>
+    
+<nav class="hextra-toc hx-order-last hx-hidden hx-w-64 hx-shrink-0 xl:hx-block print:hx-hidden hx-px-4" aria-label="table of contents">
+    <div class="hextra-scrollbar hx-sticky hx-top-16 hx-overflow-y-auto hx-pr-4 hx-pt-6 hx-text-sm [hyphens:auto] hx-max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] ltr:hx--mr-4 rtl:hx--ml-4"><p class="hx-mb-4 hx-font-semibold hx-tracking-tight">On this page</p><ul>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#the-lab-environment">The Lab Environment
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#the-content">The content
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#model-evasion">Model Evasion
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#model-extraction">Model Extraction
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#model-assessments">Model Assessments
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#model-inversion">Model Inversion
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#model-poisoning">Model Poisoning
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#large-language-model-llm-attacks">Large Language Model (LLM) Attacks
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#the-exam">The Exam
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#final-remarks">Final Remarks
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#references">References
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#appendix">Appendix:
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#course-outline">Course Outline
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#environment-specifications">Environment specifications
+        </a>
+      </li></ul>
+      <div class="hx-mt-8 hx-border-t hx-bg-white hx-pt-8 hx-shadow-[0_-12px_16px_white] dark:hx-bg-dark dark:hx-shadow-[0_-12px_16px_#111] hx-sticky hx-bottom-0 hx-flex hx-flex-col hx-items-start hx-gap-2 hx-pb-8 dark:hx-border-neutral-800 contrast-more:hx-border-t contrast-more:hx-border-neutral-400 contrast-more:hx-shadow-none contrast-more:dark:hx-border-neutral-400">
+        <button aria-hidden="true" id="backToTop" onClick="scrollUp();" class="hx-transition-all hx-duration-75 hx-opacity-0 hx-text-xs hx-font-medium hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-100 contrast-more:hx-text-gray-800 contrast-more:dark:hx-text-gray-50">
+          <span>Scroll to top</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hx-inline ltr:hx-ml-1 rtl:hx-mr-1 hx-h-3.5 hx-w-3.5 hx-border hx-rounded-full hx-border-gray-500 hover:hx-border-gray-900 dark:hx-border-gray-400 dark:hover:hx-border-gray-100 contrast-more:hx-border-gray-800 contrast-more:dark:hx-border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx-w-full hx-break-words hx-flex hx-min-h-[calc(100vh-var(--navbar-height))] hx-min-w-0 hx-justify-center hx-pb-8 hx-pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+        
+      <main class="hx-w-full hx-min-w-0 hx-max-w-6xl hx-pt-4">
+        
+  <div class="hx-mt-1.5 hx-flex hx-items-center hx-gap-1 hx-overflow-hidden hx-text-sm hx-text-gray-500 dark:hx-text-gray-400 contrast-more:hx-text-current">
+        <div class="hx-whitespace-nowrap hx-transition-colors hx-min-w-[24px] hx-overflow-hidden hx-text-ellipsis hover:hx-text-gray-900 dark:hover:hx-text-gray-100">
+          <a href="/articles/">articles</a>
+        </div><svg class="hx-w-3.5 hx-shrink-0 rtl:-hx-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx-whitespace-nowrap hx-transition-colors hx-font-medium hx-text-gray-700 contrast-more:hx-font-bold contrast-more:hx-text-current dark:hx-text-gray-100 contrast-more:dark:hx-text-current">NVIDIA Exploring Adversarial Machine Learning (Course Review)</div>
+  </div>
+
+        <h1 class="hx-mt-2 hx-text-4xl hx-font-bold hx-tracking-tight hx-text-slate-900 dark:hx-text-slate-100">NVIDIA Exploring Adversarial Machine Learning (Course Review)</h1>
+            
+        <div class="hx-mt-4 hx-mb-4 hx-text-gray-500 hx-text-sm hx-flex hx-items-center hx-flex-wrap hx-gap-y-2"><span class="hx-mr-1">January 24, 2026</span><span class="hx-mx-1">·</span><a
+                  href="https://fyx.me/articles" target="_blank"
+                  class="hx-group hx-inline-flex hx-items-center hx-text-current hx-gap-x-1.5 hx-mx-1"
+                  title="fyx(me)"
+                ><img src="https://fyx.me/favicon.ico" alt="fyx(me)" class="hx-inline-block hx-h-4 hx-w-4 hx-rounded-full" loading="lazy" />
+                  <div class="group-hover:hx-underline">fyx(me)</div>
+                </a></div>
+        <div class="content">
+          <p>
+    <img src="../img/NVIDIA%20Exploring%20Adversarial%20Machine%20Learning%20Certificate%20%28Cropped%29.png" alt="" loading="lazy" /></p>
+<p>For the past year, I&rsquo;ve been playing around with prompt injection, system prompt leak (&ldquo;extraction&rdquo; as the cool ML peeps call it), and data poisoning. However, this has always been ad-hoc through personal research and via capture the flags (CTFs). I&rsquo;ve come to realise that there is a lot more to adversarial machine learning (ML) then just prompt injection and I wanted to explore other ways that these ML systems can be exploited and understand the underlying math/ML principles a little better.</p>
+<p>I came across this course (<a href="https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI&#43;S-DS-03&#43;V1" target="_blank" rel="noopener">Exploring Adversarial Machine Learning</a>) when a friend posted about it last year but only got around to it now. He&rsquo;s also written a review about the course itself which you can read <a href="https://tech.2keebs.com/exploring-adversarial-machine-learning/" target="_blank" rel="noopener">here</a>.</p>
+<p>All in all, this was a great course! A lot of the concepts I had heard of during past research and while scanning ML papers but I&rsquo;d never looked more into it and I&rsquo;d never looked at how to actually perform these attacks. The course showcases a lot of great tools too to help perform attacks, optimise hyper-parameters and dive into data using Explanatory Data Analysis (EDA).</p>
+<p>The EDA sections were actually super interest because obviously you might know that not all information is relevant to the model when it makes predictions but seeing which parts are relevant is another story. For example, you can identify which parts of an image are relevant to a prediction model when it attempts to identify what its looking at, if you can then transpose that onto other images you may be able to trick a model into thinking this is X instead of Y:</p>
+<p>
+    <figure>
+    <img src="../img/EDA%20Alibi%20extracting%20significant%20data%20from%20image.webp" title="Alibi extracting significant data from image" alt="" loading="lazy" />
+    <figcaption>Alibi extracting significant data from image</figcaption>
+  </figure></p>
+<p>This is a simple example but it got me thinking about what if you were able to do the same with something like near invisible watermarks (ie. Synth-ID). Could this be extracted and then transposed onto another image to trick the model into thinking this was a watermarked image while it wasn&rsquo;t (ie. forge a false positive)? Food for thought&hellip;</p>
+<p>The course costs 90 euros (150$ AUD) with which you get access to:</p>
+<ul>
+<li>Full coursework with lab environment in Jupyter, notebooks, training data, answer notebooks, boilerplate code, etc</li>
+<li>30 GPUs hours (8 hour sessions before the machine auto-shuts down) on a NVIDIA A10G (AWS g5.2xlarge ec2 instance). You can see the specs in the appendix.</li>
+<li>A certification after passing an exam that tests each of the core concepts.</li>
+</ul>
+<p><em>Should I do the suggested pre-requisite (<a href="https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI&#43;S-FX-01&#43;V1" target="_blank" rel="noopener">Getting Started with Deep Learning</a>)?</em> If you can read/write python code and know a little about <code>pytorch</code>, <code>pandas</code>, and <code>numpy</code>, then its probably not needed. There&rsquo;s a lot of well commented examples throughout the whole course.</p>
+<p>I don&rsquo;t think its super needed because the course already has all the resources and external links/papers/articles you&rsquo;ll need. But if you&rsquo;re stuck on an exercise or have questions about the course you can always ask about it on the <a href="https://forums.developer.nvidia.com/c/learning-and-certification/745" target="_blank" rel="noopener">NVIDIA Forums</a>.</p>
+<h2>The Lab Environment<span class="hx-absolute -hx-mt-20" id="the-lab-environment"></span>
+    <a href="#the-lab-environment" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Once you start the course, you are given access to a Jupyter lab environment hosted on an ec2 instance:</p>
+<p>
+    <figure>
+    <img src="../img/Jupyter%20lab%20environment%20for%20NVIDIA%20Exploring%20Adversarial%20Machine%20Learning%20Course.webp" title="Jupyter lab environment for NVIDIA Exploring Adversarial Machine Learning Course" alt="" loading="lazy" />
+    <figcaption>Jupyter lab environment for NVIDIA Exploring Adversarial Machine Learning Course</figcaption>
+  </figure></p>
+<p>The environment is very responsive and contains everything you&rsquo;ll need for the course. The coursework, tutorial, exercises, answers and the exam itself.</p>
+<div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200">
+  <p class="hx-flex hx-items-center hx-font-medium"><svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Important</p>
+
+  <div class="hx-w-full hx-min-w-0 hx-leading-7">
+    <div class="hx-mt-6 hx-leading-7 first:hx-mt-0"><p>Every time you shut off the environment, everything will be deleted and next time you start the environment again it&rsquo;ll be a clean deployment. As such, <strong>its super important to save your work</strong> if you don&rsquo;t want to loose progress. Thankfully <em>most</em> exercises have answer notebooks so you can always fall back on those if needed.</p>
+</div>
+  </div>
+</div>
+<p>Before you start, you might want to make a full export of the lab environment. You can use the following command to create an archive that you can then download for offline use:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tar chvfz notebook.tar.gz *</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<p><em>Note: There are some larger models and a bunch of training data making the tar generation quite slow (approx. 1.4GB compressed). Hence, its not worth doing it every time you start/stop the environment unless you&rsquo;re planning on smashing the course in under 8 hours</em></p>
+<p>Go through the course at your own pace and try to understand as much as possible. There&rsquo;s a few external resources shared throughout the course which are good reads too.</p>
+<h2>The content<span class="hx-absolute -hx-mt-20" id="the-content"></span>
+    <a href="#the-content" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>Model Evasion<span class="hx-absolute -hx-mt-20" id="model-evasion"></span>
+    <a href="#model-evasion" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><blockquote>
+  <p>Generating a sample to intentionally get misclassified while preserving some other property (such as human imperceptibility).</p>
+
+</blockquote>
+<p>This section goes through open box and closed box evasion techniques and algorithms, such as SimBA (Simple BlackBox Attack) and HopSkipJump algos. This is also the first section so you might have some getting used to if you haven&rsquo;t played much with Jupyter notebooks before. Although they&rsquo;re easy to use and  understand. The course also highlights some useful Jupyter functionality throughout the course, especially needed in later sections where you start creating and optimising models.</p>
+<p>This section and the next section are very information dense but you&rsquo;ll get to reuse a lot of it as you move on to other section so don&rsquo;t be afraid to take it slow here.</p>
+<h3>Model Extraction<span class="hx-absolute -hx-mt-20" id="model-extraction"></span>
+    <a href="#model-extraction" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><blockquote>
+  <p>Using queries to build a functionally equivalent model.</p>
+
+</blockquote>
+<p>This is a really interesting concept where you learn to re-create a model by extracting a lot of data from the model you&rsquo;re targeting. You may be thinking what&rsquo;s the point of this? We&rsquo;ll if you can gather enough data on the target model (which you might not have access to), you can train a local model, attack it locally which is usually a lot easier and faster and then (if your local model is representative enough), you can use that same attack against the target model. Mind blowing idea but super cool! You get to replicate <a href="https://nvd.nist.gov/vuln/detail/CVE-2019-20634" target="_blank" rel="noopener">CVE-2019-20634</a> inside the lab, a really cool vulnerability that existed on Proofpoint Email Protection spam detection.</p>
+<h3>Model Assessments<span class="hx-absolute -hx-mt-20" id="model-assessments"></span>
+    <a href="#model-assessments" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><blockquote>
+  <p>Applying building-block techniques to perform wholistic and useful security assessments of ML models.</p>
+
+</blockquote>
+<p>This section focuses on introducing tools and libraries to perform various attacks against offline and online models. It showcases <a href="https://github.com/Trusted-AI/adversarial-robustness-toolbox" target="_blank" rel="noopener">Adversarial Robustness Toolbox (ART)</a> which is a Python library for Machine Learning Security. The courses showcases a number of algorithm including some that you&rsquo;ve implemented, however the library is a lot more optimised so don&rsquo;t cry when you see that the adversarial images you created in previous sections are much worse than the images they create where they change 3 pixels on an image of a dog and it starts being identified as a spaceship&hellip; I&rsquo;m exaggerating but still, its incredible how much you can optimise your attacks.</p>
+<p>You&rsquo;ll also be introduced to <a href="https://docs.seldon.ai/alibi-explain/" target="_blank" rel="noopener">Alibi</a>, a library which provides a set of algorithms or methods known as explainers. Basically, they&rsquo;re algorithms that give insights into trained model predictions. It builds on top of EDA that was introduced in the previous sections and showcases more ways you can learn about &ldquo;why a model predicts x/y/z&rdquo; basically.</p>
+<p>Lastly, you&rsquo;ll learn about hyper-parameter optimisation and how to use <a href="https://optuna.org/" target="_blank" rel="noopener">Optuna</a> to optimise your attacks. The course introduces the basics of this and how to use Optuna most of the complexity but don&rsquo;t panic if you feel like this section raises more sections than it answers. Hyper-parameter optimisation is not easy and while the library makes it seem like a breeze, if you dig deeper the core concepts are more difficult.</p>
+<h3>Model Inversion<span class="hx-absolute -hx-mt-20" id="model-inversion"></span>
+    <a href="#model-inversion" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><blockquote>
+  <p>Inverting a model in order to get a representation of the training data.</p>
+
+</blockquote>
+<p>The inversion section showcases how to recover data by querying a model. As mentioned in the course, this works best when the example for each class (assuming we&rsquo;re attacking a classification model) are very similar to each others. Basically, this attack works the easiest when the model is overfit. The MIFace attack showcased in the course was originally developed for facial recognition systems.</p>
+<p>Don&rsquo;t go thinking that after this course you&rsquo;ll be able to recover the training data for Claude or ChatGPT&hellip; But you&rsquo;ll be introduced to blind inference to attack a diffusion model (Image generation) to recover training data from it! This reminded me of the ChatGPT <a href="https://www.businessinsider.com/openai-studio-ghibli-image-generator-copyright-debate-sam-altman-2025-3" target="_blank" rel="noopener">Ghibli fiasco</a> where they got accused of exploiting artists&rsquo; work (ie. ingesting copyrighted material).</p>
+<h3>Model Poisoning<span class="hx-absolute -hx-mt-20" id="model-poisoning"></span>
+    <a href="#model-poisoning" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><blockquote>
+  <p>Training-time attacks designed to influence decisions made by the final model</p>
+
+</blockquote>
+<p>This is another great section that is simple to think about and understand and that you may have done in the past as part of CTFs (I believe there was a challenge in picoCTF some time ago). However, this showcases why these sort of things happens and you can abuse it.</p>
+<p>With LLMs ingesting everything and anything nowadays, we&rsquo;re already seen some cases of this happening:</p>
+<ul>
+<li><a href="https://github.com/elder-plinius" target="_blank" rel="noopener">elder-plinius</a> has become quite popular on <a href="https://x.com/elder_plinius" target="_blank" rel="noopener">twitter</a> for jail-breaking models and extracting system prompts. I don&rsquo;t have the reference but some models obviously ingested his tweets, code, etc and there&rsquo;s been cases of where simply mentioning parts of his name in the conversation would trigger the jailbreaks.</li>
+<li>There was also another instance of indirect poisoning where a GPT model was using people&rsquo;s feedback for post-training. This is <a href="https://x.com/georgejrjrjr/status/1917722125668081863" target="_blank" rel="noopener">an anecdotal tweet</a> from Will Depue, a researcher at OpenAI, that explains how a GPT model stopped responding to Croatian queries entirely because Croatian users were more prone to down vote messages!</li>
+</ul>
+<h3>Large Language Model (LLM) Attacks<span class="hx-absolute -hx-mt-20" id="large-language-model-llm-attacks"></span>
+    <a href="#large-language-model-llm-attacks" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><blockquote>
+  <p>LLM Model attacks: Prompt Injection, Data Poisoning, Training Data Extraction</p>
+
+</blockquote>
+<p>While this being the last section, if you&rsquo;re following AI news on twitter and have looked into attacking AI LLM models, this should be a breeze and quite easy to run through.</p>
+<p>Its cover techniques that you&rsquo;ve seen in previous sections but applied to LLMs. You also get to implement part of the <a href="https://arxiv.org/pdf/2012.07805" target="_blank" rel="noopener">Extracting Training Data from Large Language Models</a> paper and attempt to extract information from the data that might have been ingested as part of training.</p>
+<p>The assessment for this section only focuses on the first section but all three parts are interesting and worth learning about.</p>
+<h2>The Exam<span class="hx-absolute -hx-mt-20" id="the-exam"></span>
+    <a href="#the-exam" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>To earn the certificate, you’ll need to complete the assessments. There&rsquo;s 6 exercises being assessed, one for each major topic. The exam is very straightforward, its slightly harder than the coursework but not by much. Easily achievable in the allocated time. You also have all the material at your disposal so feel free to copy code from previous exercises and what not. There&rsquo;s no needed to remember everything.</p>
+<p>You can also do the exam after every section instead of waiting to do everything at the end. Just remember to save your answers because they grade all sections at once.</p>
+<p>Finally, once you achieve a score above 90% you&rsquo;ll pass the course and receive the coveted certification highlighting your hard work:</p>
+<p>
+    <figure>
+    <img src="../img/NVIDIA%20Exploring%20Adversarial%20Machine%20Learning%20Grade%20Feedback.webp" title="NVIDIA Exploring Adversarial Machine Learning Grade Feedback" alt="" loading="lazy" />
+    <figcaption>NVIDIA Exploring Adversarial Machine Learning Grade Feedback</figcaption>
+  </figure></p>
+<p>You&rsquo;ll then receive the digital certification within 24 hours via email. Or, if you&rsquo;re impatient like me you can retrieve it from <a href="https://learn.nvidia.com/my-learning" target="_blank" rel="noopener">here</a>:</p>
+<p>
+    <figure>
+    <img src="../img/NVIDIA%20my%20learning%20certificates%20dashboard.webp" title="NVIDIA my learning certificates dashboard" alt="" loading="lazy" />
+    <figcaption>NVIDIA my learning certificates dashboard</figcaption>
+  </figure></p>
+<p>You can take a clean screenshot of your cert using your brother&rsquo;s node screenshot functionality. Open the html inspector and right click on the node you wish to screenshot to get a perfect screenshot without worrying about having to crop or get the perfect delimitation:</p>
+<p>
+    <figure>
+    <img src="../img/Brave%20Capture%20node%20screenshot.webp" title="Brave Capture node screenshot" alt="" loading="lazy" />
+    <figcaption>Brave Capture node screenshot</figcaption>
+  </figure></p>
+<p>This leaves you with a beautiful certificate to proudly display on LinkedIn:</p>
+<p>
+    <figure>
+    <img src="../img/NVIDIA%20Exploring%20Adversarial%20Machine%20Learning%20Certificate.webp" title="NVIDIA Exploring Adversarial Machine Learning Certificate awarded to fyx(me)" alt="" loading="lazy" />
+    <figcaption>NVIDIA Exploring Adversarial Machine Learning Certificate awarded to fyx(me)</figcaption>
+  </figure></p>
+<div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-orange-100 hx-bg-orange-50 hx-text-orange-800 dark:hx-border-orange-400/30 dark:hx-bg-orange-400/20 dark:hx-text-orange-300">
+  <p class="hx-flex hx-items-center hx-font-medium">Protip</p>
+
+  <div class="hx-w-full hx-min-w-0 hx-leading-7">
+    <div class="hx-mt-6 hx-leading-7 first:hx-mt-0"><p>Once you&rsquo;re done with the exam, mine crypto with the remaining GPU hours to make the cert cheaper. jk, but more seriously: you can still use the environment after passing the exam. Also GPU is GPU hours&hellip; Use it to practice, run RL pipeline or anything else&hellip; You paid for ec2 hours in the end so make use of them.</p>
+</div>
+  </div>
+</div>
+<h2>Final Remarks<span class="hx-absolute -hx-mt-20" id="final-remarks"></span>
+    <a href="#final-remarks" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Most concepts are easy to grasp if you&rsquo;ve played around with AI and machine learning in general. The only hard part will be remembering all the attacks and everything that is possible. Also remembering how to use the attacks/algorithms with automation tools can be a little overwhelming but as always&hellip; you just need time to practice and as they say in the course, there&rsquo;s a huge number of algos so its normal not knowing/remembering everything. Just know that they exist, remember the attacks and know where to look.</p>
+<p>Unrelated, but I got caught offguard because the following code comments in the exam and I thought they somehow knew my handle (<code>#FYXME</code>):</p>
+<p>
+    <figure>
+    <img src="../img/NVIDIA%20Exploring%20Adversarial%20Machine%20Learning%20Funny%20comment.webp" title="#FIXME" alt="" loading="lazy" />
+    <figcaption>#FIXME</figcaption>
+  </figure></p>
+<p>Lastly, one of the authors of this course Will Pearce, also has his own Adversary Machine Learning training platform which you can look into if you want to practice further: <a href="https://dreadnode.io/" target="_blank" rel="noopener">https://dreadnode.io/</a></p>
+<h2>References<span class="hx-absolute -hx-mt-20" id="references"></span>
+    <a href="#references" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><ul>
+<li><a href="https://dreadnode.io/" target="_blank" rel="noopener">https://dreadnode.io/</a></li>
+<li><a href="https://docs.pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html#gradients" target="_blank" rel="noopener">https://docs.pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html#gradients</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-20634" target="_blank" rel="noopener">https://nvd.nist.gov/vuln/detail/CVE-2019-20634</a></li>
+<li><a href="https://arxiv.org/abs/2303.14126" target="_blank" rel="noopener">https://arxiv.org/abs/2303.14126</a></li>
+<li><a href="https://datascience.stackexchange.com/questions/32651/what-is-the-use-of-torch-no-grad-in-pytorch" target="_blank" rel="noopener">https://datascience.stackexchange.com/questions/32651/what-is-the-use-of-torch-no-grad-in-pytorch</a></li>
+<li><a href="https://docs.seldon.ai/alibi-explain/" target="_blank" rel="noopener">https://docs.seldon.ai/alibi-explain/</a></li>
+<li><a href="https://optuna.org/" target="_blank" rel="noopener">https://optuna.org/</a></li>
+<li><a href="https://lnwatson.co.uk/posts/llm-training-poisoning/" target="_blank" rel="noopener">https://lnwatson.co.uk/posts/llm-training-poisoning/</a></li>
+<li><a href="https://www.nvidia.com/en-us/data-center/products/a10-gpu/" target="_blank" rel="noopener">https://www.nvidia.com/en-us/data-center/products/a10-gpu/</a></li>
+</ul>
+<h2>Appendix:<span class="hx-absolute -hx-mt-20" id="appendix"></span>
+    <a href="#appendix" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>Course Outline<span class="hx-absolute -hx-mt-20" id="course-outline"></span>
+    <a href="#course-outline" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">1. Introduction  
+</span></span><span class="line"><span class="cl">    Overview of topics covered in the hands-on notebooks
+</span></span><span class="line"><span class="cl">    - Course Overview Notebook
+</span></span><span class="line"><span class="cl">    - Getting Started With JupyterLabs Notebook
+</span></span><span class="line"><span class="cl">2. Model Evasion  
+</span></span><span class="line"><span class="cl">    Generating a sample to intentionally get misclassified while preserving some other property (such as human imperceptibility).
+</span></span><span class="line"><span class="cl">    - Evasion Open-Box Notebook
+</span></span><span class="line"><span class="cl">    - Evasion Closed-Box Notebook
+</span></span><span class="line"><span class="cl">3. Model Extraction  
+</span></span><span class="line"><span class="cl">    Using queries to build a functionally equivalent model.
+</span></span><span class="line"><span class="cl">    - Extraction Basics Notebook
+</span></span><span class="line"><span class="cl">    - Extraction &#34;the Hard Way&#34; Notebook
+</span></span><span class="line"><span class="cl">4. Model Assessments  
+</span></span><span class="line"><span class="cl">    Applying building-block techniques to perform wholistic and useful security assessments of ML models.
+</span></span><span class="line"><span class="cl">    - Assessments ART, TextAttack, Alibi Notebook
+</span></span><span class="line"><span class="cl">    - Assessments Optuna Notebook
+</span></span><span class="line"><span class="cl">5. Model Inversion  
+</span></span><span class="line"><span class="cl">    Inverting a model in order to get a representation of the training data.
+</span></span><span class="line"><span class="cl">    - Inversion Notebook
+</span></span><span class="line"><span class="cl">6. Model Poisoning  
+</span></span><span class="line"><span class="cl">    Training-time attacks designed to influence decisions made by the final model
+</span></span><span class="line"><span class="cl">    - Poisoning Notebook
+</span></span><span class="line"><span class="cl">7. LLM Attacks  
+</span></span><span class="line"><span class="cl">    LLM Model attacks: Prompt Injection, Data Poisoning, Training Data Extraction
+</span></span><span class="line"><span class="cl">    - LLM Prompting Notebook
+</span></span><span class="line"><span class="cl">    - LLM Poisoning Notebook
+</span></span><span class="line"><span class="cl">    - LLM Extraction Notebook
+</span></span><span class="line"><span class="cl">8. Course Certificate Coding Assessment</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+<h3>Environment specifications<span class="hx-absolute -hx-mt-20" id="environment-specifications"></span>
+    <a href="#environment-specifications" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>
+    <figure>
+    <img src="../img/AWS%20g5.2xlarge%20price%20guide.webp" title="AWS g5.2xlarge price guide" alt="" loading="lazy" />
+    <figcaption>AWS g5.2xlarge price guide</figcaption>
+  </figure></p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+  
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">root@8cde1fbe28c8:/dli/task# curl http://169.254.169.254/latest/meta-data/instance-type
+</span></span><span class="line"><span class="cl">g5.2xlarge
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@8cde1fbe28c8:/dli/task# uname -a
+</span></span><span class="line"><span class="cl">Linux 8cde1fbe28c8 5.11.0-1028-aws #31~20.04.1-Ubuntu SMP Fri Jan 14 14:37:50 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@939ff24637c3:/dli/task# df -h
+</span></span><span class="line"><span class="cl">Filesystem      Size  Used Avail Use% Mounted on
+</span></span><span class="line"><span class="cl">overlay         291G   44G  248G  15% /
+</span></span><span class="line"><span class="cl">tmpfs            64M     0   64M   0% /dev
+</span></span><span class="line"><span class="cl">tmpfs            16G     0   16G   0% /sys/fs/cgroup
+</span></span><span class="line"><span class="cl">/dev/root       291G   44G  248G  15% /usr/bin/nvidia-smi
+</span></span><span class="line"><span class="cl">shm              64M     0   64M   0% /dev/shm
+</span></span><span class="line"><span class="cl">tmpfs            16G   12K   16G   1% /proc/driver/nvidia
+</span></span><span class="line"><span class="cl">tmpfs           3.2G  904K  3.2G   1% /run/nvidia-persistenced/socket
+</span></span><span class="line"><span class="cl">devtmpfs         16G     0   16G   0% /dev/nvidia0
+</span></span><span class="line"><span class="cl">tmpfs            16G     0   16G   0% /proc/acpi
+</span></span><span class="line"><span class="cl">tmpfs            16G     0   16G   0% /proc/scsi
+</span></span><span class="line"><span class="cl">tmpfs            16G     0   16G   0% /sys/firmware
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@939ff24637c3:/dli/task# free -h
+</span></span><span class="line"><span class="cl">              total        used        free      shared  buff/cache   available
+</span></span><span class="line"><span class="cl">Mem:           31Gi       756Mi        18Gi       0.0Ki        12Gi        29Gi
+</span></span><span class="line"><span class="cl">Swap:            0B          0B          0B
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@939ff24637c3:/dli/task# cat /proc/cpuinfo 
+</span></span><span class="line"><span class="cl">processor       : 0
+</span></span><span class="line"><span class="cl">vendor_id       : AuthenticAMD
+</span></span><span class="line"><span class="cl">cpu family      : 23
+</span></span><span class="line"><span class="cl">model           : 49
+</span></span><span class="line"><span class="cl">model name      : AMD EPYC 7R32
+</span></span><span class="line"><span class="cl">stepping        : 0
+</span></span><span class="line"><span class="cl">microcode       : 0x830107f
+</span></span><span class="line"><span class="cl">cpu MHz         : 2800.000
+</span></span><span class="line"><span class="cl">cache size      : 512 KB
+</span></span><span class="line"><span class="cl">physical id     : 0
+</span></span><span class="line"><span class="cl">siblings        : 8
+</span></span><span class="line"><span class="cl">core id         : 0
+</span></span><span class="line"><span class="cl">cpu cores       : 4
+</span></span><span class="line"><span class="cl">apicid          : 0
+</span></span><span class="line"><span class="cl">initial apicid  : 0
+</span></span><span class="line"><span class="cl">fpu             : yes
+</span></span><span class="line"><span class="cl">fpu_exception   : yes
+</span></span><span class="line"><span class="cl">cpuid level     : 13
+</span></span><span class="line"><span class="cl">wp              : yes
+</span></span><span class="line"><span class="cl">flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch topoext ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 clzero xsaveerptr rdpru wbnoinvd arat npt nrip_save rdpid
+</span></span><span class="line"><span class="cl">bugs            : sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass
+</span></span><span class="line"><span class="cl">bogomips        : 5600.00
+</span></span><span class="line"><span class="cl">TLB size        : 3072 4K pages
+</span></span><span class="line"><span class="cl">clflush size    : 64
+</span></span><span class="line"><span class="cl">cache_alignment : 64
+</span></span><span class="line"><span class="cl">address sizes   : 48 bits physical, 48 bits virtual
+</span></span><span class="line"><span class="cl">power management:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">processor       : 1
+</span></span><span class="line"><span class="cl">vendor_id       : AuthenticAMD
+</span></span><span class="line"><span class="cl">cpu family      : 23
+</span></span><span class="line"><span class="cl">model           : 49
+</span></span><span class="line"><span class="cl">model name      : AMD EPYC 7R32
+</span></span><span class="line"><span class="cl">stepping        : 0
+</span></span><span class="line"><span class="cl">microcode       : 0x830107f
+</span></span><span class="line"><span class="cl">cpu MHz         : 2800.000
+</span></span><span class="line"><span class="cl">cache size      : 512 KB
+</span></span><span class="line"><span class="cl">physical id     : 0
+</span></span><span class="line"><span class="cl">siblings        : 8
+</span></span><span class="line"><span class="cl">core id         : 1
+</span></span><span class="line"><span class="cl">cpu cores       : 4
+</span></span><span class="line"><span class="cl">apicid          : 2
+</span></span><span class="line"><span class="cl">initial apicid  : 2
+</span></span><span class="line"><span class="cl">fpu             : yes
+</span></span><span class="line"><span class="cl">fpu_exception   : yes
+</span></span><span class="line"><span class="cl">cpuid level     : 13
+</span></span><span class="line"><span class="cl">wp              : yes
+</span></span><span class="line"><span class="cl">flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch topoext ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 clzero xsaveerptr rdpru wbnoinvd arat npt nrip_save rdpid
+</span></span><span class="line"><span class="cl">bugs            : sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass
+</span></span><span class="line"><span class="cl">bogomips        : 5600.00
+</span></span><span class="line"><span class="cl">TLB size        : 3072 4K pages
+</span></span><span class="line"><span class="cl">clflush size    : 64
+</span></span><span class="line"><span class="cl">cache_alignment : 64
+</span></span><span class="line"><span class="cl">address sizes   : 48 bits physical, 48 bits virtual
+</span></span><span class="line"><span class="cl">power management:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">processor       : 2
+</span></span><span class="line"><span class="cl">vendor_id       : AuthenticAMD
+</span></span><span class="line"><span class="cl">cpu family      : 23
+</span></span><span class="line"><span class="cl">model           : 49
+</span></span><span class="line"><span class="cl">model name      : AMD EPYC 7R32
+</span></span><span class="line"><span class="cl">stepping        : 0
+</span></span><span class="line"><span class="cl">microcode       : 0x830107f
+</span></span><span class="line"><span class="cl">cpu MHz         : 2800.000
+</span></span><span class="line"><span class="cl">cache size      : 512 KB
+</span></span><span class="line"><span class="cl">physical id     : 0
+</span></span><span class="line"><span class="cl">siblings        : 8
+</span></span><span class="line"><span class="cl">core id         : 2
+</span></span><span class="line"><span class="cl">cpu cores       : 4
+</span></span><span class="line"><span class="cl">apicid          : 4
+</span></span><span class="line"><span class="cl">initial apicid  : 4
+</span></span><span class="line"><span class="cl">fpu             : yes
+</span></span><span class="line"><span class="cl">fpu_exception   : yes
+</span></span><span class="line"><span class="cl">cpuid level     : 13
+</span></span><span class="line"><span class="cl">wp              : yes
+</span></span><span class="line"><span class="cl">flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch topoext ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 clzero xsaveerptr rdpru wbnoinvd arat npt nrip_save rdpid
+</span></span><span class="line"><span class="cl">bugs            : sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass
+</span></span><span class="line"><span class="cl">bogomips        : 5600.00
+</span></span><span class="line"><span class="cl">TLB size        : 3072 4K pages
+</span></span><span class="line"><span class="cl">clflush size    : 64
+</span></span><span class="line"><span class="cl">cache_alignment : 64
+</span></span><span class="line"><span class="cl">address sizes   : 48 bits physical, 48 bits virtual
+</span></span><span class="line"><span class="cl">power management:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">processor       : 3
+</span></span><span class="line"><span class="cl">vendor_id       : AuthenticAMD
+</span></span><span class="line"><span class="cl">cpu family      : 23
+</span></span><span class="line"><span class="cl">model           : 49
+</span></span><span class="line"><span class="cl">model name      : AMD EPYC 7R32
+</span></span><span class="line"><span class="cl">stepping        : 0
+</span></span><span class="line"><span class="cl">microcode       : 0x830107f
+</span></span><span class="line"><span class="cl">cpu MHz         : 2800.000
+</span></span><span class="line"><span class="cl">cache size      : 512 KB
+</span></span><span class="line"><span class="cl">physical id     : 0
+</span></span><span class="line"><span class="cl">siblings        : 8
+</span></span><span class="line"><span class="cl">core id         : 3
+</span></span><span class="line"><span class="cl">cpu cores       : 4
+</span></span><span class="line"><span class="cl">apicid          : 6
+</span></span><span class="line"><span class="cl">initial apicid  : 6
+</span></span><span class="line"><span class="cl">fpu             : yes
+</span></span><span class="line"><span class="cl">fpu_exception   : yes
+</span></span><span class="line"><span class="cl">cpuid level     : 13
+</span></span><span class="line"><span class="cl">wp              : yes
+</span></span><span class="line"><span class="cl">flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch topoext ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 clzero xsaveerptr rdpru wbnoinvd arat npt nrip_save rdpid
+</span></span><span class="line"><span class="cl">bugs            : sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass
+</span></span><span class="line"><span class="cl">bogomips        : 5600.00
+</span></span><span class="line"><span class="cl">TLB size        : 3072 4K pages
+</span></span><span class="line"><span class="cl">clflush size    : 64
+</span></span><span class="line"><span class="cl">cache_alignment : 64
+</span></span><span class="line"><span class="cl">address sizes   : 48 bits physical, 48 bits virtual
+</span></span><span class="line"><span class="cl">power management:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">processor       : 4
+</span></span><span class="line"><span class="cl">vendor_id       : AuthenticAMD
+</span></span><span class="line"><span class="cl">cpu family      : 23
+</span></span><span class="line"><span class="cl">model           : 49
+</span></span><span class="line"><span class="cl">model name      : AMD EPYC 7R32
+</span></span><span class="line"><span class="cl">stepping        : 0
+</span></span><span class="line"><span class="cl">microcode       : 0x830107f
+</span></span><span class="line"><span class="cl">cpu MHz         : 3274.366
+</span></span><span class="line"><span class="cl">cache size      : 512 KB
+</span></span><span class="line"><span class="cl">physical id     : 0
+</span></span><span class="line"><span class="cl">siblings        : 8
+</span></span><span class="line"><span class="cl">core id         : 0
+</span></span><span class="line"><span class="cl">cpu cores       : 4
+</span></span><span class="line"><span class="cl">apicid          : 1
+</span></span><span class="line"><span class="cl">initial apicid  : 1
+</span></span><span class="line"><span class="cl">fpu             : yes
+</span></span><span class="line"><span class="cl">fpu_exception   : yes
+</span></span><span class="line"><span class="cl">cpuid level     : 13
+</span></span><span class="line"><span class="cl">wp              : yes
+</span></span><span class="line"><span class="cl">flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch topoext ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 clzero xsaveerptr rdpru wbnoinvd arat npt nrip_save rdpid
+</span></span><span class="line"><span class="cl">bugs            : sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass
+</span></span><span class="line"><span class="cl">bogomips        : 5600.00
+</span></span><span class="line"><span class="cl">TLB size        : 3072 4K pages
+</span></span><span class="line"><span class="cl">clflush size    : 64
+</span></span><span class="line"><span class="cl">cache_alignment : 64
+</span></span><span class="line"><span class="cl">address sizes   : 48 bits physical, 48 bits virtual
+</span></span><span class="line"><span class="cl">power management:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">processor       : 5
+</span></span><span class="line"><span class="cl">vendor_id       : AuthenticAMD
+</span></span><span class="line"><span class="cl">cpu family      : 23
+</span></span><span class="line"><span class="cl">model           : 49
+</span></span><span class="line"><span class="cl">model name      : AMD EPYC 7R32
+</span></span><span class="line"><span class="cl">stepping        : 0
+</span></span><span class="line"><span class="cl">microcode       : 0x830107f
+</span></span><span class="line"><span class="cl">cpu MHz         : 2800.000
+</span></span><span class="line"><span class="cl">cache size      : 512 KB
+</span></span><span class="line"><span class="cl">physical id     : 0
+</span></span><span class="line"><span class="cl">siblings        : 8
+</span></span><span class="line"><span class="cl">core id         : 1
+</span></span><span class="line"><span class="cl">cpu cores       : 4
+</span></span><span class="line"><span class="cl">apicid          : 3
+</span></span><span class="line"><span class="cl">initial apicid  : 3
+</span></span><span class="line"><span class="cl">fpu             : yes
+</span></span><span class="line"><span class="cl">fpu_exception   : yes
+</span></span><span class="line"><span class="cl">cpuid level     : 13
+</span></span><span class="line"><span class="cl">wp              : yes
+</span></span><span class="line"><span class="cl">flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch topoext ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 clzero xsaveerptr rdpru wbnoinvd arat npt nrip_save rdpid
+</span></span><span class="line"><span class="cl">bugs            : sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass
+</span></span><span class="line"><span class="cl">bogomips        : 5600.00
+</span></span><span class="line"><span class="cl">TLB size        : 3072 4K pages
+</span></span><span class="line"><span class="cl">clflush size    : 64
+</span></span><span class="line"><span class="cl">cache_alignment : 64
+</span></span><span class="line"><span class="cl">address sizes   : 48 bits physical, 48 bits virtual
+</span></span><span class="line"><span class="cl">power management:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">processor       : 6
+</span></span><span class="line"><span class="cl">vendor_id       : AuthenticAMD
+</span></span><span class="line"><span class="cl">cpu family      : 23
+</span></span><span class="line"><span class="cl">model           : 49
+</span></span><span class="line"><span class="cl">model name      : AMD EPYC 7R32
+</span></span><span class="line"><span class="cl">stepping        : 0
+</span></span><span class="line"><span class="cl">microcode       : 0x830107f
+</span></span><span class="line"><span class="cl">cpu MHz         : 2800.000
+</span></span><span class="line"><span class="cl">cache size      : 512 KB
+</span></span><span class="line"><span class="cl">physical id     : 0
+</span></span><span class="line"><span class="cl">siblings        : 8
+</span></span><span class="line"><span class="cl">core id         : 2
+</span></span><span class="line"><span class="cl">cpu cores       : 4
+</span></span><span class="line"><span class="cl">apicid          : 5
+</span></span><span class="line"><span class="cl">initial apicid  : 5
+</span></span><span class="line"><span class="cl">fpu             : yes
+</span></span><span class="line"><span class="cl">fpu_exception   : yes
+</span></span><span class="line"><span class="cl">cpuid level     : 13
+</span></span><span class="line"><span class="cl">wp              : yes
+</span></span><span class="line"><span class="cl">flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch topoext ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 clzero xsaveerptr rdpru wbnoinvd arat npt nrip_save rdpid
+</span></span><span class="line"><span class="cl">bugs            : sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass
+</span></span><span class="line"><span class="cl">bogomips        : 5600.00
+</span></span><span class="line"><span class="cl">TLB size        : 3072 4K pages
+</span></span><span class="line"><span class="cl">clflush size    : 64
+</span></span><span class="line"><span class="cl">cache_alignment : 64
+</span></span><span class="line"><span class="cl">address sizes   : 48 bits physical, 48 bits virtual
+</span></span><span class="line"><span class="cl">power management:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">processor       : 7
+</span></span><span class="line"><span class="cl">vendor_id       : AuthenticAMD
+</span></span><span class="line"><span class="cl">cpu family      : 23
+</span></span><span class="line"><span class="cl">model           : 49
+</span></span><span class="line"><span class="cl">model name      : AMD EPYC 7R32
+</span></span><span class="line"><span class="cl">stepping        : 0
+</span></span><span class="line"><span class="cl">microcode       : 0x830107f
+</span></span><span class="line"><span class="cl">cpu MHz         : 3190.944
+</span></span><span class="line"><span class="cl">cache size      : 512 KB
+</span></span><span class="line"><span class="cl">physical id     : 0
+</span></span><span class="line"><span class="cl">siblings        : 8
+</span></span><span class="line"><span class="cl">core id         : 3
+</span></span><span class="line"><span class="cl">cpu cores       : 4
+</span></span><span class="line"><span class="cl">apicid          : 7
+</span></span><span class="line"><span class="cl">initial apicid  : 7
+</span></span><span class="line"><span class="cl">fpu             : yes
+</span></span><span class="line"><span class="cl">fpu_exception   : yes
+</span></span><span class="line"><span class="cl">cpuid level     : 13
+</span></span><span class="line"><span class="cl">wp              : yes
+</span></span><span class="line"><span class="cl">flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch topoext ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 clzero xsaveerptr rdpru wbnoinvd arat npt nrip_save rdpid
+</span></span><span class="line"><span class="cl">bugs            : sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass
+</span></span><span class="line"><span class="cl">bogomips        : 5600.00
+</span></span><span class="line"><span class="cl">TLB size        : 3072 4K pages
+</span></span><span class="line"><span class="cl">clflush size    : 64
+</span></span><span class="line"><span class="cl">cache_alignment : 64
+</span></span><span class="line"><span class="cl">address sizes   : 48 bits physical, 48 bits virtual
+</span></span><span class="line"><span class="cl">power management:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@939ff24637c3:/dli/task# nvidia-smi
+</span></span><span class="line"><span class="cl">Thu Jan 22 00:44:12 2026       
+</span></span><span class="line"><span class="cl">+-----------------------------------------------------------------------------+
+</span></span><span class="line"><span class="cl">| NVIDIA-SMI 510.47.03    Driver Version: 510.47.03    CUDA Version: 12.1     |
+</span></span><span class="line"><span class="cl">|-------------------------------+----------------------+----------------------+
+</span></span><span class="line"><span class="cl">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+</span></span><span class="line"><span class="cl">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+</span></span><span class="line"><span class="cl">|                               |                      |               MIG M. |
+</span></span><span class="line"><span class="cl">|===============================+======================+======================|
+</span></span><span class="line"><span class="cl">|   0  NVIDIA A10G         On   | 00000000:00:1E.0 Off |                    0 |
+</span></span><span class="line"><span class="cl">|  0%   21C    P8    17W / 300W |      0MiB / 23028MiB |      0%      Default |
+</span></span><span class="line"><span class="cl">|                               |                      |                  N/A |
+</span></span><span class="line"><span class="cl">+-------------------------------+----------------------+----------------------+
+</span></span><span class="line"><span class="cl">                                                                               
+</span></span><span class="line"><span class="cl">+-----------------------------------------------------------------------------+
+</span></span><span class="line"><span class="cl">| Processes:                                                                  |
+</span></span><span class="line"><span class="cl">|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+</span></span><span class="line"><span class="cl">|        ID   ID                                                   Usage      |
+</span></span><span class="line"><span class="cl">|=============================================================================|
+</span></span><span class="line"><span class="cl">|  No running processes found                                                 |
+</span></span><span class="line"><span class="cl">+-----------------------------------------------------------------------------+</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+
+  
+</div>
+
+        </div>
+        <div class="hx-mt-16"></div>
+        
+        <div class="hx-mb-8 hx-flex hx-items-center hx-border-t hx-pt-8 dark:hx-border-neutral-800 contrast-more:hx-border-neutral-400 dark:contrast-more:hx-border-neutral-400 print:hx-hidden"><a
+        href="/articles/exploring-autonomous-llm-agents-for-capture-the-flag-problem-solving-using-context-engineering-rag-and-open-source-models/"
+        title="Exploring Autonomous LLM Agents for Capture The Flag problem solving using Prompt Engineering, RAG and Open Source LLMs"
+        class="hx-flex hx-max-w-[50%] hx-items-center hx-gap-1 hx-py-4 hx-text-base hx-font-medium hx-text-gray-600 hx-transition-colors [word-break:break-word] hover:hx-text-primary-600 dark:hx-text-gray-300 md:hx-text-lg ltr:hx-pr-4 rtl:hx-pl-4"
+      ><svg class="hx-inline hx-h-5 hx-shrink-0 ltr:hx-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>Exploring Autonomous LLM Agents for Capture The Flag problem solving using Prompt Engineering, RAG and Open Source LLMs</a></div>
+        
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx-bg-gray-100 hx-pb-[env(safe-area-inset-bottom)] dark:hx-bg-neutral-900 print:hx-bg-transparent"><div class="hx-mx-auto hx-flex hx-gap-2 hx-py-2 hx-px-4 hx-max-w-screen-xl"><button
+  title="Change theme"
+  data-theme="light"
+  class="theme-toggle hx-group hx-h-7 hx-rounded-md hx-px-2 hx-text-left hx-text-xs hx-font-medium hx-text-gray-600 hx-transition-colors dark:hx-text-gray-400 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50"
+  type="button"
+  aria-label="Change theme"
+>
+  <div class="hx-flex hx-items-center hx-gap-2 hx-capitalize"><svg height=12 class="group-data-[theme=light]:hx-hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="group-data-[theme=light]:hx-hidden">Light</span><svg height=12 class="group-data-[theme=dark]:hx-hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="group-data-[theme=dark]:hx-hidden">Dark</span></div>
+</button>
+</div><hr class="dark:hx-border-neutral-800" /></footer>
+
+
+    
+    <script defer src="/js/main.min.a6eb101c76cd824b14b5bb9fa54e34e4b6414edb5e56347f59c358ba151e0432.js" integrity="sha256-pusQHHbNgksUtbufpU405LZBTtteVjR/WcNYuhUeBDI="></script>
+
+
+<script defer src="/lib/flexsearch/flexsearch.bundle.min.0425860527cc9968f9f049421c7a56b39327d475e2e3a8f550416be3a9134327.js" integrity="sha256-BCWGBSfMmWj58ElCHHpWs5Mn1HXi46j1UEFr46kTQyc="></script>
+    <script defer src="/en.search.min.4a72af14c5044971882cecddc91b1d5027c5a1ce9145e85eae7ee5145e971777.js" integrity="sha256-SnKvFMUESXGILOzdyRsdUCfFoc6RRehern7lFF6XF3c="></script>
+
+
+  </body>
+</html>
