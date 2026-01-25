@@ -910,10 +910,10 @@
         <div class="content">
           <p>
     <img src="../img/NVIDIA%20Exploring%20Adversarial%20Machine%20Learning%20Certificate%20%28Cropped%29.png" alt="" loading="lazy" /></p>
-<p>For the past year, I&rsquo;ve been playing around with prompt injection, system prompt leak (&ldquo;extraction&rdquo; as the cool ML peeps call it), and data poisoning. However, this has always been ad-hoc through personal research and via capture the flags (CTFs). I&rsquo;ve come to realise that there is a lot more to adversarial machine learning (ML) then just prompt injection and I wanted to explore other ways that these ML systems can be exploited and understand the underlying math/ML principles a little better.</p>
+<p>For the past year, I&rsquo;ve been playing around with prompt injection, system prompt leak (&ldquo;extraction&rdquo; as the cool ML peeps call it), and data poisoning. However, this has always been ad-hoc through personal research and via capture the flags (CTFs). I&rsquo;ve come to realise that there is a lot more to adversarial machine learning (ML) than just prompt injection and I wanted to explore other ways that these ML systems can be exploited and understand the underlying math/ML principles a little better.</p>
 <p>I came across this course (<a href="https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI&#43;S-DS-03&#43;V1" target="_blank" rel="noopener">Exploring Adversarial Machine Learning</a>) when a friend posted about it last year but only got around to it now. He&rsquo;s also written a review about the course itself which you can read <a href="https://tech.2keebs.com/exploring-adversarial-machine-learning/" target="_blank" rel="noopener">here</a>.</p>
 <p>All in all, this was a great course! A lot of the concepts I had heard of during past research and while scanning ML papers but I&rsquo;d never looked more into it and I&rsquo;d never looked at how to actually perform these attacks. The course showcases a lot of great tools too to help perform attacks, optimise hyper-parameters and dive into data using Explanatory Data Analysis (EDA).</p>
-<p>The EDA sections were actually super interest because obviously you might know that not all information is relevant to the model when it makes predictions but seeing which parts are relevant is another story. For example, you can identify which parts of an image are relevant to a prediction model when it attempts to identify what its looking at, if you can then transpose that onto other images you may be able to trick a model into thinking this is X instead of Y:</p>
+<p>The EDA sections were actually super interesting because obviously you might know that not all information is relevant to the model when it makes predictions but seeing which parts are relevant is another story. For example, you can identify which parts of an image are relevant to a prediction model when it attempts to identify what it&rsquo;s looking at, if you can then transpose that onto other images you may be able to trick a model into thinking this is X instead of Y:</p>
 <p>
     <figure>
     <img src="../img/EDA%20Alibi%20extracting%20significant%20data%20from%20image.webp" title="Alibi extracting significant data from image" alt="" loading="lazy" />
@@ -926,8 +926,8 @@
 <li>30 GPUs hours (8 hour sessions before the machine auto-shuts down) on a NVIDIA A10G (AWS g5.2xlarge ec2 instance). You can see the specs in the appendix.</li>
 <li>A certification after passing an exam that tests each of the core concepts.</li>
 </ul>
-<p><em>Should I do the suggested pre-requisite (<a href="https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI&#43;S-FX-01&#43;V1" target="_blank" rel="noopener">Getting Started with Deep Learning</a>)?</em> If you can read/write python code and know a little about <code>pytorch</code>, <code>pandas</code>, and <code>numpy</code>, then its probably not needed. There&rsquo;s a lot of well commented examples throughout the whole course.</p>
-<p>I don&rsquo;t think its super needed because the course already has all the resources and external links/papers/articles you&rsquo;ll need. But if you&rsquo;re stuck on an exercise or have questions about the course you can always ask about it on the <a href="https://forums.developer.nvidia.com/c/learning-and-certification/745" target="_blank" rel="noopener">NVIDIA Forums</a>.</p>
+<p><em>Should I do the suggested pre-requisite (<a href="https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI&#43;S-FX-01&#43;V1" target="_blank" rel="noopener">Getting Started with Deep Learning</a>)?</em> If you can read/write python code and know a little about <code>pytorch</code>, <code>pandas</code>, and <code>numpy</code>, then it&rsquo;s probably not needed. There&rsquo;s a lot of well commented examples throughout the whole course.</p>
+<p>I don&rsquo;t think it&rsquo;s super needed because the course already has all the resources and external links/papers/articles you&rsquo;ll need. But if you&rsquo;re stuck on an exercise or have questions about the course you can always ask about it on the <a href="https://forums.developer.nvidia.com/c/learning-and-certification/745" target="_blank" rel="noopener">NVIDIA Forums</a>.</p>
 <h2>The Lab Environment<span class="hx-absolute -hx-mt-20" id="the-lab-environment"></span>
     <a href="#the-lab-environment" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Once you start the course, you are given access to a Jupyter lab environment hosted on an ec2 instance:</p>
 <p>
@@ -940,7 +940,7 @@
   <p class="hx-flex hx-items-center hx-font-medium"><svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Important</p>
 
   <div class="hx-w-full hx-min-w-0 hx-leading-7">
-    <div class="hx-mt-6 hx-leading-7 first:hx-mt-0"><p>Every time you shut off the environment, everything will be deleted and next time you start the environment again it&rsquo;ll be a clean deployment. As such, <strong>its super important to save your work</strong> if you don&rsquo;t want to loose progress. Thankfully <em>most</em> exercises have answer notebooks so you can always fall back on those if needed.</p>
+    <div class="hx-mt-6 hx-leading-7 first:hx-mt-0"><p>Every time you shut off the environment, everything will be deleted and next time you start the environment again it&rsquo;ll be a clean deployment. As such, <strong>it&rsquo;s super important to save your work</strong> if you don&rsquo;t want to lose progress. Thankfully <em>most</em> exercises have answer notebooks so you can always fall back on those if needed.</p>
 </div>
   </div>
 </div>
@@ -960,7 +960,7 @@
 
   
 </div>
-<p><em>Note: There are some larger models and a bunch of training data making the tar generation quite slow (approx. 1.4GB compressed). Hence, its not worth doing it every time you start/stop the environment unless you&rsquo;re planning on smashing the course in under 8 hours</em></p>
+<p><em>Note: There are some larger models and a bunch of training data making the tar generation quite slow (approx. 1.4GB compressed). Hence, it&rsquo;s not worth doing it every time you start/stop the environment unless you&rsquo;re planning on smashing the course in under 8 hours</em></p>
 <p>Go through the course at your own pace and try to understand as much as possible. There&rsquo;s a few external resources shared throughout the course which are good reads too.</p>
 <h2>The content<span class="hx-absolute -hx-mt-20" id="the-content"></span>
     <a href="#the-content" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>Model Evasion<span class="hx-absolute -hx-mt-20" id="model-evasion"></span>
@@ -968,36 +968,36 @@
   <p>Generating a sample to intentionally get misclassified while preserving some other property (such as human imperceptibility).</p>
 
 </blockquote>
-<p>This section goes through open box and closed box evasion techniques and algorithms, such as SimBA (Simple BlackBox Attack) and HopSkipJump algos. This is also the first section so you might have some getting used to if you haven&rsquo;t played much with Jupyter notebooks before. Although they&rsquo;re easy to use and  understand. The course also highlights some useful Jupyter functionality throughout the course, especially needed in later sections where you start creating and optimising models.</p>
-<p>This section and the next section are very information dense but you&rsquo;ll get to reuse a lot of it as you move on to other section so don&rsquo;t be afraid to take it slow here.</p>
+<p>This section goes through open box and closed box evasion techniques and algorithms, such as SimBA (Simple BlackBox Attack) and HopSkipJump algos. This is also the first section so you might have some getting used to if you haven&rsquo;t played much with Jupyter notebooks before. Although they&rsquo;re easy to use and understand. The course also highlights some useful Jupyter functionality throughout the course, especially needed in later sections where you start creating and optimising models.</p>
+<p>This section and the next section are very information dense but you&rsquo;ll get to reuse a lot of it as you move on to other sections so don&rsquo;t be afraid to take it slow here.</p>
 <h3>Model Extraction<span class="hx-absolute -hx-mt-20" id="model-extraction"></span>
     <a href="#model-extraction" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><blockquote>
   <p>Using queries to build a functionally equivalent model.</p>
 
 </blockquote>
-<p>This is a really interesting concept where you learn to re-create a model by extracting a lot of data from the model you&rsquo;re targeting. You may be thinking what&rsquo;s the point of this? We&rsquo;ll if you can gather enough data on the target model (which you might not have access to), you can train a local model, attack it locally which is usually a lot easier and faster and then (if your local model is representative enough), you can use that same attack against the target model. Mind blowing idea but super cool! You get to replicate <a href="https://nvd.nist.gov/vuln/detail/CVE-2019-20634" target="_blank" rel="noopener">CVE-2019-20634</a> inside the lab, a really cool vulnerability that existed on Proofpoint Email Protection spam detection.</p>
+<p>This is a really interesting concept where you learn to re-create a model by extracting a lot of data from the model you&rsquo;re targeting. You may be thinking what&rsquo;s the point of this? Well, if you can gather enough data on the target model (which you might not have access to), you can train a local model, attack it locally which is usually a lot easier and faster and then (if your local model is representative enough), you can use that same attack against the target model. Mind blowing idea but super cool! You get to replicate <a href="https://nvd.nist.gov/vuln/detail/CVE-2019-20634" target="_blank" rel="noopener">CVE-2019-20634</a> inside the lab, a really cool vulnerability that existed on Proofpoint Email Protection spam detection.</p>
 <h3>Model Assessments<span class="hx-absolute -hx-mt-20" id="model-assessments"></span>
     <a href="#model-assessments" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><blockquote>
   <p>Applying building-block techniques to perform wholistic and useful security assessments of ML models.</p>
 
 </blockquote>
-<p>This section focuses on introducing tools and libraries to perform various attacks against offline and online models. It showcases <a href="https://github.com/Trusted-AI/adversarial-robustness-toolbox" target="_blank" rel="noopener">Adversarial Robustness Toolbox (ART)</a> which is a Python library for Machine Learning Security. The courses showcases a number of algorithm including some that you&rsquo;ve implemented, however the library is a lot more optimised so don&rsquo;t cry when you see that the adversarial images you created in previous sections are much worse than the images they create where they change 3 pixels on an image of a dog and it starts being identified as a spaceship&hellip; I&rsquo;m exaggerating but still, its incredible how much you can optimise your attacks.</p>
+<p>This section focuses on introducing tools and libraries to perform various attacks against offline and online models. It showcases <a href="https://github.com/Trusted-AI/adversarial-robustness-toolbox" target="_blank" rel="noopener">Adversarial Robustness Toolbox (ART)</a> which is a Python library for Machine Learning Security. The courses showcases a number of algorithm including some that you&rsquo;ve implemented, however the library is a lot more optimised so don&rsquo;t cry when you see that the adversarial images you created in previous sections are much worse than the images they create where they change 3 pixels on an image of a dog and it starts being identified as a spaceship&hellip; I&rsquo;m exaggerating but still, it&rsquo;s incredible how much you can optimise your attacks.</p>
 <p>You&rsquo;ll also be introduced to <a href="https://docs.seldon.ai/alibi-explain/" target="_blank" rel="noopener">Alibi</a>, a library which provides a set of algorithms or methods known as explainers. Basically, they&rsquo;re algorithms that give insights into trained model predictions. It builds on top of EDA that was introduced in the previous sections and showcases more ways you can learn about &ldquo;why a model predicts x/y/z&rdquo; basically.</p>
-<p>Lastly, you&rsquo;ll learn about hyper-parameter optimisation and how to use <a href="https://optuna.org/" target="_blank" rel="noopener">Optuna</a> to optimise your attacks. The course introduces the basics of this and how to use Optuna most of the complexity but don&rsquo;t panic if you feel like this section raises more sections than it answers. Hyper-parameter optimisation is not easy and while the library makes it seem like a breeze, if you dig deeper the core concepts are more difficult.</p>
+<p>Lastly, you&rsquo;ll learn about hyper-parameter optimisation and how to use <a href="https://optuna.org/" target="_blank" rel="noopener">Optuna</a> to optimise your attacks. The course introduces the basics of this and how to use Optuna most of the complexity but don&rsquo;t panic if you feel like this section raises more questions than it answers. Hyper-parameter optimisation is not easy and while the library makes it seem like a breeze, if you dig deeper the core concepts are more difficult.</p>
 <h3>Model Inversion<span class="hx-absolute -hx-mt-20" id="model-inversion"></span>
     <a href="#model-inversion" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><blockquote>
   <p>Inverting a model in order to get a representation of the training data.</p>
 
 </blockquote>
-<p>The inversion section showcases how to recover data by querying a model. As mentioned in the course, this works best when the example for each class (assuming we&rsquo;re attacking a classification model) are very similar to each others. Basically, this attack works the easiest when the model is overfit. The MIFace attack showcased in the course was originally developed for facial recognition systems.</p>
+<p>The inversion section showcases how to recover data by querying a model. As mentioned in the course, this works best when the example for each class (assuming we&rsquo;re attacking a classification model) are very similar to each other. Basically, this attack works the easiest when the model is overfit. The MIFace attack showcased in the course was originally developed for facial recognition systems.</p>
 <p>Don&rsquo;t go thinking that after this course you&rsquo;ll be able to recover the training data for Claude or ChatGPT&hellip; But you&rsquo;ll be introduced to blind inference to attack a diffusion model (Image generation) to recover training data from it! This reminded me of the ChatGPT <a href="https://www.businessinsider.com/openai-studio-ghibli-image-generator-copyright-debate-sam-altman-2025-3" target="_blank" rel="noopener">Ghibli fiasco</a> where they got accused of exploiting artists&rsquo; work (ie. ingesting copyrighted material).</p>
 <h3>Model Poisoning<span class="hx-absolute -hx-mt-20" id="model-poisoning"></span>
     <a href="#model-poisoning" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><blockquote>
   <p>Training-time attacks designed to influence decisions made by the final model</p>
 
 </blockquote>
-<p>This is another great section that is simple to think about and understand and that you may have done in the past as part of CTFs (I believe there was a challenge in picoCTF some time ago). However, this showcases why these sort of things happens and you can abuse it.</p>
-<p>With LLMs ingesting everything and anything nowadays, we&rsquo;re already seen some cases of this happening:</p>
+<p>This is another great section that is simple to think about and understand and that you may have done in the past as part of CTFs (I believe there was a challenge in picoCTF some time ago). However, this showcases why these sorts of things happen and you can abuse it.</p>
+<p>With LLMs ingesting everything and anything nowadays, we&rsquo;ve already seen some cases of this happening:</p>
 <ul>
 <li><a href="https://github.com/elder-plinius" target="_blank" rel="noopener">elder-plinius</a> has become quite popular on <a href="https://x.com/elder_plinius" target="_blank" rel="noopener">twitter</a> for jail-breaking models and extracting system prompts. I don&rsquo;t have the reference but some models obviously ingested his tweets, code, etc and there&rsquo;s been cases of where simply mentioning parts of his name in the conversation would trigger the jailbreaks.</li>
 <li>There was also another instance of indirect poisoning where a GPT model was using people&rsquo;s feedback for post-training. This is <a href="https://x.com/georgejrjrjr/status/1917722125668081863" target="_blank" rel="noopener">an anecdotal tweet</a> from Will Depue, a researcher at OpenAI, that explains how a GPT model stopped responding to Croatian queries entirely because Croatian users were more prone to down vote messages!</li>
@@ -1007,11 +1007,11 @@
   <p>LLM Model attacks: Prompt Injection, Data Poisoning, Training Data Extraction</p>
 
 </blockquote>
-<p>While this being the last section, if you&rsquo;re following AI news on twitter and have looked into attacking AI LLM models, this should be a breeze and quite easy to run through.</p>
-<p>Its cover techniques that you&rsquo;ve seen in previous sections but applied to LLMs. You also get to implement part of the <a href="https://arxiv.org/pdf/2012.07805" target="_blank" rel="noopener">Extracting Training Data from Large Language Models</a> paper and attempt to extract information from the data that might have been ingested as part of training.</p>
+<p>This being the last section, if you&rsquo;re following AI news on twitter and have looked into attacking AI LLM models, this should be a breeze and quite easy to run through.</p>
+<p>It covers techniques that you&rsquo;ve seen in previous sections but applied to LLMs. You also get to implement part of the <a href="https://arxiv.org/pdf/2012.07805" target="_blank" rel="noopener">Extracting Training Data from Large Language Models</a> paper and attempt to extract information from the data that might have been ingested as part of training.</p>
 <p>The assessment for this section only focuses on the first section but all three parts are interesting and worth learning about.</p>
 <h2>The Exam<span class="hx-absolute -hx-mt-20" id="the-exam"></span>
-    <a href="#the-exam" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>To earn the certificate, you’ll need to complete the assessments. There&rsquo;s 6 exercises being assessed, one for each major topic. The exam is very straightforward, its slightly harder than the coursework but not by much. Easily achievable in the allocated time. You also have all the material at your disposal so feel free to copy code from previous exercises and what not. There&rsquo;s no needed to remember everything.</p>
+    <a href="#the-exam" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>To earn the certificate, you’ll need to complete the assessments. There&rsquo;s 6 exercises being assessed, one for each major topic. The exam is very straightforward, it&rsquo;s slightly harder than the coursework but not by much. Easily achievable in the allocated time. You also have all the material at your disposal so feel free to copy code from previous exercises and what not. There&rsquo;s no need to remember everything.</p>
 <p>You can also do the exam after every section instead of waiting to do everything at the end. Just remember to save your answers because they grade all sections at once.</p>
 <p>Finally, once you achieve a score above 90% you&rsquo;ll pass the course and receive the coveted certification highlighting your hard work:</p>
 <p>
@@ -1025,7 +1025,7 @@
     <img src="../img/NVIDIA%20my%20learning%20certificates%20dashboard.webp" title="NVIDIA my learning certificates dashboard" alt="" loading="lazy" />
     <figcaption>NVIDIA my learning certificates dashboard</figcaption>
   </figure></p>
-<p>You can take a clean screenshot of your cert using your brother&rsquo;s node screenshot functionality. Open the html inspector and right click on the node you wish to screenshot to get a perfect screenshot without worrying about having to crop or get the perfect delimitation:</p>
+<p>You can take a clean screenshot of your cert using your browser&rsquo;s node screenshot functionality. Open the html inspector and right click on the node you wish to screenshot to get a perfect screenshot without worrying about having to crop or get the perfect delimitation:</p>
 <p>
     <figure>
     <img src="../img/Brave%20Capture%20node%20screenshot.webp" title="Brave Capture node screenshot" alt="" loading="lazy" />
@@ -1046,8 +1046,8 @@
   </div>
 </div>
 <h2>Final Remarks<span class="hx-absolute -hx-mt-20" id="final-remarks"></span>
-    <a href="#final-remarks" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Most concepts are easy to grasp if you&rsquo;ve played around with AI and machine learning in general. The only hard part will be remembering all the attacks and everything that is possible. Also remembering how to use the attacks/algorithms with automation tools can be a little overwhelming but as always&hellip; you just need time to practice and as they say in the course, there&rsquo;s a huge number of algos so its normal not knowing/remembering everything. Just know that they exist, remember the attacks and know where to look.</p>
-<p>Unrelated, but I got caught offguard because the following code comments in the exam and I thought they somehow knew my handle (<code>#FYXME</code>):</p>
+    <a href="#final-remarks" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Most concepts are easy to grasp if you&rsquo;ve played around with AI and machine learning in general. The only hard part will be remembering all the attacks and everything that is possible. Also remembering how to use the attacks/algorithms with automation tools can be a little overwhelming but as always&hellip; you just need time to practice and as they say in the course, there&rsquo;s a huge number of algos so it&rsquo;s normal not knowing/remembering everything. Just know that they exist, remember the attacks and know where to look.</p>
+<p>Unrelated, but I got caught off guard because the following code comments in the exam and I thought they somehow knew my handle (<code>#FYXME</code>):</p>
 <p>
     <figure>
     <img src="../img/NVIDIA%20Exploring%20Adversarial%20Machine%20Learning%20Funny%20comment.webp" title="#FIXME" alt="" loading="lazy" />

@@ -977,7 +977,7 @@
 <p>As we can see from the results above, <code>dpkt</code> is way faster than its peers by more than 100x, taking only 0.229 seconds to parse 100,000 packets. The accuracy is the same, they all find and parse all packets properly and accurately which is expected.</p>
 <h2>Improved memory benchmark<span class="hx-absolute -hx-mt-20" id="improved-memory-benchmark"></span>
     <a href="#improved-memory-benchmark" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>The memory calculations are odd and that&rsquo;s because the memory calculation is based on the memory of the current process. <code>scapy</code> and <code>dpkt</code> use C-bindings and spawn child processes which are not included in the calculation. <code>pyshark</code> uses <code>tshark</code> under the hood which is its own process too and therefore not in the current calculation. Additionally, the calculation is made before and after the work is done which might miss the actual peak memory usage if the garbage collector has already cleaned-up parts of memory.</p>
-<p>We&rsquo;ll update the script with a small harness that run each library in its own process and includes the memory usage for the child processes to get a more accurate calculation. Again, this shows that <code>dpkt</code> is much more efficient then the alternatives:</p>
+<p>We&rsquo;ll update the script with a small harness that runs each library in its own process and includes the memory usage for the child processes to get a more accurate calculation. Again, this shows that <code>dpkt</code> is much more efficient than the alternatives:</p>
 <ul>
 <li>Performance metrics for 100,000 Packets with improved memory profiling</li>
 </ul>
@@ -1015,12 +1015,12 @@
       </tr>
   </tbody>
 </table>
-<p>The final bench-marking script can be found here: <a href="https://gist.github.com/fyxme/1dc1662fddfa231f5fa4d2bf519ec93d" target="_blank" rel="noopener">https://gist.github.com/fyxme/1dc1662fddfa231f5fa4d2bf519ec93d</a>.</p>
+<p>The final benchmarking script can be found here: <a href="https://gist.github.com/fyxme/1dc1662fddfa231f5fa4d2bf519ec93d" target="_blank" rel="noopener">https://gist.github.com/fyxme/1dc1662fddfa231f5fa4d2bf519ec93d</a>.</p>
 <h2>Log scale input pcap sizes parsing comparison<span class="hx-absolute -hx-mt-20" id="log-scale-input-pcap-sizes-parsing-comparison"></span>
     <a href="#log-scale-input-pcap-sizes-parsing-comparison" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>To get a better grasp of the parsing speed differences, I wanted to test with files ranging from 1,000 packets to 1,024,000 packets. Since it takes a while to generate each file, I decided to use a log scale for input sizes such that I don&rsquo;t need to test every size in between but I still get an accurate estimate. As such, I doubled input every time starting with 1,000 packets, then 2,000, then 4,000, then 8,000, etc&hellip; Until I reached a pcap file with 1,024,000 packets.</p>
 <p>The following table holds the results of each run:</p>
 <iframe src="https://baserow.io/public/grid/VmN_Wg_ZFF9Fo7yWCdsrftd-i3NnChOoatCOrwUpnPg" frameborder="0" width="100%" height="400"></iframe>
-<p><em>Note: <code>scapy</code> ran out of memory (OOM) and was killed by the operating sytem (OS) when trying to parse the 1 million packets file. Hence why you wont see a value for it below, nor in the table above.</em></p>
+<p><em>Note: <code>scapy</code> ran out of memory (OOM) and was killed by the operating system (OS) when trying to parse the 1 million packets file. Hence why you won&rsquo;t see a value for it below, nor in the table above.</em></p>
 <p>If we plot the data, we can clearly see that on large datasets, <code>dpkt</code> blows both <code>scapy</code> and <code>pyshark</code> out of the water:</p>
 <p>
     <figure>
@@ -1028,10 +1028,10 @@
     <figcaption>Benchmark python pcap parsers results</figcaption>
   </figure></p>
 <h2>Conclusion<span class="hx-absolute -hx-mt-20" id="conclusion"></span>
-    <a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>This quick analysis already shows how much different there can be between different libraries/tools we&rsquo;re using. In this case, <code>dpkt</code> was much more resource efficient then the two other alternatives providing much faster parsing with a much lower memory profile. I will use <code>dpkt</code> for this project which I may release in the future, only time will tell.</p>
+    <a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>This quick analysis already shows how much difference there can be between different libraries/tools we&rsquo;re using. In this case, <code>dpkt</code> was much more resource efficient than the two other alternatives providing much faster parsing with a much lower memory profile. I will use <code>dpkt</code> for this project which I may release in the future, only time will tell.</p>
 <p>We didn&rsquo;t need to in this case, but if we had to improve the memory profile of one of our python applications I would highly recommend using <a href="https://github.com/bloomberg/memray" target="_blank" rel="noopener">memray</a> to perform a much deeper analysis and identify improvements. I&rsquo;ll write a quick tutorial next time I come across an interesting use case.</p>
 <p>Furthermore, the benchmark does not take CPU usage in consideration because I&rsquo;m only interested in speed and memory usage. However, a more in-depth benchmark should include CPU usage. Additionally, the pcap generation should be randomised further such that the Beacons, ProbeReq, ProbeResp, SSIDs and BSSIDs vary more, to see how this affects resource usage. I&rsquo;ll leave this as an exercise for the reader.</p>
-<p>Lastly, remember that its always important to test your tools especially when you&rsquo;re competing against other tools/people (ie. bug bounties). A lot of tools may work for the job but its always faster to cut a steak with a sharp knife than a blunt fork.</p>
+<p>Lastly, remember that it&rsquo;s always important to test your tools especially when you&rsquo;re competing against other tools/people (ie. bug bounties). A lot of tools may work for the job but it&rsquo;s always faster to cut a steak with a sharp knife than a blunt fork.</p>
 <p>Stay safe out there.</p>
 <h2>Appendix<span class="hx-absolute -hx-mt-20" id="appendix"></span>
     <a href="#appendix" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>Appendix 1: Initial tool output with broken memory calculations<span class="hx-absolute -hx-mt-20" id="appendix-1-initial-tool-output-with-broken-memory-calculations"></span>
