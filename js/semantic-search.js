@@ -520,7 +520,8 @@
           <circle cx="11" cy="11" r="8"/>
           <path d="m21 21-4.35-4.35"/>
         </svg>
-        <span>Semantic Search</span>
+        <span class="ss-trigger-text-full">Semantic Search</span>
+        <span class="ss-trigger-text-short">Search</span>
         <kbd>⌘K</kbd>
       `;
       btn.addEventListener('click', openModal);
