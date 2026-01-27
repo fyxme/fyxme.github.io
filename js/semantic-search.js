@@ -47,6 +47,9 @@
   function searchEmbeddings(queryEmbedding, topK = TOP_K, query = '') {
     if (!embeddings || !embeddings.items) return [];
 
+    // Index pages to exclude from search results
+    const indexPaths = ['/articles/', '/minis/', '/bazaar/'];
+
     // Type boost: prioritize articles and minis
     const typeBoost = {
       article: 0.15,
@@ -57,7 +60,9 @@
     // Prepare query words for title matching
     const queryWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
 
-    const results = embeddings.items.map((item) => {
+    const results = embeddings.items
+      .filter((item) => !indexPaths.includes(item.url))
+      .map((item) => {
       const rawScore = cosineSimilarity(queryEmbedding, item.embedding);
       const typeBoostVal = typeBoost[item.type] || 0;
 
