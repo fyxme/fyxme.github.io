@@ -24,7 +24,7 @@
   <meta itemprop="description" content="Deep dive into extracting and attacking Google DeepMind&#39;s SynthID image watermarking system using adversarial machine learning techniques. Learn how invisible watermarks work, explore LSB steganography, train a surrogate CNN detector model, and test regeneration attacks and C&amp;W L2 adversarial perturbations against the real SynthID validator.">
   <meta itemprop="datePublished" content="2026-02-08T00:00:00+00:00">
   <meta itemprop="dateModified" content="2026-02-08T00:00:00+00:00">
-  <meta itemprop="wordCount" content="4707">
+  <meta itemprop="wordCount" content="4712">
   <meta itemprop="image" content="https://fyx.me/opengraph/content-articles-attempting-model-extraction-of-google-deepmind-synthid-image-watermark-detector-and-exploring-adversarial-machine-learning-attacks-against-synthid.webp">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://fyx.me/opengraph/content-articles-attempting-model-extraction-of-google-deepmind-synthid-image-watermark-detector-and-exploring-adversarial-machine-learning-attacks-against-synthid.webp">
@@ -1239,7 +1239,7 @@ These are inputs with small, often imperceptible, perturbations designed to caus
 <p>
     <img src="../img/Pasted%20image%2020260210184149.webp" alt="" loading="lazy" /></p>
 <p>At first I thought sure it seems to pick up stuff but even for a subreddit dedicated to Nano Banana generated images this is a lot&hellip; Maybe it just answers WATERMARKED to everything?</p>
-<p>And then while scrolling the subreddit, I came across this post <a href="https://www.reddit.com/r/nanobanana/comments/1ov904a/replacing_the_apron/" target="_blank" rel="noopener">the Reddit post itself</a> which had 3 images, 2 of which were clean images that he combined to make a 3rd image (the Nano Banana watermarked image). The user was asking for tips on how to make the AI generated apron look better:</p>
+<p>And then while scrolling the subreddit, I came across <a href="https://www.reddit.com/r/nanobanana/comments/1ov904a/replacing_the_apron/" target="_blank" rel="noopener">this Reddit post</a> which had 3 images, 2 of which were clean images that the user combined to make a 3rd image (the Nano Banana watermarked image). The user was asking for tips on how to make the AI generated apron look better:</p>
 <p>
     <img src="../img/Pasted%20image%2020260210185249.webp" alt="" loading="lazy" /></p>
 <p>Now I thought this was a perfect example because apart from the apron the first and last image look very similar so you&rsquo;d think if the model picked up images with humans as watermarked images than it would think both the first and last image were watermarked, except it correctly identified both the first and second image as clean and the last image as watermarked:</p>
@@ -1306,12 +1306,12 @@ These are inputs with small, often imperceptible, perturbations designed to caus
 <p>We can compare the two images to identify the perturbations that were added (which look super interesting!):</p>
 <p>
     <img src="../img/Pasted%20image%2020260210192132.webp" alt="" loading="lazy" /></p>
-<p>You can see the mean delta is small which means each RGB value didn&rsquo;t change by much but the amount of pixels modified is huged (96%). If you look carefully, you&rsquo;ll also notice interesting wave patterns around the subject. I&rsquo;m not exactly sure what it is but it looks awesome!</p>
+<p>You can see the mean delta is small which means each RGB value didn&rsquo;t change by much but the amount of pixels modified is huged (96%). If you look carefully, you&rsquo;ll also notice interesting wave patterns around the subject. I&rsquo;m not exactly sure if it&rsquo;s related to the watermark or not but it looks awesome!</p>
 <h3>Attempting to replicate the attacks against the online model<span class="hx-absolute -hx-mt-20" id="attempting-to-replicate-the-attacks-against-the-online-model"></span>
     <a href="#attempting-to-replicate-the-attacks-against-the-online-model" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Attacking our local is great and fun but now we have to fool the overloard, the one and only, Papa SynthID Validator (ie. the real online version). So, I did what I had to do&hellip; I submitted my adversarial image to Gemini and asked it to check the image using SynthID which it obliged. I looked at that animation spin and spin and spin. And then it came back with the verdict:</p>
 <p>
     <img src="../img/Pasted%20image%2020260206214303.webp" alt="" loading="lazy" /></p>
-<p>Unfortunately, the force was too strong in this one and SynthID did end up identifying the watermark. <em>I know you were nearly fooled! Its only a lost battle, I&rsquo;ll fool you in the next one, don&rsquo;t you worry!</em></p>
+<p>Unfortunately, the force was too strong in this one and SynthID did end up identifying the watermark. <em>I know you were nearly fooled Mr. Synth! Its only a lost battle, I&rsquo;ll fool you in the next one, don&rsquo;t you worry!</em></p>
 <p>I did try other attacks but they didn&rsquo;t work either. I&rsquo;ll have to improve the surrogate model first using a more broad training dataset, including some adversarial hardening and then try this again!</p>
 <h2>Conclusion<span class="hx-absolute -hx-mt-20" id="conclusion"></span>
     <a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>This project was a great hands-on learning experience that tied together several domains: steganography, adversarial machine learning, and model extraction.</p>
