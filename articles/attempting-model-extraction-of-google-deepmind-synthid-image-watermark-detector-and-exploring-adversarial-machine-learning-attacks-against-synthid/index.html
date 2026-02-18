@@ -24,7 +24,7 @@
   <meta itemprop="description" content="Deep dive into extracting and attacking Google DeepMind&#39;s SynthID image watermarking system using adversarial machine learning techniques. Learn how invisible watermarks work, explore LSB steganography, train a surrogate CNN detector model, and test regeneration attacks and C&amp;W L2 adversarial perturbations against the real SynthID validator.">
   <meta itemprop="datePublished" content="2026-02-08T00:00:00+00:00">
   <meta itemprop="dateModified" content="2026-02-08T00:00:00+00:00">
-  <meta itemprop="wordCount" content="4712">
+  <meta itemprop="wordCount" content="4717">
   <meta itemprop="image" content="https://fyx.me/opengraph/content-articles-attempting-model-extraction-of-google-deepmind-synthid-image-watermark-detector-and-exploring-adversarial-machine-learning-attacks-against-synthid.webp">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://fyx.me/opengraph/content-articles-attempting-model-extraction-of-google-deepmind-synthid-image-watermark-detector-and-exploring-adversarial-machine-learning-attacks-against-synthid.webp">
@@ -711,6 +711,14 @@
             </li><li class="hx-flex hx-flex-col "><a
     class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/bazaar/computer-science--programming/qemu-vm-disk-resize-guide/"
+    
+  >Qemu Vm Disk Resize Guide
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
     href="/bazaar/computer-science--programming/versioning/"
     
   >Versioning
@@ -905,7 +913,7 @@
         </a>
       </li>
       <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
-        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#attacking-my-local-own-model">Attacking my local own model
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#attacking-my-own-local-model">Attacking my own local model
         </a>
       </li>
       <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
@@ -968,7 +976,7 @@
                   <div class="group-hover:hx-underline">fyx(me)</div>
                 </a></div>
         <div class="content">
-          <p>Some time ago, prior to taking the NVIDIA Exploring Adversarial Machine Learning course, I read about Google DeepMind&rsquo;s Synth-ID. An interesting technology that aims to add invisible watermarks to generative AI text and images. I was intrigued about the Image watermarking aspect since it claimed to be invisible and could resist certain image modifications like <em>adding filters, changing colours, and saving with various lossy compression schemes</em>. This reminded me of the stegonography CTF challenges which basically are challenges that hide data inside images by modifying the least significant bits of an image (ie. the bits that have the little effect on each pixel). By doing so, you can hide data inside images without any visible modifications on the image itself.</p>
+          <p>Some time ago, prior to taking the NVIDIA Exploring Adversarial Machine Learning course, I read about Google DeepMind&rsquo;s Synth-ID, an interesting technology that aims to add invisible watermarks to generative AI text and images. I was intrigued about the Image watermarking aspect since it claimed to be invisible and could resist certain image modifications like <em>adding filters, changing colours, and saving with various lossy compression schemes</em>. This reminded me of the steganography CTF challenges which basically are challenges that hide data inside images by modifying the least significant bits of an image (ie. the bits that have the little effect on each pixel). By doing so, you can hide data inside images without any visible modifications on the image itself.</p>
 <p>I was also speculating that given enough data, you could probably recreate a local model to do the validation. At the time I didn&rsquo;t know where to find the data and I didn&rsquo;t know about offline model attacks in Adversarial Machine Learning (AML) which I learned during the <a href="/articles/nvidia-exploring-adversarial-machine-learning-course-review/" >NVIDIA course</a>.</p>
 <p>After the course, I knew a lot more about it and was even more interested. I thought it would be epic to create a surrogate model to attempt attacks against it and see if they are effective against the real Synth-ID model. If you want to skip straight there, skip to the <em><strong>Surrogate Model</strong></em> section. Here&rsquo;s a quick taste of what&rsquo;s to come:</p>
 <p>
@@ -976,34 +984,34 @@
 <p>Before we get to the surrogate model, I&rsquo;ll start by exploring and recreating some of the attacks against Synth-ID.</p>
 <h2>What sort of watermarks or identifiers are added to each image?<span class="hx-absolute -hx-mt-20" id="what-sort-of-watermarks-or-identifiers-are-added-to-each-image"></span>
     <a href="#what-sort-of-watermarks-or-identifiers-are-added-to-each-image" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>The visible watermark<span class="hx-absolute -hx-mt-20" id="the-visible-watermark"></span>
-    <a href="#the-visible-watermark" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>The first watermark we all know about is the little Gemini Star placed in the bottom right corner of the image. Its very easily identifiable:</p>
+    <a href="#the-visible-watermark" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>The first watermark we all know about is the little Gemini Star placed in the bottom right corner of the image. It&rsquo;s very easily identifiable:</p>
 <p>
     <img src="../img/Pasted%20image%2020260208113036.webp" alt="" loading="lazy" /></p>
 <p>This watermark means two things, you generated the image with Gemini/Nano banana AND you generated the image via the web interface. API generated images do not have this watermark.</p>
 <h3>The metadata identifiers<span class="hx-absolute -hx-mt-20" id="the-metadata-identifiers"></span>
     <a href="#the-metadata-identifiers" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>If you try read the exif metadata from the image, you&rsquo;ll realise there is a lot of information in there, including potential signatures, identifiers, etc. I didn&rsquo;t look too much into this because I didn&rsquo;t think it was particularly interesting at the time and because removing it is trivial. Also, a lot of images you&rsquo;ll see online usually have their metadata stripped to reduce file size, hence I&rsquo;m not focusing on this for this initial research.</p>
-<p>However, I do believe that some of these are significant identifiers and be used to map the image to whoever generated it.</p>
+<p>However, I do believe that some of these are significant identifiers and could be used to map the image to whoever generated it.</p>
 <p>You can see an example image below:</p>
 <p>
     <img src="../img/Pasted%20image%2020260208114149.webp" alt="" loading="lazy" /></p>
 <h3>The hidden watermarks<span class="hx-absolute -hx-mt-20" id="the-hidden-watermarks"></span>
     <a href="#the-hidden-watermarks" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>The last watermark is the invisible watermark. Hidden in the image itself in a way that is hard to detect but easy to validate. This is the watermark we&rsquo;re trying to attack.</p>
-<p>Saying the watermark is &ldquo;invisible&rdquo; is an exaggeration. The watermark is very hard to see but there are some edge cases where its impossible to hide the watermark. If you recall what I mentioned about stegonography, you might have caught on to where I&rsquo;m going with this.</p>
+<p>Saying the watermark is &ldquo;invisible&rdquo; is an exaggeration. The watermark is very hard to see but there are some edge cases where it&rsquo;s impossible to hide the watermark. If you recall what I mentioned about steganography, you might have caught on to where I&rsquo;m going with this.</p>
 <p><strong>Imagine you&rsquo;re playing hide and seek in an empty square room that is painted all white. If you wear clothes that match the colour of the walls you might be harder to notice but you&rsquo;ll still have a hard time hiding. We can use the same approach to identify hidden watermark patterns!</strong></p>
-<p>We&rsquo;ll provide an image in a single colour and ask Gemini to hide the watermark in there without changing anything else. In doing so, we&rsquo;ll be able to see any changes made to the image even if they are super small transformation (ie. Least Significant Bit modifications) because they will contrast greatly with the background colour we set.</p>
-<p>I&rsquo;m using a square image where every pixel is black and I&rsquo;ve asked Gemini to remake it without modifying anything (probably the most boring task it receive today):</p>
+<p>We&rsquo;ll provide an image in a single colour and ask Gemini to hide the watermark in there without changing anything else. In doing so, we&rsquo;ll be able to see any changes made to the image even if they are super small transformations (ie. Least Significant Bit modifications) because they will contrast greatly with the background colour we set.</p>
+<p>I&rsquo;m using a square image where every pixel is black and I&rsquo;ve asked Gemini to remake it without modifying anything (probably the most boring task it received today):</p>
 <p>
     <img src="../img/Pasted%20image%2020260208120819.webp" alt="" loading="lazy" /></p>
-<p>From there, I took both images and decided to compare them to extract the delta for each pixel value and plot that. You can see the delta for the Red-Green-Blue (RGB) channels as well as a heat map of the combined deltas and some distributions graphs I&rsquo;ll explain below:</p>
+<p>From there, I took both images and decided to compare them to extract the delta for each pixel value and plot that. You can see the delta for the Red-Green-Blue (RGB) channels as well as a heat map of the combined deltas and some distribution graphs I&rsquo;ll explain below:</p>
 <p>
     <img src="../img/Pasted%20image%2020260122205059.webp" alt="" loading="lazy" /></p>
 <p><em>Note: the image was cropped to remove the Gemini star in the bottom right to make it easier to read the graphs and understand what is going on.</em></p>
 <p>The watermark is very obvious when extracted and graphed like this. However, if we look at the actual data, we realise that the watermark is hidden in the 2 Least Significant Bits (LSB) of each pixel in the image. Now what does that mean?</p>
-<p>Each pixel of an image has 3 value, the 3 Red Green Blue (RGB) channels that define the colour of that pixel. Each channel has a value between 0 and 255. The higher the value, the more that visible that colour will be in the pixel. For example, if we want a full red pixel, we&rsquo;ll use an RGB value of (255, 0, 0) (ie. 255 Red, 0 Green, 0 Blue):</p>
+<p>Each pixel of an image has 3 values, the 3 Red Green Blue (RGB) channels that define the colour of that pixel. Each channel has a value between 0 and 255. The higher the value, the more visible that colour will be in the pixel. For example, if we want a full red pixel, we&rsquo;ll use an RGB value of (255, 0, 0) (ie. 255 Red, 0 Green, 0 Blue):</p>
 <p>
     <img src="../img/Pasted%20image%2020260208122610.webp" alt="" loading="lazy" /></p>
 <p>White is 255 on each channel and Black is 0 on every channel.</p>
-<p>The values at represented in base 10 (ie. what we&rsquo;re used to). But we can convert this to its binary representation (ie. base 2). For example, <code>255</code> in base 10 is  <code>11111111</code> in base 2 (ie. the binary representation). In binary, each 0/1 value is a bit so when we talk about the Least Significant Bit we&rsquo;re talking about the bit which has the least impact on the final value. In the case of 255, this means the bits that are the most to the right: <code>11111111 &lt;- the bits on this side</code> because changing this doesn&rsquo;t change the value as much as the bits on the left side:</p>
+<p>The values are represented in base 10 (ie. what we&rsquo;re used to). But we can convert this to its binary representation (ie. base 2). For example, <code>255</code> in base 10 is  <code>11111111</code> in base 2 (ie. the binary representation). In binary, each 0/1 value is a bit so when we talk about the Least Significant Bit we&rsquo;re talking about the bit which has the least impact on the final value. In the case of 255, this means the bits that are the most to the right: <code>11111111 &lt;- the bits on this side</code> because changing this doesn&rsquo;t change the value as much as the bits on the left side:</p>
 <ul>
 <li><code>11111111</code> -&gt; <code>255</code></li>
 <li><code>11111110</code> -&gt; <code>254</code></li>
@@ -1021,14 +1029,14 @@
 <p>If you managed to identify 3 different reds, congratulations&hellip; You already have hawk eyes! But otherwise you can see the different reds here. I started at a value of 255, toggling the rightmost bits one by one until I reached a value of 224:</p>
 <p>
     <img src="../img/red-lined.webp" alt="" loading="lazy" /></p>
-<p>As you can see, there&rsquo;s basically no noticeable difference between the first 3 reds (at least I don&rsquo;t see it). And this is why modifying those bits (to for example hide data) has very little effect on the overall image which is what stegonography uses and what SynthID also does as we saw above.</p>
+<p>As you can see, there&rsquo;s basically no noticeable difference between the first 3 reds (at least I don&rsquo;t see it). And this is why modifying those bits (to for example hide data) has very little effect on the overall image which is what steganography uses and what SynthID also does as we saw above.</p>
 <p>From the data we collected, we can see the highest delta value was 12. This seems arbitrary but if we remember that data is hidden in each of the color channels, we realise that there&rsquo;s basically 2 bits per channel used to hide the watermark:</p>
 <div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
   
 
 <div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Each channel:
 </span></span><span class="line"><span class="cl">- 2 bits
-</span></span><span class="line"><span class="cl">- loweset delta = 0 (ie. 00 in binary)
+</span></span><span class="line"><span class="cl">- lowest delta = 0 (ie. 00 in binary)
 </span></span><span class="line"><span class="cl">- highest delta = 4 (ie. 11 in binary)
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">Total max delta = 12</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
@@ -1044,8 +1052,8 @@
   
 </div>
 <p>And this is basically how the watermark is hidden inside the image.</p>
-<p>You might have noticed in the graphs above, the max delta for blue and green appear to be higher then 4. (ie. more than 2 bits). Synth-ID uses more than 1 watermark method which I believe is why we get a delta higher then 4. Alternatively, it could be the &ldquo;secret&rdquo; that they mention in their article, basically an identifier hidden in the image (notice the distortions in the watermark above).</p>
-<p>I looked into more analysis methods such as Fast-Fourier Transform (FFT) which looks at the Frequency channel of images. I won&rsquo;t go through all the various image analysis I did otherwise we&rsquo;ll never get to the model extraction part. You can look at in the <em><strong>Appendix 1: FFT analysis</strong></em> for further analysis. There&rsquo;s also <a href="https://github.com/aloshdenny/reverse-SynthID" target="_blank" rel="noopener">another researcher</a> who identified a few interesting image patterns via statistical analysis on the 150k Nano Banana Dataset.</p>
+<p>You might have noticed in the graphs above, the max delta for blue and green appear to be higher than 4. (ie. more than 2 bits). Synth-ID uses more than 1 watermark method which I believe is why we get a delta higher than 4. Alternatively, it could be the &ldquo;secret&rdquo; that they mention in their article, basically an identifier hidden in the image (notice the distortions in the watermark above).</p>
+<p>I looked into more analysis methods such as Fast-Fourier Transform (FFT) which looks at the Frequency channel of images. I won&rsquo;t go through all the various image analysis I did otherwise we&rsquo;ll never get to the model extraction part. You can look at it in the <em><strong>Appendix 1: FFT analysis</strong></em> for further analysis. There&rsquo;s also <a href="https://github.com/aloshdenny/reverse-SynthID" target="_blank" rel="noopener">another researcher</a> who identified a few interesting image patterns via statistical analysis on the 150k Nano Banana Dataset.</p>
 <h2>Removing the basic identifiers<span class="hx-absolute -hx-mt-20" id="removing-the-basic-identifiers"></span>
     <a href="#removing-the-basic-identifiers" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Now that we understand the watermark system a bit more, we can look at attack Synth-ID. We&rsquo;ll start with what probably most people want to do. How do we remove the watermarks?</p>
 <h3>Removing the visible watermark<span class="hx-absolute -hx-mt-20" id="removing-the-visible-watermark"></span>
@@ -1065,13 +1073,13 @@
   <p class="hx-flex hx-items-center hx-font-medium"><svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>Warning</p>
 
   <div class="hx-w-full hx-min-w-0 hx-leading-7">
-    <div class="hx-mt-6 hx-leading-7 first:hx-mt-0"><p><code>exiftool -all:all=</code>  usually works well for most file but I&rsquo;ve just realised that it didn&rsquo;t work in this case. Seems to be only valid for JPEG images. Beware.</p>
+    <div class="hx-mt-6 hx-leading-7 first:hx-mt-0"><p><code>exiftool -all:all=</code>  usually works well for most files but I&rsquo;ve just realised that it didn&rsquo;t work in this case. Seems to be only valid for JPEG images. Beware.</p>
 </div>
   </div>
 </div>
 <p>Unfortunately, this doesn&rsquo;t do anything and our image still gets caught&hellip;</p>
 <h2>Looking into adversarial attacks<span class="hx-absolute -hx-mt-20" id="looking-into-adversarial-attacks"></span>
-    <a href="#looking-into-adversarial-attacks" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>We just saw that removing the basic identifiers doesn&rsquo;t do much which we could have predicted based on our hidden watermark analysis. Lets look at more interesting attacks and see what can be done to bypass it. We&rsquo;ll use the attacks described in the original DeepMind Synth-ID article.</p>
+    <a href="#looking-into-adversarial-attacks" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>We just saw that removing the basic identifiers doesn&rsquo;t do much which we could have predicted based on our hidden watermark analysis. Let&rsquo;s look at more interesting attacks and see what can be done to bypass it. We&rsquo;ll use the attacks described in the original DeepMind Synth-ID article.</p>
 <h2>Simple adversarial attacks<span class="hx-absolute -hx-mt-20" id="simple-adversarial-attacks"></span>
     <a href="#simple-adversarial-attacks" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><blockquote>
   <p><strong>(Universal) adversarial examples</strong>
@@ -1079,7 +1087,7 @@ These are inputs with small, often imperceptible, perturbations designed to caus
 
 </blockquote>
 <h3>Zeroing out Least Significant Bits (LSB)<span class="hx-absolute -hx-mt-20" id="zeroing-out-least-significant-bits-lsb"></span>
-    <a href="#zeroing-out-least-significant-bits-lsb" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>We know some of the watermarking data is stored in the LSB of the images. Lets try to zero out the Least Significant Bits from the image and see if we can bypass the Synth-ID check. You can see here the degradation for every LSB we zero out (the gif has 4 images with 0 bit changed, 1 bit changed, 2 bits changed and 3 bits changed):</p>
+    <a href="#zeroing-out-least-significant-bits-lsb" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>We know some of the watermarking data is stored in the LSB of the images. Let&rsquo;s try to zero out the Least Significant Bits from the image and see if we can bypass the Synth-ID check. You can see here the degradation for every LSB we zero out (the gif has 4 images with 0 bit changed, 1 bit changed, 2 bits changed and 3 bits changed):</p>
 <p>
     <img src="../img/bluey-zeroed-lsb.gif" alt="" loading="lazy" /></p>
 <p>Unfortunately, even the image with 3 LSB zeroed out did not fool SynthID:</p>
@@ -1090,7 +1098,7 @@ These are inputs with small, often imperceptible, perturbations designed to caus
 <p>
     <img src="../img/Pasted%20image%2020260208140900.webp" alt="" loading="lazy" /></p>
 <h3>Attempting to forge a watermark<span class="hx-absolute -hx-mt-20" id="attempting-to-forge-a-watermark"></span>
-    <a href="#attempting-to-forge-a-watermark" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>As an alternative, I wanted to see if we could trick the model into thinking it watermarked an image it didn&rsquo;t. I asked ChatGPT to create a fluffy boy and he came up with this which is perfect and so adorable:</p>
+    <a href="#attempting-to-forge-a-watermark" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>As an alternative, I wanted to see if we could trick the model into thinking it watermarked an image it didn&rsquo;t. I asked ChatGPT to create a fluffy boy and it came up with this which is perfect and so adorable:</p>
 <p>
     <img src="../img/gpt-image-1.5-high-fidelity_a_fluffy_boy.webp" alt="" loading="lazy" /></p>
 <p>I then wrote a quick script to copy the delta mask from the black square analysis we did earlier and placed it on the image above. Again. Synth-ID wasn&rsquo;t fooled:</p>
@@ -1102,8 +1110,8 @@ These are inputs with small, often imperceptible, perturbations designed to caus
   <p>These attacks use other powerful generative models (like diffusion models) to reconstruct a watermarked image, potentially washing out the watermark in the process (An et al., <a href="https://arxiv.org/html/2510.09263v1#bib.bib5" target="_blank" rel="noopener">2024</a>; Zhao et al., <a href="https://arxiv.org/html/2510.09263v1#bib.bib111" target="_blank" rel="noopener">2024</a>).</p>
 
 </blockquote>
-<p>In this attack, we can task a diffusion model to basically re-generate the image itself. This works as long as the image re-processes the image and perform de-noising removing the some of the more subtle watermark signals. You essentially get a slightly different image than originally produced by Nano Banana.</p>
-<p>There&rsquo;s a few tools already available on hugginface but the most interesting one I found was the following <a href="https://github.com/00quebec/Synthid-Bypass/tree/main" target="_blank" rel="noopener">ComfyUI workflow by 00quebec</a>. The examples provided are really good. You can still see the difference and lower quality image (look at the wooden floorboards):</p>
+<p>In this attack, we can task a diffusion model to basically re-generate the image itself. This works as long as the model reprocesses the image and performs de-noising, removing some of the more subtle watermark signals. You essentially get a slightly different image than originally produced by Nano Banana.</p>
+<p>There&rsquo;s a few tools already available on Hugging Face but the most interesting one I found was the following <a href="https://github.com/00quebec/Synthid-Bypass/tree/main" target="_blank" rel="noopener">ComfyUI workflow by 00quebec</a>. The examples provided are really good. You can still see the difference and lower quality image (look at the wooden floorboards):</p>
 <p>
     <img src="../img/Pasted%20image%2020260208145530.webp" alt="" loading="lazy" /></p>
 <p>I decided to try it out with our trusty Bluey image and got some good result but you can clearly see the loss in quality/detail between the two images:</p>
@@ -1119,7 +1127,7 @@ These are inputs with small, often imperceptible, perturbations designed to caus
   <p>Since adversarial examples often transfer between different models, an attacker can train a local substitute model to craft attacks in a black-box setting (Papernot et al., <a href="https://arxiv.org/html/2510.09263v1#bib.bib67" target="_blank" rel="noopener">2017</a>; Tramèr et al., <a href="https://arxiv.org/html/2510.09263v1#bib.bib90" target="_blank" rel="noopener">2016</a>).</p>
 
 </blockquote>
-<p>When I started analysing the hidden watermarks in Synth-ID generated images, I dreamed of having enough data to be able to create a surrogate model. I thought I would have to find a way to scrape data and validate it before attempting to train a model. However, when I landed <a href="https://github.com/aloshdenny/reverse-SynthID/tree/main" target="_blank" rel="noopener">aloshdenny&rsquo;s</a> analysis which was using a 150K image dataset, I realised there was probably something for me to use.</p>
+<p>When I started analysing the hidden watermarks in Synth-ID generated images, I dreamed of having enough data to be able to create a surrogate model. I thought I would have to find a way to scrape data and validate it before attempting to train a model. However, when I landed on <a href="https://github.com/aloshdenny/reverse-SynthID/tree/main" target="_blank" rel="noopener">aloshdenny&rsquo;s</a> analysis which was using a 150K image dataset, I realised there was probably something for me to use.</p>
 <h3>Selecting datasets to train on<span class="hx-absolute -hx-mt-20" id="selecting-datasets-to-train-on"></span>
     <a href="#selecting-datasets-to-train-on" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>After some digging, I found the <a href="https://picotrex.github.io/Awesome-Nano-Banana-images/" target="_blank" rel="noopener">following research</a> where they released a <a href="https://huggingface.co/datasets/Yejy53/Nano-consistent-150k" target="_blank" rel="noopener">150k Nano Banana image dataset</a> and after testing a few of them, I realised they did in fact have the Google Synth-ID watermark!</p>
 <p>This meant we had a decent dataset to start with. The dataset consists of approximately:</p>
@@ -1138,15 +1146,15 @@ These are inputs with small, often imperceptible, perturbations designed to caus
 </div>
   </div>
 </div>
-<p>For the model, I trained a dual-stream Convolutional Neural Networks (CNN) binary image classifier. (That&rsquo;s a lot of complicated words) But to make it simple, its a neural network to classify images (watermarked or not) that looks at both the spatial branch (ie. RGB channels and grayscale of an image) and frequency branch that processes frequency domain features (ie. the hidden patterns, FFT, etc).</p>
+<p>For the model, I trained a dual-stream Convolutional Neural Networks (CNN) binary image classifier. (That&rsquo;s a lot of complicated words) But to make it simple, it&rsquo;s a neural network to classify images (watermarked or not) that looks at both the spatial branch (ie. RGB channels and grayscale of an image) and frequency branch that processes frequency domain features (ie. the hidden patterns, FFT, etc).</p>
 <p>The spatial branch is built on a <a href="https://huggingface.co/microsoft/resnet-34" target="_blank" rel="noopener">ResNet-34</a> backbone, a pre-trained model used for image classification that is quite good at understanding subtle patterns/signals.</p>
-<p>The reason I choose this setup is because of the analysis I did on the hidden watermarks which pointed to visible domain patterns as well as frequency patterns (ie. FFT patterns), which was also highlighted by other research work discussed in earlier sections. If you&rsquo;re interested, here&rsquo;s another good read on <a href="https://medium.com/vithelper/spatial-and-frequency-domain-image-processing-83ffa3fc7cbc" target="_blank" rel="noopener">Spatial and Frequency Domain</a>.</p>
-<p>I&rsquo;m sure this isn&rsquo;t the ideal setup and it might be interesting to look at other domains or optimisations but as you&rsquo;ll see below, it seems to work quite well for Synth-ID identification! The article also suggest watermark is content-dependent (tied to the image, not a fixed pattern) which means its likely that there&rsquo;s more optimal solutions here.</p>
-<p>Armed with my 250k images and my duck tape model setup, I rented a bunch of GPUs on <a href="https://vast.ai/" target="_blank" rel="noopener">vast.ai</a>. I don&rsquo;t actually remember the exact specs I rented but I can tell you it was not H100s because for around 8h of usage, I paid less than 2.50$:</p>
+<p>The reason I chose this setup is because of the analysis I did on the hidden watermarks which pointed to visible domain patterns as well as frequency patterns (ie. FFT patterns), which was also highlighted by other research work discussed in earlier sections. If you&rsquo;re interested, here&rsquo;s another good read on <a href="https://medium.com/vithelper/spatial-and-frequency-domain-image-processing-83ffa3fc7cbc" target="_blank" rel="noopener">Spatial and Frequency Domain</a>.</p>
+<p>I&rsquo;m sure this isn&rsquo;t the ideal setup and it might be interesting to look at other domains or optimisations but as you&rsquo;ll see below, it seems to work quite well for Synth-ID identification! The article also suggests watermark is content-dependent (tied to the image, not a fixed pattern) which means its likely that there&rsquo;s more optimal solutions here.</p>
+<p>Armed with my 250k images and my duct tape model setup, I rented a bunch of GPUs on <a href="https://vast.ai/" target="_blank" rel="noopener">vast.ai</a>. I don&rsquo;t actually remember the exact specs I rented but I can tell you it was not H100s because for around 8h of usage, I paid less than 2.50$:</p>
 <p>
     <img src="../img/Pasted%20image%2020260209204352.webp" alt="" loading="lazy" /></p>
-<p>It didn&rsquo;t take 8 hours to train the model either&hellip; I actually messed up the first time around (might have over-fit slightly&hellip;) and forget to turn off the instance for a while! Next time I&rsquo;ll probably do a much longer session with a larger dataset!</p>
-<p>You can see an extract of the training output below. You can see after 9 epoch it correctly identifies 100% of the images which means&hellip;. yeah its probably over-fit. What&rsquo;s also interesting is that even after 1 epoch of training it achieves 99% detection&hellip; which doesn&rsquo;t seem right. However, I still decided to let it run and after some more out of dataset testing, I found that epoch 8 produced a model that was quite good at identifying watermarked images:</p>
+<p>It didn&rsquo;t take 8 hours to train the model either&hellip; I actually messed up the first time around (might have over-fit slightly&hellip;) and forgot to turn off the instance for a while! Next time I&rsquo;ll probably do a much longer session with a larger dataset!</p>
+<p>You can see an extract of the training output below. You can see after 9 epochs it correctly identifies 100% of the images which means&hellip;. yeah its probably over-fit. What&rsquo;s also interesting is that even after 1 epoch of training it achieves 99% detection&hellip; which doesn&rsquo;t seem right. However, I still decided to let it run and after some more out of dataset testing, I found that epoch 8 produced a model that was quite good at identifying watermarked images:</p>
 <div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
   
 
@@ -1213,17 +1221,17 @@ These are inputs with small, often imperceptible, perturbations designed to caus
 
   
 </div>
-<p>Below you can see some of the out of training set tests ran at different epoch. The two images I test against vastly different content, one is a image of a person and the other is an image of a new tab in a web browser. Both have the Synth-ID Watermarked but the watermark features are more prominent on people than in-animate or virtual objects which is why the second is always harder to catch.</p>
-<p>Epoch 6 Model doesn&rsquo;t pickup the web browser watermarked image but identifies the model image easily:</p>
+<p>Below you can see some of the out of training set tests ran at different epoch. The two images I test against vastly different content, one is an image of a person and the other is an image of a new tab in a web browser. Both have the Synth-ID Watermarked but the watermark features are more prominent on people than inanimate or virtual objects which is why the second is always harder to catch.</p>
+<p>The epoch 6 model doesn&rsquo;t pick up the web browser watermarked image but identifies the model image easily:</p>
 <p>
     <figure>
     <img src="../img/Pasted%20image%2020260206204514.webp" title="Epoch 6 Model results on 2 off training set Gemini watermarked testcases" alt="" loading="lazy" />
     <figcaption>Epoch 6 Model results on 2 off training set Gemini watermarked testcases</figcaption>
   </figure></p>
-<p>Epoch 8 Model identifies the human, the browser tab and is marks the flux generated image as clean:</p>
+<p>The epoch 8 model identifies the human, the browser tab and marks the flux generated image as clean:</p>
 <p>
     <img src="../img/Pasted%20image%2020260210173718.webp" alt="" loading="lazy" /></p>
-<p>Epoch 9 is a little over-fit and does not identify the web browser watermarked image:</p>
+<p>The epoch 9 model is a little overfit and does not identify the web browser watermarked image:</p>
 <p>
     <img src="../img/Pasted%20image%2020260206205751.webp" alt="" loading="lazy" /></p>
 <p>I know this is a bit ad-hoc and I should have made another bigger validation dataset on top of the testing/validation dataset used for training for it to be more thorough. However, I didn&rsquo;t have the credits to spend on a large dataset and I found another way to validate my Model as you&rsquo;ll see in the next section.</p>
@@ -1233,7 +1241,7 @@ These are inputs with small, often imperceptible, perturbations designed to caus
 <li><a href="https://www.reddit.com/r/nanobanana/" target="_blank" rel="noopener">/r/nanobanana</a></li>
 <li><a href="http://reddit.com/r/isthisai" target="_blank" rel="noopener">/r/isthisai</a></li>
 </ul>
-<p>I was scared at first that the model wouldn&rsquo;t pick up any of the images posted online&hellip; To me surprise, it was a bloodbath!</p>
+<p>I was scared at first that the model wouldn&rsquo;t pick up any of the images posted online&hellip; To my surprise, it was a bloodbath!</p>
 <h4>Testing the model against /r/nanobanana<span class="hx-absolute -hx-mt-20" id="testing-the-model-against-rnanobanana"></span>
     <a href="#testing-the-model-against-rnanobanana" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>Obviously, <strong>/r/nanobanana</strong> had nearly only Gemini generated images (ie. watermarked) and the model didn&rsquo;t take long to identify the majority of them! For testing, I download all images from the top 100 posts of all time on that subreddit and ran the model against all of them, here&rsquo;s a peek of the results:</p>
 <p>
@@ -1249,19 +1257,19 @@ These are inputs with small, often imperceptible, perturbations designed to caus
   <p class="hx-flex hx-items-center hx-font-medium"><svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Note</p>
 
   <div class="hx-w-full hx-min-w-0 hx-leading-7">
-    <div class="hx-mt-6 hx-leading-7 first:hx-mt-0"><p>Its obviously not perfect and some of the watermarked images were marked as clean which show potential improvements but as a first run, I&rsquo;m very happy with the outcome!</p>
+    <div class="hx-mt-6 hx-leading-7 first:hx-mt-0"><p>It&rsquo;s obviously not perfect and some of the watermarked images were marked as clean which show potential improvements but as a first run, I&rsquo;m very happy with the outcome!</p>
 </div>
   </div>
 </div>
 <h4>Testing the model against /r/isthisai<span class="hx-absolute -hx-mt-20" id="testing-the-model-against-risthisai"></span>
-    <a href="#testing-the-model-against-risthisai" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>Now, the bigger test. Can it correctly identify a Nano Banana Generated Image that people had a hard time to identify&hellip; The <strong>/r/isthisai</strong> subreddit basically allows people to submit images they believe could be AI and humans try to identify abnormalities which could indicate GenAI.</p>
-<p>As previously, I did the same for <strong>/r/isthisai</strong> and pulled the images from the top 100 posts. My thought process here was, if my model was actually good it would pickup any watermarked posts which I could then validate with Synth-ID in Gemini. To be fair, I was really not confident this would work because the photos posted there are screenshots or cropped and what not so I thought the model wouldn&rsquo;t pick up on those. All images had little probabilities EXCEPT for one image which was clearly marked as WATERMARKED:</p>
+    <a href="#testing-the-model-against-risthisai" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>Now, the bigger test. Can it correctly identify a Nano Banana Generated Image that people had a hard time identifying&hellip; The <strong>/r/isthisai</strong> subreddit basically allows people to submit images they believe could be AI and humans try to identify abnormalities which could indicate GenAI.</p>
+<p>As previously, I did the same for <strong>/r/isthisai</strong> and pulled the images from the top 100 posts. My thought process here was, if my model was actually good it would pickup any watermarked posts which I could then validate with Synth-ID in Gemini. To be fair, I was really not confident this would work because the photos posted there are screenshots or cropped and what not so I thought the model wouldn&rsquo;t pick up on those. All images had low probabilities EXCEPT for one image which was clearly marked as WATERMARKED:</p>
 <p>
     <img src="../img/Pasted%20image%2020260208094100.webp" alt="" loading="lazy" /></p>
 <p>This was the image in question, and you can see <a href="https://www.reddit.com/r/isthisAI/comments/1qw41bf/the_sign_says_joes_pizza_but_there_is_another/" target="_blank" rel="noopener">people discussed it</a> and marked it as AI based on weird things in the image:</p>
 <p>
     <img src="../img/Pasted%20image%2020260208094118.webp" alt="" loading="lazy" /></p>
-<p>However, we don&rsquo;t care about the image content itself, we care about the hidden watermarked which we believe exists. To validate our finding, we can simply use the Synth-ID Application in Gemini and we see the model predicted correctly:</p>
+<p>However, we don&rsquo;t care about the image content itself, we care about the hidden watermark which we believe exists. To validate our finding, we can simply use the Synth-ID Application in Gemini and we see the model predicted correctly:</p>
 <p>
     <img src="../img/Pasted%20image%2020260208094018.webp" alt="" loading="lazy" /></p>
 <h4>Edge cases<span class="hx-absolute -hx-mt-20" id="edge-cases"></span>
@@ -1272,8 +1280,8 @@ These are inputs with small, often imperceptible, perturbations designed to caus
 <p>The threshold is arbitrary but based on testing, when given a clean image, the model is pretty adamant about it being clean and will return a probability under 5%. Hence, a 48% probability likely means it picked up the watermark from the image:</p>
 <p>
     <img src="../img/Pasted%20image%2020260206212236.webp" alt="" loading="lazy" /></p>
-<h3>Attacking my local own model<span class="hx-absolute -hx-mt-20" id="attacking-my-local-own-model"></span>
-    <a href="#attacking-my-local-own-model" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Now that I had an surrogate (offline) model, I wanted to see if I could fool it by using Adversarial Machine Learning as I learned in the <a href="/articles/nvidia-exploring-adversarial-machine-learning-course-review/" >NVIDIA Exploring Adversarial Machine Learning</a> course I took recently. I decided to use the <a href="https://github.com/Trusted-AI/adversarial-robustness-toolbox" target="_blank" rel="noopener">Adversarial Robustness Toolbox (ART)</a> and selected Carlini &amp; Wagner L2 (C&amp;W L2) as my attack of choice. It took about 5 minutes but from the Watermarked girl with apron image we saw earlier, it created an adversarial image that evaded the model:</p>
+<h3>Attacking my own local model<span class="hx-absolute -hx-mt-20" id="attacking-my-own-local-model"></span>
+    <a href="#attacking-my-own-local-model" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Now that I had a surrogate (offline) model, I wanted to see if I could fool it by using Adversarial Machine Learning as I learned in the <a href="/articles/nvidia-exploring-adversarial-machine-learning-course-review/" >NVIDIA Exploring Adversarial Machine Learning</a> course I took recently. I decided to use the <a href="https://github.com/Trusted-AI/adversarial-robustness-toolbox" target="_blank" rel="noopener">Adversarial Robustness Toolbox (ART)</a> and selected Carlini &amp; Wagner L2 (C&amp;W L2) as my attack of choice. It took about 5 minutes but from the Watermarked girl with apron image we saw earlier, it created an adversarial image that evaded the model:</p>
 <div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
   
 
@@ -1306,9 +1314,9 @@ These are inputs with small, often imperceptible, perturbations designed to caus
 <p>We can compare the two images to identify the perturbations that were added (which look super interesting!):</p>
 <p>
     <img src="../img/Pasted%20image%2020260210192132.webp" alt="" loading="lazy" /></p>
-<p>You can see the mean delta is small which means each RGB value didn&rsquo;t change by much but the amount of pixels modified is huged (96%). If you look carefully, you&rsquo;ll also notice interesting wave patterns around the subject. I&rsquo;m not exactly sure if it&rsquo;s related to the watermark or not but it looks awesome!</p>
+<p>You can see the mean delta is small which means each RGB value didn&rsquo;t change by much but the amount of pixels modified is huge (96%). If you look carefully, you&rsquo;ll also notice interesting wave patterns around the subject. I&rsquo;m not exactly sure if it&rsquo;s related to the watermark or not but it looks awesome!</p>
 <h3>Attempting to replicate the attacks against the online model<span class="hx-absolute -hx-mt-20" id="attempting-to-replicate-the-attacks-against-the-online-model"></span>
-    <a href="#attempting-to-replicate-the-attacks-against-the-online-model" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Attacking our local is great and fun but now we have to fool the overloard, the one and only, Papa SynthID Validator (ie. the real online version). So, I did what I had to do&hellip; I submitted my adversarial image to Gemini and asked it to check the image using SynthID which it obliged. I looked at that animation spin and spin and spin. And then it came back with the verdict:</p>
+    <a href="#attempting-to-replicate-the-attacks-against-the-online-model" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Attacking our local is great and fun but now we have to fool the overlord, the one and only, Papa SynthID Validator (ie. the real online version). So, I did what I had to do&hellip; I submitted my adversarial image to Gemini and asked it to check the image using SynthID which it obliged. I looked at that animation spin and spin and spin. And then it came back with the verdict:</p>
 <p>
     <img src="../img/Pasted%20image%2020260206214303.webp" alt="" loading="lazy" /></p>
 <p>Unfortunately, the force was too strong in this one and SynthID did end up identifying the watermark. <em>I know you were nearly fooled Mr. Synth! Its only a lost battle, I&rsquo;ll fool you in the next one, don&rsquo;t you worry!</em></p>
@@ -1317,7 +1325,7 @@ These are inputs with small, often imperceptible, perturbations designed to caus
     <a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>This project was a great hands-on learning experience that tied together several domains: steganography, adversarial machine learning, and model extraction.</p>
 <p>Here are the key takeaways:</p>
 <ul>
-<li>SynthID is well-engineered. Simple attacks like zeroing or randomizing LSBs, removing metadata, or naively copying watermark patterns all failed. The watermark doesn&rsquo;t rely on a single technique it uses multiple embedding methods across both spatial and frequency domains (and more), making it resilient to surface-level tampering. Understanding why these attacks fail taught me more about the system than reading the paper alone.</li>
+<li>SynthID is well-engineered. Simple attacks like zeroing or randomizing LSBs, removing metadata, or naively copying watermark patterns all failed. The watermark doesn&rsquo;t rely on a single technique; it uses multiple embedding methods across both spatial and frequency domains (and more), making it resilient to surface-level tampering. Understanding why these attacks fail taught me more about the system than reading the paper alone.</li>
 <li>Regeneration attacks work, but at a cost. Using a diffusion model to reconstruct the image was the only attack that successfully bypassed SynthID. The trade-off is visible quality degradation, which makes it impractical for many use cases. This reinforces an important AML concept: attack success often comes with a quality/utility penalty.</li>
 <li>Surrogate models are surprisingly accessible. With a publicly available 250k image dataset and under $2.50 in GPU rental, I managed to train a dual-stream CNN that could accurately detect SynthID watermarks even on unseen Reddit images. The barrier to building a local detector is much lower than expected, which has implications for both research and the long-term effectiveness of watermarking as a trust signal.</li>
 <li>Adversarial transferability is hard. While C&amp;W L2 attacks successfully fooled my surrogate model, they did not transfer to the real SynthID validator. This gap highlights that my surrogate, despite good detection accuracy, hasn&rsquo;t captured enough of the internal decision boundary of the real model. Closing this gap is the next challenge. Better training data, adversarial hardening, and architecture improvements should help.</li>
@@ -1327,7 +1335,7 @@ These are inputs with small, often imperceptible, perturbations designed to caus
     <a href="#model-release" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>I believe this is the first model attempting to replicate Google SynthID Image Watermark Detection. There&rsquo;s a few attempting to implement SynthID Text Watermark detection but none for images:</p>
 <p>
     <img src="../img/Pasted%20image%2020260208083117.webp" alt="" loading="lazy" /></p>
-<p>I&rsquo;ve release the model if you&rsquo;re interested in testing it out. You can find it on huggingface with example inference code:</p>
+<p>I&rsquo;ve released the model if you&rsquo;re interested in testing it out. You can find it on huggingface with example inference code:</p>
 <p><a href="https://huggingface.co/fyxme/opensynthid-detect-0.1" target="_blank" rel="noopener">https://huggingface.co/fyxme/opensynthid-detect-0.1</a></p>
 <p>I will cleanup and release the training code in the upcoming few days and will update this post once the full training code is available.</p>
 <h3>Future Research &amp; Improvements<span class="hx-absolute -hx-mt-20" id="future-research--improvements"></span>
