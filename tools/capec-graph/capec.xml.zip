@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="description" content="Common Attack Pattern Enumeration and Classification (CAPEC) is a list of software weaknesses." />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link href="/css/main.css?version=3.6.102121" rel="stylesheet" type="text/css" />
+	<!--[if IE]>
+	<link rel="stylesheet" type="text/css" href="/css/ie.css?version=1.7" />
+	<![endif]-->
+	
+	<script src="/includes/jquery.js" language="JavaScript" type="text/javascript"></script>
+	<script src="/includes/capec_minimizer.js" language="JavaScript" type="text/javascript"></script>
+	<script src="/includes/browserheight.js" language="JavaScript" type="text/javascript"></script>
+	<script src="/includes/cookie.js" language="Javascript" type="text/javascript"></script>
+	<script src=https://cmp.osano.com/AzyhULTdPkqmy4aDN/a02172fb-4011-47ed-b5ff-3ae82caa92f9/osano.js></script>
+	<link href="/css/print.css?version=1.0" rel="stylesheet" media="print" type="text/css" />
+	<noscript>
+	<style>
+		#script { visibility:collapse; visibility:hidden; font-size:0px; height:0px; width:0px  }
+		#noscript { visibility:visible; font-size:inherit;  height:inherit; width:inherit}
+	</style>
+	</noscript>
+	<title>CAPEC - 
+404 Error</title>
+	<meta http-equiv="refresh" content="10;URL=/index.html" />
+	<title>
+</title>
+</head>
+	<body bgcolor="#eeeeee" onload="onloadCookie()">
+
+<div style="background-color:#ffffff;">
+<a name="top" id="top"></a>
+<div id="MastHead">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" summary="Masthead Table">
+	<tr>
+		<th style="width:70%"/>
+		<th style="width:30%"/>
+	</tr>
+	<tr>
+	    <td align="left" style="padding:20px 10px 10px 20px" valign="middle" nowrap="nowrap">
+		<a href="/index.html" style="color:#32498D; text-decoration:none">
+		<div>
+		<img src="/images/capec_logo_new2.gif" width="160" height="55" style="float:left;border:0;margin-right:6px" alt="CAPEC" />
+		<h1 style="color:#edef97;font-size:1.2em;font-family:'Verdana',sans-serif;text-shadow: 2px 2px #000;margin: .1em auto">Common Attack Pattern Enumeration and Classification</h1>
+		<p style="color:#fff;font-size:1em;text-shadow: 2px 2px #000;margin:.2em auto 0 auto">A Community Resource for Identifying and Understanding Attacks</p>
+		</a>
+		</div>
+	    </td>
+	    <td>
+		<div style="float:right;padding-top:0px;padding-right:14px;padding-bottom:0px;"><a href="/about/new_to_capec.html" title="New to CAPEC? Start Here"><img src="/images/new_to_capec.png" width=100" height="100" border="0" alt="New to CAPEC? Start Here" style="vertical-align:top"/></a></div>
+	    </td>
+	</tr>
+	</table>
+</div>
+
+<div id="HeaderBar" class="noprint">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="Breadcrumbs and Search Table">
+	<tr>
+		<td width="100%" valign="middle" align="left" style="padding-left:10px; font-size:75%;">
+		<a href="/" >Home</a>  &gt;  <a href="/data/index.html" >CAPEC List</a>  &gt;  
+
+404 Error
+		&nbsp;
+		</td>
+		<td valign="middle" align="right" nowrap="nowrap" style="padding-right:12px">
+		
+<div class="noprint" style="text-align:right">
+  <form action="/cgi-bin/jumpmenu.cgi" style="margin-bottom:0.1em;vertical-align:center;">
+	<label for="id" style="padding-right:5px">ID Lookup:</label>
+    <input id="id" name="id" type="text" style="width:50px; font-size:80%" maxlength="10" />
+	<input value="Go" style="padding: 0px; font-size:80%" type="submit" />
+  </form>
+</div> 
+ 
+		</td>
+	</tr>
+</table>
+</div> <!--//HeaderBar-->
+<div class="yesprint">
+<hr width="100%" size="1" style="clear:both" color="#000000" />
+</div>
+
+<div class="topnav">
+<ul>
+<li><a href="/index.html">Home</a></li>
+<li>
+        <div class="dropdown">
+          <a href="/about/index.html"><button class="dropbtn">About</button></a>
+          <div class="dropdown-content">
+            <a href="/about/index.html">Overview</a>
+            <a href="/about/board.html">Board</a>
+            <a href="/about/glossary.html">Glossary</a>
+            <a href="/about/use_cases.html">Use Cases</a>
+            <a href="/about/resources.html">Resources</a>
+            <a href="/about/documents.html">Documents</a>
+            <a href="/about/faq.html">FAQs</a>
+            <a href="/about/new_to_capec.html">New to CAPEC?</a>
+          </div>
+        </div>
+</li>
+
+<li>
+        <div class="dropdown">
+          <a href="/data/index.html"><button class="dropbtn">CAPEC List</button></a>
+          <div class="dropdown-content">
+            <a href="/data/index.html">Latest Version</a>
+            <a href="/data/downloads.html">Downloads</a>
+            <a href="/data/reports.html">Reports</a>
+            <a href="/data/archive.html">Archive</a>
+          </div>
+        </div>
+</li>
+<li>
+        <div class="dropdown">
+          <a href="/community/index.html"><button class="dropbtn">Community</button></a>
+          <div class="dropdown-content">
+            <a href="/community/index.html">Community</a>
+            <a href="/community/citations.html">Citations</a>
+            <a href="/community/usage.html">Organization Usage</a>
+            <a href="/community/related.html">Related Activities</a>
+            <a href="/community/registration.html">Discussion List</a>
+            <a href="https://www.mail-archive.com/capec-research-list@mitre.org/" target="_blank" rel="noopener noreferrer">Discussion Archives</a>
+            <a href="/about/documents.html#capec_user_summit">CAPEC User Summit</a>	            
+          </div>
+        </div>
+</li>
+<li>
+        <div class="dropdown">
+          <a href="/news/index.html"><button class="dropbtn">News</button></a>
+          <div class="dropdown-content">
+            <a href="/news/index.html">Current News</a>
+            <a href="https://twitter.com/CweCapec" target="_blank" rel="noopener noreferrer">CAPEC on Twitter<img src="/images/twitter_sm.png" border="0" title="Twitter" style="position:relative; vertical-align:bottom; padding-left:3px; top:-1px"></a>
+            <a href="https://www.linkedin.com/showcase/cve-cwe-capec" target="_blank" rel="noopener noreferrer">CAPEC on LinkedIn<img src="/images/linkedin_sm.jpg" alt="LinkedIn"  width="12" height="12" style="position:relative; vertical-align:bottom; padding-left:3px; top:-1px"></a>
+            <a href="https://medium.com/@CWE_CAPEC" target="_blank" rel="noopener noreferrer">CAPEC Blog <img src="/images/medium.png" alt="Medium" width="12" height="12" style="position:relative; vertical-align:bottom; padding-left:3px; top:-1px"></a>            
+            <a href="https://outofbounds.buzzsprout.com/" target="_blank" rel="noopener noreferrer">CAPEC Podcast<img src="/images/out_of_bounds_read_logo_B_W.png" alt="Out of Bounds Read Podcast"  width="15" height="15" style="position:relative; vertical-align:bottom; padding-left:3px; top:-1px"></a>
+            <a href="https://www.youtube.com/channel/UCpY9VIpRmFK4ebD6orssifA" target="_blank" rel="noopener noreferrer">CAPEC on YouTube<img src="/images/youtube.png" alt="YouTube"  width="12" height="12" style="position:relative; vertical-align:bottom; padding-left:3px; top:-1px"></a>
+            <a href="/news/archives/index.html">News Archive</a>
+          </div>
+        </div>
+</li>
+<li style="border-color:#aaaaaa"><a href="/find/index.html">Search</a></li>
+</ul>
+</div>
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="MainPane"> 
+  <tr>
+	<!-- begin left side menu -->
+    <td valign="top" rowspan="2" id="LeftPane">
+	<!--include virtual="/includes/leftsidemenu.html" -->
+	<script type="text/javascript">browserheight();</script>
+	</td>
+	<!-- end left side menu -->
+    <td style="height:1px"></td>
+	<!-- begin right column -->
+	<td valign="top" align="center" rowspan="2" nowrap="nowrap" id="RightPane">
+
+	</td>
+	<!-- end right side menu -->
+  </tr>
+  <tr>
+	<!-- begin content pane -->
+    <td valign="top" id="Contentpane" width="100%" style="word-wrap:break-word">
+    <script type="text/javascript">
+		$("#Contentpane").css('max-width', ($(window).width()-230) + 'px');
+	</script>
+
+
+<!--begin Main Content-->
+<h2 id="Shadow">
+	<div class="topShadow">404 Error - Not Found</div>
+	<div class="bottomShadow">404 Error - Not Found</div>
+</h2>
+
+<div style="padding:5%">
+	<h3>The page you were looking for has not been found.</h3>
+<br />
+	<h4>You will be redirected to the home page in 10 seconds...</h4>
+</div>
+
+<!--end Main Content-->
+
+	 <div id="More_Message">
+<div style="background-color:#33332C; padding:2px; color:#ffffff; font-size:95%; text-align:center" >More information is available &mdash; Please select a different filter.</div></div>
+
+	</td>
+	<!-- end content pane -->
+  </tr>
+</table>
+<div id="FootPane" class="noprint">
+  <div id="footbar">
+    <b>Page Last Updated or Reviewed: </b>
+
+April 04, 2019
+  </div>
+  <div class="Footer noprint">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" class="ltgreybackground" style="clear:both" summary="Footer Table">
+      <tr>
+        <td colspan="3" id="line"><div class="line">&nbsp;</div></td>
+      </tr>
+      <tr>
+        <td valign="middle" nowrap="nowrap">
+          <div id="footerlinks" class="footlogo">
+            <a href="https://www.mitre.org" target="_blank"><img src="/images/mitre_logo.gif" height="36" border="0" alt="MITRE"/></a>
+          </div>
+        </td>
+        <td width="100%" valign="top" style="padding:6px 0px;">
+          <div id="footerlinks">
+            <a href="/sitemap.html">Site Map</a> |
+            <a href="/about/termsofuse.html">Terms of Use</a> |
+            <a href="#" onclick="Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')">Manage Cookies</a> |
+            <a target="_blank" href="/about/cookie_notice.html">Cookie Notice</a> |            
+            <a target="_blank" href="https://cwe.mitre.org/about/privacy_policy.html">Privacy Policy</a> |
+            <a href="mailto:capec@mitre.org">Contact Us</a> |
+            <a target="_blank" href="https://twitter.com/CweCapec"><img src="/images/twitter.jpg" width="20" height="20" style="border:0;vertical-align:right;" alt="CAPEC on Twitter" title="CAPEC on Twitter"></a>
+            <a target="_blank" href="https://www.linkedin.com/showcase/cve-cwe-capec"><img src="/images/linkedin_sm.jpg" width="20" height="20" style="border:0;vertical-align:right;" alt="CAPEC on LinkedIn" title="CAPEC on LinkedIn"></a>
+            <a target="_blank" href="https://www.youtube.com/channel/UCpY9VIpRmFK4ebD6orssifA"><img src="/images/youtube.png" width="20" height="20" style="border:0;vertical-align:right;" alt="CAPEC on YouTube" title="CAPEC on YouTube"></a>
+            <a target="_blank" href="https://outofbounds.buzzsprout.com/"><img src="/images/out_of_bounds_read_sm.png" width="20" height="20" style="border:0;vertical-align:right;" alt="CAPEC Out-of-Bounds-Read Podcast" title="CAPEC Out-of-Bounds-Read Podcast"></a>
+            <a target="_blank" href="https://medium.com/@CWE_CAPEC"><img src="/images/medium.png" width="20" height="20" style="border:0;vertical-align:right;" alt="CAPEC Blog on Medium" title="CAPEC Blog on Medium"></a>                        
+          </div>
+          <p>Use of the Common Attack Pattern Enumeration and Classification (CAPEC), and the associated references from this website are subject to the <a href="/about/termsofuse.html">Terms of Use</a>. Copyright &copy; 2007&ndash;2026, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.</p>
+        </td>
+        <td valign="middle" nowrap="nowrap">
+          <div id="footerlinks" class="footlogo">
+            <a href="https://www.dhs.gov/science-and-technology/hssedi" target="_blank" rel="noopener noreferrer"><img src="/images/hssedi.png" height="36" border="0" alt="HSSEDI" title="HSSEDI"/></a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<!-- Osano Code -->
+<script src=https://cmp.osano.com/AzyhULTdPkqmy4aDN/a02172fb-4011-47ed-b5ff-3ae82caa92f9/osano.js></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SB6E7FR4V4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-SB6E7FR4V4');
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,1175 @@
+{
+  "metadata": {
+    "source": "CAPEC v3.9 (2023-01-24)",
+    "url": "https://capec.mitre.org",
+    "description": "Common Attack Pattern Enumeration and Classification",
+    "total_patterns_in_capec": 558,
+    "total_active_categories": 21,
+    "subset_nodes": 107,
+    "subset_edges": 118
+  },
+  "hierarchy_explanation": {
+    "view": "Top-level organizing structure (CAPEC-1000=Mechanisms of Attack, CAPEC-3000=Domains of Attack)",
+    "category": "Groups of related attack patterns by theme (9 categories under Mechanisms of Attack)",
+    "meta": "Most abstract attack patterns describing a general technique",
+    "standard": "Specific attack methodology with enough detail to understand the approach",
+    "detailed": "Concrete attack variant with implementation-level details"
+  },
+  "relationship_types": {
+    "HasMember": "Category/view contains this pattern (view->category, category->meta)",
+    "ChildOf": "Pattern is a specialization of a parent (child->parent direction in data, shown as parent->child in edges)",
+    "ParentOf": "Inverse of ChildOf",
+    "CanPrecede": "This attack can enable or lead to another attack",
+    "CanFollow": "Inverse of CanPrecede",
+    "PeerOf": "Patterns are related at the same abstraction level",
+    "CanAlsoBe": "Pattern can also be viewed as an instance of another"
+  },
+  "all_view1000_categories": {
+    "118": "Collect and Analyze Information",
+    "152": "Inject Unexpected Items",
+    "156": "Engage in Deceptive Interactions",
+    "172": "Manipulate Timing and State",
+    "210": "Abuse Existing Functionality",
+    "223": "Employ Probabilistic Techniques",
+    "225": "Subvert Access Control",
+    "255": "Manipulate Data Structures",
+    "262": "Manipulate System Resources"
+  },
+  "all_view3000_categories": {
+    "513": "Software",
+    "515": "Hardware",
+    "512": "Communications",
+    "437": "Supply Chain",
+    "403": "Social Engineering",
+    "514": "Physical Security"
+  },
+  "nodes": [
+    {
+      "id": "1000",
+      "name": "Mechanisms of Attack",
+      "type": "view"
+    },
+    {
+      "id": "118",
+      "name": "Collect and Analyze Information",
+      "type": "category"
+    },
+    {
+      "id": "169",
+      "name": "Footprinting",
+      "type": "meta"
+    },
+    {
+      "id": "292",
+      "name": "Host Discovery",
+      "type": "standard"
+    },
+    {
+      "id": "285",
+      "name": "ICMP Echo Request Ping",
+      "type": "detailed"
+    },
+    {
+      "id": "300",
+      "name": "Port Scanning",
+      "type": "standard"
+    },
+    {
+      "id": "287",
+      "name": "TCP SYN Scan",
+      "type": "detailed"
+    },
+    {
+      "id": "117",
+      "name": "Interception",
+      "type": "meta"
+    },
+    {
+      "id": "157",
+      "name": "Sniffing Attacks",
+      "type": "standard"
+    },
+    {
+      "id": "31",
+      "name": "Accessing/Intercepting/Modifying HTTP Cookies",
+      "type": "detailed"
+    },
+    {
+      "id": "499",
+      "name": "Android Intent Intercept",
+      "type": "standard"
+    },
+    {
+      "id": "501",
+      "name": "Android Activity Hijack",
+      "type": "detailed"
+    },
+    {
+      "id": "224",
+      "name": "Fingerprinting",
+      "type": "meta"
+    },
+    {
+      "id": "312",
+      "name": "Active OS Fingerprinting",
+      "type": "standard"
+    },
+    {
+      "id": "317",
+      "name": "IP ID Sequencing Probe",
+      "type": "detailed"
+    },
+    {
+      "id": "313",
+      "name": "Passive OS Fingerprinting",
+      "type": "standard"
+    },
+    {
+      "id": "152",
+      "name": "Inject Unexpected Items",
+      "type": "category"
+    },
+    {
+      "id": "242",
+      "name": "Code Injection",
+      "type": "meta"
+    },
+    {
+      "id": "19",
+      "name": "Embedding Scripts within Scripts",
+      "type": "standard"
+    },
+    {
+      "id": "23",
+      "name": "File Content Injection",
+      "type": "standard"
+    },
+    {
+      "id": "44",
+      "name": "Overflow Binary Resource File",
+      "type": "detailed"
+    },
+    {
+      "id": "248",
+      "name": "Command Injection",
+      "type": "meta"
+    },
+    {
+      "id": "40",
+      "name": "Manipulating Writeable Terminal Devices",
+      "type": "standard"
+    },
+    {
+      "id": "66",
+      "name": "SQL Injection",
+      "type": "standard"
+    },
+    {
+      "id": "7",
+      "name": "Blind SQL Injection",
+      "type": "detailed"
+    },
+    {
+      "id": "175",
+      "name": "Code Inclusion",
+      "type": "meta"
+    },
+    {
+      "id": "251",
+      "name": "Local Code Inclusion",
+      "type": "standard"
+    },
+    {
+      "id": "252",
+      "name": "PHP Local File Inclusion",
+      "type": "detailed"
+    },
+    {
+      "id": "253",
+      "name": "Remote Code Inclusion",
+      "type": "standard"
+    },
+    {
+      "id": "101",
+      "name": "Server Side Include (SSI) Injection",
+      "type": "detailed"
+    },
+    {
+      "id": "156",
+      "name": "Engage in Deceptive Interactions",
+      "type": "category"
+    },
+    {
+      "id": "151",
+      "name": "Identity Spoofing",
+      "type": "meta"
+    },
+    {
+      "id": "89",
+      "name": "Pharming",
+      "type": "standard"
+    },
+    {
+      "id": "98",
+      "name": "Phishing",
+      "type": "standard"
+    },
+    {
+      "id": "163",
+      "name": "Spear Phishing",
+      "type": "detailed"
+    },
+    {
+      "id": "173",
+      "name": "Action Spoofing",
+      "type": "meta"
+    },
+    {
+      "id": "103",
+      "name": "Clickjacking",
+      "type": "standard"
+    },
+    {
+      "id": "181",
+      "name": "Flash File Overlay",
+      "type": "detailed"
+    },
+    {
+      "id": "504",
+      "name": "Task Impersonation",
+      "type": "standard"
+    },
+    {
+      "id": "654",
+      "name": "Credential Prompt Impersonation",
+      "type": "detailed"
+    },
+    {
+      "id": "416",
+      "name": "Manipulate Human Behavior",
+      "type": "meta"
+    },
+    {
+      "id": "407",
+      "name": "Pretexting",
+      "type": "standard"
+    },
+    {
+      "id": "383",
+      "name": "Harvesting Information via API Event Monitoring",
+      "type": "detailed"
+    },
+    {
+      "id": "417",
+      "name": "Influence Perception",
+      "type": "standard"
+    },
+    {
+      "id": "418",
+      "name": "Influence Perception of Reciprocation",
+      "type": "detailed"
+    },
+    {
+      "id": "210",
+      "name": "Abuse Existing Functionality",
+      "type": "category"
+    },
+    {
+      "id": "113",
+      "name": "Interface Manipulation",
+      "type": "meta"
+    },
+    {
+      "id": "36",
+      "name": "Using Unpublished Interfaces or Functionality",
+      "type": "standard"
+    },
+    {
+      "id": "121",
+      "name": "Exploit Non-Production Interfaces",
+      "type": "standard"
+    },
+    {
+      "id": "661",
+      "name": "Root/Jailbreak Detection Evasion via Debugging",
+      "type": "detailed"
+    },
+    {
+      "id": "125",
+      "name": "Flooding",
+      "type": "meta"
+    },
+    {
+      "id": "482",
+      "name": "TCP Flood",
+      "type": "standard"
+    },
+    {
+      "id": "486",
+      "name": "UDP Flood",
+      "type": "standard"
+    },
+    {
+      "id": "272",
+      "name": "Protocol Manipulation",
+      "type": "meta"
+    },
+    {
+      "id": "90",
+      "name": "Reflection Attack in Authentication Protocol",
+      "type": "standard"
+    },
+    {
+      "id": "220",
+      "name": "Client-Server Protocol Manipulation",
+      "type": "standard"
+    },
+    {
+      "id": "33",
+      "name": "HTTP Request Smuggling",
+      "type": "detailed"
+    },
+    {
+      "id": "223",
+      "name": "Employ Probabilistic Techniques",
+      "type": "category"
+    },
+    {
+      "id": "112",
+      "name": "Brute Force",
+      "type": "meta"
+    },
+    {
+      "id": "20",
+      "name": "Encryption Brute Forcing",
+      "type": "standard"
+    },
+    {
+      "id": "49",
+      "name": "Password Brute Forcing",
+      "type": "standard"
+    },
+    {
+      "id": "16",
+      "name": "Dictionary-based Password Attack",
+      "type": "detailed"
+    },
+    {
+      "id": "28",
+      "name": "Fuzzing",
+      "type": "meta"
+    },
+    {
+      "id": "225",
+      "name": "Subvert Access Control",
+      "type": "category"
+    },
+    {
+      "id": "94",
+      "name": "Adversary in the Middle (AiTM)",
+      "type": "meta"
+    },
+    {
+      "id": "219",
+      "name": "XML Routing Detour Attacks",
+      "type": "standard"
+    },
+    {
+      "id": "384",
+      "name": "Application API Message Manipulation via Man-in-the-Middle",
+      "type": "standard"
+    },
+    {
+      "id": "385",
+      "name": "Transaction or Event Tampering via Application API Manipulation",
+      "type": "detailed"
+    },
+    {
+      "id": "122",
+      "name": "Privilege Abuse",
+      "type": "meta"
+    },
+    {
+      "id": "1",
+      "name": "Accessing Functionality Not Properly Constrained by ACLs",
+      "type": "standard"
+    },
+    {
+      "id": "58",
+      "name": "Restful Privilege Elevation",
+      "type": "detailed"
+    },
+    {
+      "id": "17",
+      "name": "Using Malicious Files",
+      "type": "standard"
+    },
+    {
+      "id": "177",
+      "name": "Create files with the same name as files protected with a higher classification",
+      "type": "detailed"
+    },
+    {
+      "id": "233",
+      "name": "Privilege Escalation",
+      "type": "meta"
+    },
+    {
+      "id": "30",
+      "name": "Hijacking a Privileged Thread of Execution",
+      "type": "standard"
+    },
+    {
+      "id": "68",
+      "name": "Subvert Code-signing Facilities",
+      "type": "standard"
+    },
+    {
+      "id": "255",
+      "name": "Manipulate Data Structures",
+      "type": "category"
+    },
+    {
+      "id": "123",
+      "name": "Buffer Manipulation",
+      "type": "meta"
+    },
+    {
+      "id": "100",
+      "name": "Overflow Buffers",
+      "type": "standard"
+    },
+    {
+      "id": "8",
+      "name": "Buffer Overflow in an API Call",
+      "type": "detailed"
+    },
+    {
+      "id": "540",
+      "name": "Overread Buffers",
+      "type": "standard"
+    },
+    {
+      "id": "153",
+      "name": "Input Data Manipulation",
+      "type": "meta"
+    },
+    {
+      "id": "126",
+      "name": "Path Traversal",
+      "type": "standard"
+    },
+    {
+      "id": "76",
+      "name": "Manipulating Web Input to File System Calls",
+      "type": "detailed"
+    },
+    {
+      "id": "128",
+      "name": "Integer Attacks",
+      "type": "standard"
+    },
+    {
+      "id": "92",
+      "name": "Forced Integer Overflow",
+      "type": "detailed"
+    },
+    {
+      "id": "262",
+      "name": "Manipulate System Resources",
+      "type": "category"
+    },
+    {
+      "id": "184",
+      "name": "Software Integrity Attack",
+      "type": "meta"
+    },
+    {
+      "id": "185",
+      "name": "Malicious Software Download",
+      "type": "standard"
+    },
+    {
+      "id": "186",
+      "name": "Malicious Software Update",
+      "type": "standard"
+    },
+    {
+      "id": "187",
+      "name": "Malicious Automated Software Update via Redirection",
+      "type": "detailed"
+    },
+    {
+      "id": "161",
+      "name": "Infrastructure Manipulation",
+      "type": "meta"
+    },
+    {
+      "id": "141",
+      "name": "Cache Poisoning",
+      "type": "standard"
+    },
+    {
+      "id": "142",
+      "name": "DNS Cache Poisoning",
+      "type": "detailed"
+    },
+    {
+      "id": "166",
+      "name": "Force the System to Reset Values",
+      "type": "standard"
+    },
+    {
+      "id": "176",
+      "name": "Configuration/Environment Manipulation",
+      "type": "meta"
+    },
+    {
+      "id": "75",
+      "name": "Manipulating Writeable Configuration Files",
+      "type": "standard"
+    },
+    {
+      "id": "203",
+      "name": "Manipulate Registry Information",
+      "type": "standard"
+    },
+    {
+      "id": "51",
+      "name": "Poison Web Service Registry",
+      "type": "detailed"
+    },
+    {
+      "id": "172",
+      "name": "Manipulate Timing and State",
+      "type": "category"
+    },
+    {
+      "id": "26",
+      "name": "Leveraging Race Conditions",
+      "type": "meta"
+    },
+    {
+      "id": "29",
+      "name": "Leveraging Time-of-Check and Time-of-Use (TOCTOU) Race Conditions",
+      "type": "standard"
+    },
+    {
+      "id": "27",
+      "name": "Leveraging Race Conditions via Symbolic Links",
+      "type": "detailed"
+    },
+    {
+      "id": "74",
+      "name": "Manipulating State",
+      "type": "meta"
+    },
+    {
+      "id": "140",
+      "name": "Bypassing of Intermediate Forms in Multiple-Form Sets",
+      "type": "standard"
+    },
+    {
+      "id": "663",
+      "name": "Exploitation of Transient Instruction Execution",
+      "type": "standard"
+    },
+    {
+      "id": "696",
+      "name": "Load Value Injection",
+      "type": "detailed"
+    }
+  ],
+  "edges": [
+    {
+      "source": "1000",
+      "target": "118",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "118",
+      "target": "169",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "169",
+      "target": "292",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "292",
+      "target": "285",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "169",
+      "target": "300",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "300",
+      "target": "287",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "118",
+      "target": "117",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "117",
+      "target": "157",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "157",
+      "target": "31",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "117",
+      "target": "499",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "499",
+      "target": "501",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "118",
+      "target": "224",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "224",
+      "target": "312",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "312",
+      "target": "317",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "224",
+      "target": "313",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "1000",
+      "target": "152",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "152",
+      "target": "242",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "242",
+      "target": "19",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "242",
+      "target": "23",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "23",
+      "target": "44",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "152",
+      "target": "248",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "248",
+      "target": "40",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "248",
+      "target": "66",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "66",
+      "target": "7",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "152",
+      "target": "175",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "175",
+      "target": "251",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "251",
+      "target": "252",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "175",
+      "target": "253",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "253",
+      "target": "101",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "1000",
+      "target": "156",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "156",
+      "target": "151",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "151",
+      "target": "89",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "151",
+      "target": "98",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "98",
+      "target": "163",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "156",
+      "target": "173",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "173",
+      "target": "103",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "103",
+      "target": "181",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "173",
+      "target": "504",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "504",
+      "target": "654",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "156",
+      "target": "416",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "416",
+      "target": "407",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "407",
+      "target": "383",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "416",
+      "target": "417",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "417",
+      "target": "418",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "1000",
+      "target": "210",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "210",
+      "target": "113",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "113",
+      "target": "36",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "113",
+      "target": "121",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "121",
+      "target": "661",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "210",
+      "target": "125",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "125",
+      "target": "482",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "125",
+      "target": "486",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "210",
+      "target": "272",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "272",
+      "target": "90",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "272",
+      "target": "220",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "220",
+      "target": "33",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "1000",
+      "target": "223",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "223",
+      "target": "112",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "112",
+      "target": "20",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "112",
+      "target": "49",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "49",
+      "target": "16",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "223",
+      "target": "28",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "1000",
+      "target": "225",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "225",
+      "target": "94",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "94",
+      "target": "219",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "94",
+      "target": "384",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "384",
+      "target": "385",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "225",
+      "target": "122",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "122",
+      "target": "1",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "1",
+      "target": "58",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "122",
+      "target": "17",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "17",
+      "target": "177",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "225",
+      "target": "233",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "233",
+      "target": "30",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "233",
+      "target": "68",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "1000",
+      "target": "255",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "255",
+      "target": "123",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "123",
+      "target": "100",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "100",
+      "target": "8",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "123",
+      "target": "540",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "255",
+      "target": "153",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "153",
+      "target": "126",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "126",
+      "target": "76",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "153",
+      "target": "128",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "128",
+      "target": "92",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "1000",
+      "target": "262",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "262",
+      "target": "184",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "184",
+      "target": "185",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "184",
+      "target": "186",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "186",
+      "target": "187",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "262",
+      "target": "161",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "161",
+      "target": "141",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "141",
+      "target": "142",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "161",
+      "target": "166",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "262",
+      "target": "176",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "176",
+      "target": "75",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "176",
+      "target": "203",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "203",
+      "target": "51",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "1000",
+      "target": "172",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "172",
+      "target": "26",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "26",
+      "target": "29",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "29",
+      "target": "27",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "172",
+      "target": "74",
+      "relationship": "HasMember"
+    },
+    {
+      "source": "74",
+      "target": "140",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "74",
+      "target": "663",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "663",
+      "target": "696",
+      "relationship": "ChildOf"
+    },
+    {
+      "source": "17",
+      "target": "233",
+      "relationship": "CanPrecede"
+    },
+    {
+      "source": "49",
+      "target": "151",
+      "relationship": "CanPrecede"
+    },
+    {
+      "source": "33",
+      "target": "141",
+      "relationship": "CanPrecede"
+    },
+    {
+      "source": "94",
+      "target": "151",
+      "relationship": "CanPrecede"
+    },
+    {
+      "source": "661",
+      "target": "68",
+      "relationship": "CanPrecede"
+    },
+    {
+      "source": "142",
+      "target": "89",
+      "relationship": "CanPrecede"
+    },
+    {
+      "source": "663",
+      "target": "141",
+      "relationship": "CanPrecede"
+    },
+    {
+      "source": "1",
+      "target": "17",
+      "relationship": "CanPrecede"
+    },
+    {
+      "source": "98",
+      "target": "89",
+      "relationship": "CanPrecede"
+    },
+    {
+      "source": "16",
+      "target": "151",
+      "relationship": "CanPrecede"
+    },
+    {
+      "source": "383",
+      "target": "94",
+      "relationship": "CanPrecede"
+    },
+    {
+      "source": "407",
+      "target": "163",
+      "relationship": "CanPrecede"
+    }
+  ]
+}
